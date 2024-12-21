@@ -6,12 +6,18 @@ LIBFT_FOLDER := libft
 LIBFT := ${LIBFT_FOLDER}/libft.a
 MAIN_FILE := ${SRC_FOLDER}/main.c
 
-# UTILS_FOLDER := ${addprefix ${SRC_FOLDER}, utils/}
-# UTILS_FILENAMES := 
-# UTILS_FILES := ${addprefix ${UTILS_FOLDER}, ${UTILS_FILENAMES}}
+SIGS_FOLDER := ${addprefix ${SRC_FOLDER}, /signals/}
+SIGS_FILENAMES := signals.c
+SIGS_FILES := ${addprefix ${SIGS_FOLDER}, ${SIGS_FILENAMES}}
 
-SRC_FILES := ${MAIN_FILE} 
-# UTILS_FILES
+UTILS_FOLDER := ${addprefix ${SRC_FOLDER}, /utils/}
+UTILS_FILENAMES := check_arg.c
+UTILS_FILES := ${addprefix ${UTILS_FOLDER}, ${UTILS_FILENAMES}}
+
+# HISTORY_FOLDER := ${addprefix ${SRC_FOLDER}, /history/}
+# HISTORY_FILENAMES := history.c
+
+SRC_FILES := ${MAIN_FILE} ${SIGS_FILES} ${UTILS_FILES}
 
 OBJS := ${SRC_FILES:.c=.o}
 
