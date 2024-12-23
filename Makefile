@@ -4,7 +4,7 @@ CFLAGS := -Wall -Werror -Wextra -g
 SRC_FOLDER := src
 LIBFT_FOLDER := libft
 LIBFT := ${LIBFT_FOLDER}/libft.a
-MAIN_FILE := ${SRC_FOLDER}/main.c
+# MAIN_FILE := ${SRC_FOLDER}/main.c
 
 SIGS_FOLDER := ${addprefix ${SRC_FOLDER}, /signals/}
 SIGS_FILENAMES := signals.c
@@ -14,10 +14,11 @@ UTILS_FOLDER := ${addprefix ${SRC_FOLDER}, /utils/}
 UTILS_FILENAMES := check_arg.c
 UTILS_FILES := ${addprefix ${UTILS_FOLDER}, ${UTILS_FILENAMES}}
 
-# HISTORY_FOLDER := ${addprefix ${SRC_FOLDER}, /history/}
-# HISTORY_FILENAMES := history.c
+MAIN_FOLDER := ${addprefix ${SRC_FOLDER}, /main/}
+MAIN_FILENAMES := loop.c main.c
+MAIN_FILES := ${addprefix ${MAIN_FOLDER}, ${MAIN_FILENAMES}}
 
-SRC_FILES := ${MAIN_FILE} ${SIGS_FILES} ${UTILS_FILES}
+SRC_FILES := ${SIGS_FILES} ${UTILS_FILES} ${MAIN_FILES}
 
 OBJS := ${SRC_FILES:.c=.o}
 

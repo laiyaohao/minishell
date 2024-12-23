@@ -16,5 +16,6 @@ typedef struct s_list
 
 void	setup_sig(void);
 int	check_arg(int argc);
+void  shell_loop(void);
 
 #endif
