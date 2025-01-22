@@ -20,6 +20,7 @@ int main(int argc, char **argv, char **env)
 
 	(void)argv;
 	(void)env;
+	(void)cmds;
 	if (!check_arg(argc))
 		return (0);
 	setup_sig();

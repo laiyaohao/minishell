@@ -2,7 +2,7 @@
 
 void	parse(char *input)
 {
-	
+	(void)input;
 }
 
 void  shell_loop(void)
