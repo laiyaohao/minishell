@@ -5,10 +5,26 @@ void	parse(char *input)
 	(void)input;
 }
 
+void	reallocate(char **tbr, char **tbu)
+{
+	char	*temp;
+
+	temp = ft_strdup(*tbr);
+	free(*tbr);
+	*tbr = ft_strjoin(temp, *tbu);
+	free(temp);
+}
+
+
+
 void  shell_loop(void)
 {
   char  *input;
+	char	*full_line;
+	int		con_flag;
 
+	full_line = ft_strdup("");
+	con_flag = 0;
   while (1)
 	{
 		input = readline("minishell> ");
@@ -16,23 +32,25 @@ void  shell_loop(void)
 			break;
 		if (*input)
 		{
-			add_history(input);
-			parse(input);
+			if (con_flag == 0)
+			{
+				free(full_line);
+				full_line = ft_strdup(input);
+			}
+			if (con_flag)
+			{
+				reallocate(&full_line, &input);
+				con_flag = 0;
+			}
+			if (line_con(input))
+			{
+				strip(&full_line);
+				con_flag = 1;
+			}
+			add_history(full_line);
+			parse(full_line);
 		}
-		// Simulate clearing history on specific input
-		if (input && strcmp(input, "clear_history") == 0) {
-			rl_clear_history();
-			printf("History cleared!\n");
-		}
-		// Command to print history
-		// if (strcmp(input, "history") == 0) {
-		// 	HIST_ENTRY **history = history_list();
-		// 	if (history) {
-		// 		for (int i = 0; history[i]; i++) {
-		// 			printf("%d: %s\n", i + 1, history[i]->line);
-		// 		}
-		// 	}
-		// }
 		free(input);
 	}
+	free(full_line);
 }

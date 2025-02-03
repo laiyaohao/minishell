@@ -11,7 +11,7 @@ SIGS_FILENAMES := signals.c
 SIGS_FILES := ${addprefix ${SIGS_FOLDER}, ${SIGS_FILENAMES}}
 
 UTILS_FOLDER := ${addprefix ${SRC_FOLDER}, /utils/}
-UTILS_FILENAMES := check_arg.c
+UTILS_FILENAMES := check_arg.c line_con.c strip.c
 UTILS_FILES := ${addprefix ${UTILS_FOLDER}, ${UTILS_FILENAMES}}
 
 MAIN_FOLDER := ${addprefix ${SRC_FOLDER}, /main/}
@@ -46,3 +46,34 @@ ${NAME}: ${OBJS}
 	${CC} ${CFLAGS} -c $< -o $@
 
 .PHONY: all clean fclean re
+
+
+# t_list struct (named cmds)
+
+# --------------------------------
+# |             |               |
+# |             |               |
+# | cmd struct  |  t_list *next |
+# |             |               |
+# |             |               |
+# --------------------------------
+
+# above is the structure for the whole entire line of commands
+# cmd struct is the one chunk before a specific pipes
+# e.g if command is "ls -l | cat", then cmd struct will contain "ls -l"
+# length of this linked list will depends on the number of pipes.
+# next will contain the address to the next t_list struct
+# for example, using the above example (ls -l | cat)
+# next will point to the address of the t_list struct for "cat"
+
+
+
+# cmd struct
+
+# --------------------------------
+# |             |               |
+# |             |               |
+# | char cmd    |   
+# |             |               |
+# |             |               |
+# --------------------------------
