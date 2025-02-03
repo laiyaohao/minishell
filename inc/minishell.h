@@ -25,5 +25,7 @@ typedef struct s_cmd
 void	setup_sig(void);
 int	check_arg(int argc);
 void  shell_loop(void);
+int	line_con(char *input);
+void	strip(char **line);
 
 #endif
