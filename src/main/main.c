@@ -28,5 +28,5 @@ int main(int argc, char **argv, char **env)
 	init_attr(&attr);
 	shell_loop(&attr);
 	rl_clear_history(); // Free history memory before exiting
-	return 0;
+	return (0);
 }

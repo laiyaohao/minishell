@@ -1,10 +1,18 @@
 NAME := minishell
-CC := gcc
+CC := cc
 CFLAGS := -Wall -Werror -Wextra -g
 SRC_FOLDER := src
 LIBFT_FOLDER := libft
 LIBFT := ${LIBFT_FOLDER}/libft.a
 # MAIN_FILE := ${SRC_FOLDER}/main.c
+
+LEX_FOLDER := ${addprefix ${SRC_FOLDER}, /lexing/}
+LEX_FILENAMES := lex.c lex_utils.c
+LEX_FILES := ${addprefix ${LEX_FOLDER}, ${LEX_FILENAMES}}
+
+PARSE_FOLDER := ${addprefix ${SRC_FOLDER}, /parsing/}
+PARSE_FILENAMES := parse.c
+PARSE_FILES := ${addprefix ${PARSE_FOLDER}, ${PARSE_FILENAMES}}
 
 SIGS_FOLDER := ${addprefix ${SRC_FOLDER}, /signals/}
 SIGS_FILENAMES := signals.c
