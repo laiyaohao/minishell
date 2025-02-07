@@ -11,14 +11,22 @@ SIGS_FILENAMES := signals.c
 SIGS_FILES := ${addprefix ${SIGS_FOLDER}, ${SIGS_FILENAMES}}
 
 UTILS_FOLDER := ${addprefix ${SRC_FOLDER}, /utils/}
-UTILS_FILENAMES := check_arg.c line_con.c strip.c
+UTILS_FILENAMES := check_arg.c line_con.c
 UTILS_FILES := ${addprefix ${UTILS_FOLDER}, ${UTILS_FILENAMES}}
+
+INIT_FOLDER := ${addprefix ${SRC_FOLDER}, /init/}
+INIT_FILENAMES := init.c
+INIT_FILES := ${addprefix ${INIT_FOLDER}, ${INIT_FILENAMES}}
+
+TOKENS_FOLDER := ${addprefix ${SRC_FOLDER}, /tokens/}
+TOKENS_FILENAMES := check_line.c
+TOKENS_FILES := ${addprefix ${TOKENS_FOLDER}, ${TOKENS_FILENAMES}}
 
 MAIN_FOLDER := ${addprefix ${SRC_FOLDER}, /main/}
 MAIN_FILENAMES := loop.c main.c
 MAIN_FILES := ${addprefix ${MAIN_FOLDER}, ${MAIN_FILENAMES}}
 
-SRC_FILES := ${SIGS_FILES} ${UTILS_FILES} ${MAIN_FILES}
+SRC_FILES := ${SIGS_FILES} ${UTILS_FILES} ${MAIN_FILES} ${INIT_FILES} ${TOKENS_FILES}
 
 OBJS := ${SRC_FILES:.c=.o}
 
@@ -77,3 +85,4 @@ ${NAME}: ${OBJS}
 # |             |               |
 # |             |               |
 # --------------------------------
+

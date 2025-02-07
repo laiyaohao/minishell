@@ -17,14 +17,9 @@ void	reallocate(char **tbr, char **tbu)
 
 
 
-void  shell_loop(void)
+void  shell_loop(t_attr *attr)
 {
   char  *input;
-	char	*full_line;
-	int		con_flag;
-
-	full_line = ft_strdup("");
-	con_flag = 0;
   while (1)
 	{
 		input = readline("minishell> ");
@@ -32,25 +27,23 @@ void  shell_loop(void)
 			break;
 		if (*input)
 		{
-			if (con_flag == 0)
+			line_con(attr, &(attr->full_line), &input);
+			if (backslash(input))
 			{
-				free(full_line);
-				full_line = ft_strdup(input);
+				strip(&(attr->full_line));
+				attr->con_flag = 1;
 			}
-			if (con_flag)
+			else if (check_line(attr))
 			{
-				reallocate(&full_line, &input);
-				con_flag = 0;
+				printf("error with %s\n", (attr->full_line));
+				free(input);
+				break;
 			}
-			if (line_con(input))
-			{
-				strip(&full_line);
-				con_flag = 1;
-			}
-			add_history(full_line);
-			parse(full_line);
+			printf("full_line: %s\n", attr->full_line);
+			add_history((attr->full_line));
+			parse((attr->full_line));
 		}
 		free(input);
 	}
-	free(full_line);
+	free(attr->full_line);
 }
