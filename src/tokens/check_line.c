@@ -1,25 +1,19 @@
 #include "../../inc/minishell.h"
 
-int allowed_c(char c)
+int not_allowed(char c)
 {
-  if (c == 32 ||
-      c == 34 ||
-      c == 36 ||
-      c == 39 ||
-      c == 60 ||
-      c == 62 ||
-      c == 63 ||
-      c == 124 ||
-      c == 126)
-      return (1);
+  if (c == 59 || // semicolon
+      c == 92 || // backslash
+      c == 96) // backtick
+    return (1);
   return (0);
 }
 
 int line_err(char *line, int i)
 {
-  if (ft_isalnum(line[i]) || allowed_c(line[i]))
-    return (0);
-  return (1);
+  if (not_allowed(line[i]))
+    return (1);
+  return (0);
 }
 
 int set_status(int status, char *line, int i)
@@ -46,9 +40,8 @@ int  check_line(t_attr *attr)
   status = 0;
   while (i < len)
   {
-    if (!line_err(attr->full_line, i))
-      status = set_status(status, attr->full_line, i);
-    else
+    status = set_status(status, attr->full_line, i);
+    if (status == 0 && line_err(attr->full_line, i))
     {
       status = 1;
       break;
@@ -57,3 +50,9 @@ int  check_line(t_attr *attr)
   }
   return (status);
 }
+
+/**
+ * Note: when testing the backslash, need to put backslash
+ * twice, i.e. "\\" as i have implemented the backslash
+ * escape sequence earlier shell_loop
+ */

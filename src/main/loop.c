@@ -34,12 +34,7 @@ void  shell_loop(t_attr *attr)
 				attr->con_flag = 1;
 			}
 			else if (check_line(attr))
-			{
 				printf("error with %s\n", (attr->full_line));
-				free(input);
-				break;
-			}
-			printf("full_line: %s\n", attr->full_line);
 			add_history((attr->full_line));
 			parse((attr->full_line));
 		}
