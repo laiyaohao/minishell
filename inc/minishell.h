@@ -32,9 +32,6 @@ void	setup_sig(void);
 int	check_arg(int argc);
 void  shell_loop(t_attr *attr);
 void	init_attr(t_attr *attr);
-void	line_con(t_attr *attr, char **full_line, char **input);
-int	backslash(char *input);
-void	strip(char **line);
 int  check_line(t_attr *attr);
 
 #endif

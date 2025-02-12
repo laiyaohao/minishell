@@ -21,10 +21,10 @@ int set_status(int status, char *line, int i)
   if (line[i] == '\'' && status == 0)
 		status = 1;
 	else if (line[i] == '\"' && status == 0)
-		status = 1;
+		status = 2;
 	else if (line[i] == '\'' && status == 1)
 		status = 0;
-	else if (line[i] == '\"' && status == 1)
+	else if (line[i] == '\"' && status == 2)
 		status = 0;
 	return (status);
 }
@@ -50,9 +50,3 @@ int  check_line(t_attr *attr)
   }
   return (status);
 }
-
-/**
- * Note: when testing the backslash, need to put backslash
- * twice, i.e. "\\" as i have implemented the backslash
- * escape sequence earlier shell_loop
- */
