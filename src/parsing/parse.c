@@ -87,22 +87,20 @@ t_cmd   *parse_redir(t_node *token, int count)
 
 t_cmd   *parse_pipe(t_node *token, int count)
 {
-    t_cmd   *head;
     t_cmd   *left;
     t_cmd   *right;
 
-    head = parse_redir(token, count);
-    if (!head)
+    left = parse_redir(token, count);
+    if (!left)
         return (NULL);
-    left = head;
-    while (token->type == T_PIPE && token->type != T_EOF)
+    while (token->type == T_PIPE)
     {
         token = token->next;
         right = parse_redir(token, count);
         left->next = right;
         left = right;
     }
-    return(head);
+    return(left);
 }
 
 /**
