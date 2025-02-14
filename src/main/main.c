@@ -16,17 +16,25 @@ int main(int argc, char **argv, char **env)
 {
 	// char *input;
 	// should have a struct for linked list
-	t_list *cmds;
+	t_list	*env_ll;
+	// t_env		key_v;
 	t_attr	attr;
+	// char **sample = {
+	// 	"hello",
+	// 	"a=1",
+	// 	"b=2",
+	// };
 
 	(void)argv;
-	(void)env;
-	(void)cmds;
+	env_ll = NULL;
 	if (!check_arg(argc))
 		return (0);
+	setup_env(&env_ll, env);
+	bi_env(&env_ll);
 	setup_sig();
 	init_attr(&attr);
 	shell_loop(&attr);
-	rl_clear_history(); // Free history memory before exiting
+	free_env(&env_ll);
+	rl_clear_history();
 	return 0;
 }

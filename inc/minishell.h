@@ -15,12 +15,11 @@
 // 	struct s_list	*next;
 // }					t_list;
 
-typedef struct s_cmd
+typedef struct s_env
 {
-	char	*cmd;
-	int		infd;
-
-}					t_cmd;
+	char	*key;
+	char	*value;
+}					t_env;
 
 typedef struct s_attr
 {
@@ -33,5 +32,11 @@ int	check_arg(int argc);
 void  shell_loop(t_attr *attr);
 void	init_attr(t_attr *attr);
 int  check_line(t_attr *attr);
+void  setup_env(t_list **env_ll, char **env);
+void  add_env(char **env, int i, t_list **env_ll);
+void  free_env(t_list **env_ll);
+void  free_node(t_env *node);
+void	print_env(t_list **env_ll);
+void	bi_env(t_list **env_ll);
 
 #endif

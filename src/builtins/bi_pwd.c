@@ -1,9 +1,7 @@
 #include "../../inc/minishell.h"
 
-void  pwd(t_astnode *node, t_shelly *shell)
+void  bi_pwd(void)
 {
-  (void)node;
-  (void)shell;
   char  *answer;
 
   answer = getcwd(NULL, 0);
