@@ -1,106 +1,80 @@
 #include "../../inc/minishell.h"
 
-size_t	ft_strlen(const char *str)
+void	parse_redir(t_node **token, t_redirect **ast_rd)
 {
-	size_t	i;
+	t_redirect	*new_rd;
+	t_redirect	*last;
 
-	i = 0;
-	while (*str++)
-		i++;
-	return (i);
-}
-
-char	*ft_strdup(const char *s)
-{
-	size_t	len;
-	char	*ans;
-	size_t	i;
-
-	i = 0;
-	len = ft_strlen(s);
-	ans = (char *) malloc((len + 1) * sizeof(char));
-	if (ans == NULL)
-		return (NULL);
-	while (i < len)
+	new_rd = malloc(sizeof(t_redirect));
+	if (!new_rd)
+		return ;
+	ft_memset(new_rd, 0, sizeof(t_redirect));
+	new_rd->type = (*token)->type;
+	(*token) = (*token)->next;
+	new_rd->file = ft_strdup((*token)->value);
+	if (!(*ast_rd))
+		*ast_rd = new_rd;
+	else
 	{
-		ans[i] = s[i];
-		i++;
+		last = *ast_rd;
+		while (last->next)
+			last = last->next;
+		last->next = new_rd;
 	}
-	ans[i] = '\0';
-	return (ans);
 }
 
-t_cmd   *parse_cmd(t_node *token, int count)
+ast_node	*parse_cmd(t_node **token)
 {
-    t_cmd   *cmd;
-    int     i;
+	ast_node	*cmd;
+	int			count;
+	int			i;
 
-    if (token->type != T_WORD)
-        return (NULL);
-    cmd = malloc(sizeof(t_cmd));
-    if (!cmd)
-        return (NULL);
-    ft_memset(cmd, 0, sizeof(cmd));
-    i = 0;
-    cmd->args = malloc(sizeof(char *) * count);
-    if (!(cmd->args))
-        return (NULL);
-    while (token->type == T_WORD)
-    {
-        cmd->args[i] = ft_strdup(token->value);
-        i++;
-        token = token->next;
-    }
-    cmd->args[i] = NULL;
-    return (cmd);
+	cmd = create_ast_node(AST_CMD);
+	if (!cmd)
+		return (NULL);
+	i = 0;
+	count = count_args(*token);
+	cmd->args = malloc(sizeof(char *) * (count + 1));
+	if (!cmd->args)
+		return (NULL);
+	while ((*token) && (*token)->type != T_PIPE && (*token)->type != T_EOF)
+	{
+		if ((*token)->type == T_WORD)
+		{
+			cmd->args[i] = ft_strdup((*token)->value);
+			i++;
+		}
+		else
+			parse_redir(token, &cmd->rd);
+		*token = (*token)->next;
+	}
+	cmd->args[i] = NULL;
+	return (cmd);
 }
 
-t_cmd   *parse_redir(t_node *token, int count)
+ast_node	*parse_pipe(t_node **token)
 {
-    t_cmd   *cmd;
-    cmd = parse_cmd(token, count);
-    if (!cmd)
-        return (NULL);
-    if (token->type == T_HEREDOC)
-    {
-        token = token->next;
-        // heredoc(token);
-    }
-    else if (token->type == T_REDIR_IN)
-    {
-        token = token->next;
-        cmd->in_fd = open(token->value, O_RDONLY);
-    }
-    else if(token->type == T_REDIR_OUT)
-    {
-        token = token->next;
-        cmd->out_fd = open(token->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-    }
-    else
-    {
-        token = token->next;
-        cmd->out_fd = open(token->value, O_CREAT | O_WRONLY | O_APPEND, 0644);
-    }
-    token = token->next;
-    return (cmd);
-}
+	ast_node	*left;
+	ast_node	*right;
+	ast_node	*pipe;
 
-t_cmd   *parse_pipe(t_node *token, int count)
-{
-    t_cmd   *left;
-    t_cmd   *right;
-
-    left = parse_redir(token, count);
-    if (!left)
-        return (NULL);
-    while (token->type == T_PIPE)
-    {
-        token = token->next;
-        right = parse_redir(token, count);
-        left->next = right;
-        left = right;
-    }
-    return(left);
+	left = parse_cmd(token);
+	if (!left)
+		return (NULL);
+	while (*token && (*token)->type == T_PIPE)
+	{
+		*token = (*token)->next;
+		if ((*token)->type == T_EOF)
+			return (NULL);
+		right = parse_pipe(token);
+		if (!right)
+			return (NULL);
+		pipe = create_ast_node(AST_PIPE);
+		pipe->left = left;
+		pipe->right = right;
+		left = pipe;
+	}
+	return (left);
 }
 
 /**
@@ -108,14 +82,15 @@ t_cmd   *parse_pipe(t_node *token, int count)
  *
  * @param list The list of tokens to be parsed.
  *
- * @details 
- * 
+ * @details Uses recursive descent to create a structure known as the AST,
+ * which will allow for execution to be done in the correct precedence.
+ *
  * @return The AST if successful, NULL if failure.
  */
-t_cmd    *parser(t_tok *list)
+ast_node	*parser(t_tok *list)
 {
-    t_cmd   *tree;
+	ast_node	*tree;
 
-    tree = parse_pipe(list->head, list->count);
-    return (tree);
+	tree = parse_pipe(&list->head);
+	return (tree);
 }

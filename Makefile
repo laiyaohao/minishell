@@ -6,20 +6,20 @@ LIBFT_FOLDER := libft
 LIBFT := ${LIBFT_FOLDER}/libft.a
 # MAIN_FILE := ${SRC_FOLDER}/main.c
 
+PARSE_FOLDER := ${addprefix ${SRC_FOLDER}, /parsing/}
+PARSE_FILENAMES := parse.c parse_utils.c print_ast.c
+PARSE_FILES := ${addprefix ${PARSE_FOLDER}, ${PARSE_FILENAMES}}
+
 LEX_FOLDER := ${addprefix ${SRC_FOLDER}, /lexing/}
 LEX_FILENAMES := lex.c lex_utils.c
 LEX_FILES := ${addprefix ${LEX_FOLDER}, ${LEX_FILENAMES}}
-
-PARSE_FOLDER := ${addprefix ${SRC_FOLDER}, /parsing/}
-PARSE_FILENAMES := parse.c
-PARSE_FILES := ${addprefix ${PARSE_FOLDER}, ${PARSE_FILENAMES}}
 
 SIGS_FOLDER := ${addprefix ${SRC_FOLDER}, /signals/}
 SIGS_FILENAMES := signals.c
 SIGS_FILES := ${addprefix ${SIGS_FOLDER}, ${SIGS_FILENAMES}}
 
 UTILS_FOLDER := ${addprefix ${SRC_FOLDER}, /utils/}
-UTILS_FILENAMES := check_arg.c
+UTILS_FILENAMES := check_arg.c ft_isspace.c
 UTILS_FILES := ${addprefix ${UTILS_FOLDER}, ${UTILS_FILENAMES}}
 
 INIT_FOLDER := ${addprefix ${SRC_FOLDER}, /init/}
@@ -34,7 +34,7 @@ MAIN_FOLDER := ${addprefix ${SRC_FOLDER}, /main/}
 MAIN_FILENAMES := loop.c main.c
 MAIN_FILES := ${addprefix ${MAIN_FOLDER}, ${MAIN_FILENAMES}}
 
-SRC_FILES := ${SIGS_FILES} ${UTILS_FILES} ${MAIN_FILES} ${INIT_FILES} ${TOKENS_FILES}
+SRC_FILES := ${PARSE_FILES} ${LEX_FILES} ${SIGS_FILES} ${UTILS_FILES} ${MAIN_FILES} ${INIT_FILES} ${TOKENS_FILES}
 
 OBJS := ${SRC_FILES:.c=.o}
 
