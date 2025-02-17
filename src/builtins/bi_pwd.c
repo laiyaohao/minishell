@@ -1,5 +1,10 @@
 #include "../../inc/minishell.h"
 
+/**
+ * bi_pwd:
+ *	Executes the pwd builtin command: prints the working directory.
+ *	Returns 1 on completion.
+ */
 void  bi_pwd(void)
 {
   char  *answer;

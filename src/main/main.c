@@ -32,7 +32,7 @@ int main(int argc, char **argv, char **env)
 	setup_env(&env_ll, env);
 	bi_env(&env_ll);
 	setup_sig();
-	init_attr(&attr);
+	init_attr(&attr, &env_ll);
 	shell_loop(&attr);
 	free_env(&env_ll);
 	rl_clear_history();

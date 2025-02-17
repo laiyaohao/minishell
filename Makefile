@@ -23,11 +23,13 @@ TOKENS_FILENAMES := check_line.c
 TOKENS_FILES := ${addprefix ${TOKENS_FOLDER}, ${TOKENS_FILENAMES}}
 
 ENV_FOLDER := ${addprefix ${SRC_FOLDER}, /env/}
-ENV_FILENAMES := setup_env.c free_env.c print_env.c add_env.c
+ENV_FILENAMES := setup_env.c free_env.c print_env.c add_env.c \
+									check_env.c del_env.c find_env.c update_env.c
 ENV_FILES := ${addprefix ${ENV_FOLDER}, ${ENV_FILENAMES}}
 
 BUILTINS_FOLDER := ${addprefix ${SRC_FOLDER}, /builtins/}
-BUILTINS_FILENAMES := bi_pwd.c bi_env.c bi_export.c
+BUILTINS_FILENAMES := bi_pwd.c bi_env.c bi_export.c bi_cd.c bi_echo.c \
+											bi_unset.c
 BUILTINS_FILES := ${addprefix ${BUILTINS_FOLDER}, ${BUILTINS_FILENAMES}}
 
 MAIN_FOLDER := ${addprefix ${SRC_FOLDER}, /main/}

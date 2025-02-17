@@ -29,5 +29,5 @@ void  free_env(t_list **env_ll)
 	}
   // free(*env_ll);
   free_node(node);
-    free(list);
+  free(list);
 }

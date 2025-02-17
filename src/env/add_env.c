@@ -21,25 +21,42 @@ void	fill_value(t_env *key_v, int key_len, char *env)
 	char  *value;
 	int i;
 	int full_len;
-	int status;
 
 	full_len = ft_strlen(env);
 	value = malloc(full_len - key_len + 1);
 	i = 0;
-	if (key_len > full_len)
-	{
-		value = NULL;
-		i = -1;
-	}
 	while (key_len < full_len)
 	{
 		value[i] = env[key_len];
 		key_len++;
 		i++;
 	}
-	if (i >= 0)
-		value[i] = '\0';
+	value[i] = '\0';
 	key_v->value = value;
+}
+
+void	add_empty_key(char **env, int i, t_list **env_ll)
+{
+	t_env	*key_v;
+	char *key;
+	int	full_len;
+	int	j;
+	t_list	*node;
+	
+
+	key_v = malloc(sizeof(t_env));
+	full_len = ft_strlen(env[i]);
+	key = malloc(sizeof(full_len));
+	j = 0;
+	while (j < full_len)
+	{
+		key[j] = env[i][j];
+		j++;
+	}
+	key_v->key = key;
+	key_v->value = NULL;
+	node = ft_lstnew(key_v);
+	ft_lstadd_back(env_ll, node);
 }
 
 void	add_env(char **env, int i, t_list **env_ll)
@@ -48,11 +65,16 @@ void	add_env(char **env, int i, t_list **env_ll)
 	t_env *key_v;
 	char  *eq;
 	int key_len;
-	// int value_len;
 	// t_env  *sample;
 
 	// find first equal sign
-	eq = ft_strchr(env[i], '=');
+	eq = ft_strchr(env[i], '='); // will be NULL if not found
+	// i.e. export VAR
+	if (eq == NULL)
+	{
+		add_empty_key(env, i, env_ll);
+		return ;
+	}
 	// length of key
 	key_len = eq - env[i];
 	if (key_len == 0 || check_key(key_len, env[i]) || 
