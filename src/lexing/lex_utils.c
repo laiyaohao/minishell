@@ -6,6 +6,21 @@ void	handle_pipe(char **s, int *i)
 	(*s)++;
 }
 
+void	add_value(char **s, int *j, char **temp)
+{
+	int	i;
+
+	*temp = malloc(sizeof(char) * (*j + 1));
+	if (!temp)
+		return ;
+	i = 0;
+	while (i < *j)
+	{
+		(*temp)[i] = (*s)[i];
+		i++;
+	}
+}
+
 void	handle_word(char **s, int *i, char **temp)
 {
 	int	j;
@@ -23,15 +38,7 @@ void	handle_word(char **s, int *i, char **temp)
 		while ((*s)[j] != ' ' && (*s)[j])
 			j++;
 	}
-	*i = 0;
-	*temp = malloc(sizeof(char) * (j + 1));
-	if (!(*temp))
-		return ;
-	while (*i < j)
-	{
-		(*temp)[*i] = (*s)[*i];
-		(*i)++;
-	}
+	add_value(s, &j, temp);
 	*i = T_WORD;
 	(*s) += j;
 }
