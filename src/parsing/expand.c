@@ -1,133 +1,101 @@
 #include "../../inc/minishell.h"
 
-char	*handle_leading(char **s)
+char	*get_var(char **s)
 {
-	char	*res;
-	int		i;
-	int		k;
-
-	i = 0;
-	k = 0;
-	while (s[i] && s[i] != '$')
-	{
-		i++;
-		if (s[i] != '"' && s[i] != '\'')
-			k++;
-	}
-	res = malloc(sizeof(char) * (k + 1));
-	if (!res)
-		return (NULL);
-}
-
-char	*handle_var(char **s)
-{
-	char	*res;
+	char	*temp;
 	int		i;
 	int		j;
 
 	i = 0;
-}
-
-void	handle_quote(char **s, char **buffer)
-{
-	int	i;
-	int	j;
-
-	(*s)++;
-	i = 0;
-	while (s[i] && s[i] != '\'')
-	{
+	while (ft_isalnum((*s)[i]) || (*s)[i] == '_')
 		i++;
-	}
-	*buffer = malloc(sizeof(char) * (i + 1));
-	if (!(*buffer))
-		return ;
+	temp = malloc(sizeof(char) * (i + 1));
+	if (!temp)
+		return (NULL);
 	j = 0;
-	while (s[j] && s[j] != '\'')
+	while (j < i)
 	{
-		buffer[j] = s[j];
+		temp[j] = (*s)[j];
 		j++;
 	}
-	s = s + j + 1;
+	temp[j] = '\0';
+	(*s) += i;
+	return(temp);
+}
+
+void	handle_var(char **s, char **res)
+{
+	char	*temp;
+	char	*var;
+
+	var = NULL;
+	(*s)++;
+	if (!ft_isalnum(**s) && (**s) != '_')
+	{
+		strcjoin('$', res);
+		strcjoin(**s, res);
+		(*s)++;
+	}
+	else
+	{
+		temp = get_var(s);
+		var = getenv(temp);
+		free(temp);
+		temp = *res;
+		if (!var)
+			*res = ft_strjoin(temp, "");
+		else
+			*res = ft_strjoin(temp, var);
+		free(temp);
+	}
+}
+
+void	handle_quote(char **s, char **res)
+{
+	(*s)++;
+	while ((**s) != '\'')
+	{
+		strcjoin(**s, res);
+		(*s)++;
+	}
+	(*s)++;
+}
+
+void	handle_dquote(char **s, char **res)
+{
+	(*s)++;
+	while ((**s) != '"')
+	{
+		if ((**s) == '$')
+			handle_var(s, res);
+		else
+			strcjoin(**s, res);
+		(*s)++;
+	}
+	(*s)++;
 }
 
 char	*handle_expand(char *s)
 {
-	int		state;
-	int		i;
-	char	*temp;
-	char	*buffer;
+	char	*res;
 
-	i = 0;
-	state = 0; // 0 if to expand
-	buffer = NULL;
-	if (s[i] == '\'')
+	res = ft_strdup("");
+	if (!res)
+		return (NULL);
+	while (s && *s)
 	{
-		state = 1;
-		handle_quote(&s, &buffer);
+		if (*s == '\'')
+			handle_quote(&s, &res);
+		else if (*s == '"')
+			handle_dquote(&s, &res);
+		else if (*s == '$')
+			handle_var(&s, &res);
+		else
+		{
+			strcjoin(*s, &res);
+			s++;
+		}
 	}
-	else if (s[i] == '"')
-	{
-		handle_dquote(&s, &state);
-	}
-	return (buffer);
+	strcjoin('\0', &res);
+	return (res);
 }
-
-// char	*expand_string(char *s)
-// {
-// 	char	*temp;
-//     char    *var;
-// 	char	*res;
-// 	int		i;
-// 	int		j;
-// 	int		k;
-
-//     res = handle_leading(&s);
-// 	i = 0;
-// 	while (s[i] && s[i] != '$')
-// 	{
-// 		i++;
-// 		if (s[i] != '"' && s[i] != '\'')
-// 			k++;
-// 	}
-// 	res = malloc(sizeof(char) * (k + 1));
-// 	if (!res)
-// 		return (NULL);
-// 	k = 0;
-// 	j = 0;
-// 	while (k < i)
-// 	{
-// 		if (s[j] == '"' || s[j] == '\'')
-// 			j++;
-// 		if (!s[j])
-// 			break ;
-// 		res[k] = s[j];
-// 		k++;
-// 		j++;
-// 	}
-// 	s += i;
-//     i = 0;
-//     j = 0;
-//     while (s)
-//     {
-//         if (s == '$')
-//             s++;
-//         while(s[i] && (ft_isalnum(s[i]) != 0 || s[i] == '_'))
-//             i++;
-//         temp = malloc(sizeof(char) * (i + 1));
-//         if (!temp)
-//             return (NULL);
-//         while (j < i)
-//         {
-//             temp[j] = s[j];
-//             j++;
-//         }
-//         var = getenv(temp);
-//         if (!var)
-//             var = ft_strdup("");
-//         free(temp);
-//         temp = res;
-//         res = ft_strjoin(temp, var);
-//         s += j;
-//     }
-// }

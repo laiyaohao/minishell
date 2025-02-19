@@ -41,7 +41,7 @@ ast_node	*parse_cmd(t_node **token)
 	{
 		if ((*token)->type == T_WORD)
 		{
-			cmd->args[i] = ft_strdup((*token)->value);
+			cmd->args[i] = handle_expand((*token)->value);
 			i++;
 		}
 		else

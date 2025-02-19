@@ -7,7 +7,7 @@ LIBFT := ${LIBFT_FOLDER}/libft.a
 # MAIN_FILE := ${SRC_FOLDER}/main.c
 
 PARSE_FOLDER := ${addprefix ${SRC_FOLDER}, /parsing/}
-PARSE_FILENAMES := parse.c parse_utils.c print_ast.c
+PARSE_FILENAMES := expand.c parse.c parse_utils.c print_ast.c
 PARSE_FILES := ${addprefix ${PARSE_FOLDER}, ${PARSE_FILENAMES}}
 
 LEX_FOLDER := ${addprefix ${SRC_FOLDER}, /lexing/}
@@ -19,7 +19,7 @@ SIGS_FILENAMES := signals.c
 SIGS_FILES := ${addprefix ${SIGS_FOLDER}, ${SIGS_FILENAMES}}
 
 UTILS_FOLDER := ${addprefix ${SRC_FOLDER}, /utils/}
-UTILS_FILENAMES := check_arg.c ft_isspace.c
+UTILS_FILENAMES := check_arg.c ft_isspace.c strcjoin.c
 UTILS_FILES := ${addprefix ${UTILS_FOLDER}, ${UTILS_FILENAMES}}
 
 INIT_FOLDER := ${addprefix ${SRC_FOLDER}, /init/}

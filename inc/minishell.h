@@ -81,9 +81,11 @@ void					handle_redir_in(char **s, int *i);
 void					handle_redir_out(char **s, int *i);
 t_tok					*lexer(char *input);
 int						grammar_check(t_tok *list);
-int 					count_args(t_node *tokens);
-ast_node    			*create_ast_node(ast_type type);
+int						count_args(t_node *tokens);
+ast_node				*create_ast_node(ast_type type);
 ast_node				*parser(t_tok *list);
+char					*handle_expand(char *s);
+void					strcjoin(char s, char **res);
 void					debug_print_ast(ast_node *root);
 
 #endif
