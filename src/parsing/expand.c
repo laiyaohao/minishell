@@ -53,7 +53,7 @@ void	handle_var(char **s, char **res)
 void	handle_quote(char **s, char **res)
 {
 	(*s)++;
-	while ((**s) != '\'')
+	while (**s && (**s) != '\'')
 	{
 		strcjoin(**s, res);
 		(*s)++;
@@ -64,7 +64,7 @@ void	handle_quote(char **s, char **res)
 void	handle_dquote(char **s, char **res)
 {
 	(*s)++;
-	while ((**s) != '"')
+	while (**s && (**s) != '"')
 	{
 		if ((**s) == '$')
 			handle_var(s, res);
@@ -99,3 +99,6 @@ char	*handle_expand(char *s)
 	strcjoin('\0', &res);
 	return (res);
 }
+
+//variable expansion also has to handle $? for the exit code of the last execution
+//will be implemented after the signals have been integrated fully

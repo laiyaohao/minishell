@@ -19,6 +19,7 @@ void	add_value(char **s, int *j, char **temp)
 		(*temp)[i] = (*s)[i];
 		i++;
 	}
+	(*temp)[i] = '\0';
 }
 
 void	handle_word(char **s, int *i, char **temp)
@@ -26,17 +27,15 @@ void	handle_word(char **s, int *i, char **temp)
 	int	j;
 
 	j = 0;
-	if ((*s)[j] == '"')
+	while ((*s)[j] && (*s)[j] != ' ')
 	{
-		j++;
-		while ((*s)[j] != '"')
+		if ((*s)[j] == '"')
+		{
 			j++;
+			while ((*s)[j] != '"')
+				j++;
+		}
 		j++;
-	}
-	else
-	{
-		while ((*s)[j] != ' ' && (*s)[j])
-			j++;
 	}
 	add_value(s, &j, temp);
 	*i = T_WORD;
