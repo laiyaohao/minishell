@@ -28,7 +28,7 @@ void  shell_loop(t_attr *attr)
 		if (*(attr->full_line))
 		{
 			if (check_line(attr))
-				printf("error with %s\n", (attr->full_line));
+				printf("have error lah deh %s\n", (attr->full_line));
 			add_history((attr->full_line));
 			tokens = lexer(attr->full_line);
 			if (!tokens)

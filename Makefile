@@ -30,11 +30,23 @@ TOKENS_FOLDER := ${addprefix ${SRC_FOLDER}, /tokens/}
 TOKENS_FILENAMES := check_line.c
 TOKENS_FILES := ${addprefix ${TOKENS_FOLDER}, ${TOKENS_FILENAMES}}
 
+ENV_FOLDER := ${addprefix ${SRC_FOLDER}, /env/}
+ENV_FILENAMES := setup_env.c free_env.c print_env.c add_env.c \
+									check_env.c del_env.c find_env.c update_env.c
+ENV_FILES := ${addprefix ${ENV_FOLDER}, ${ENV_FILENAMES}}
+
+BUILTINS_FOLDER := ${addprefix ${SRC_FOLDER}, /builtins/}
+BUILTINS_FILENAMES := bi_pwd.c bi_env.c bi_export.c bi_cd.c bi_echo.c \
+											bi_unset.c
+BUILTINS_FILES := ${addprefix ${BUILTINS_FOLDER}, ${BUILTINS_FILENAMES}}
+
 MAIN_FOLDER := ${addprefix ${SRC_FOLDER}, /main/}
 MAIN_FILENAMES := loop.c main.c
 MAIN_FILES := ${addprefix ${MAIN_FOLDER}, ${MAIN_FILENAMES}}
 
-SRC_FILES := ${PARSE_FILES} ${LEX_FILES} ${SIGS_FILES} ${UTILS_FILES} ${MAIN_FILES} ${INIT_FILES} ${TOKENS_FILES}
+SRC_FILES := ${PARSE_FILES} ${LEX_FILES} ${SIGS_FILES} ${UTILS_FILES} ${MAIN_FILES} \
+						${INIT_FILES} ${TOKENS_FILES} ${ENV_FILES} \
+						${BUILTINS_FILES}
 
 OBJS := ${SRC_FILES:.c=.o}
 
