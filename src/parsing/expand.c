@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/25 17:20:34 by tiatan            #+#    #+#             */
+/*   Updated: 2025/02/25 17:21:46 by tiatan           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 char	*get_var(char **s)
@@ -20,7 +32,7 @@ char	*get_var(char **s)
 	}
 	temp[j] = '\0';
 	(*s) += i;
-	return(temp);
+	return (temp);
 }
 
 void	handle_var(char **s, char **res)
@@ -112,5 +124,6 @@ char	*handle_expand(char *s)
 	return (res);
 }
 
-//variable expansion also has to handle $? for the exit code of the last execution
-//will be implemented after the signals have been integrated fully
+// variable expansion also has to handle $? for the exit code of
+// the last execution will be implemented after the signals have
+// been integrated fully

@@ -1,7 +1,5 @@
 #include "../../inc/minishell.h"
 
-
-
 void  setup_env(t_list **env_ll, char **env)
 {
   int i;

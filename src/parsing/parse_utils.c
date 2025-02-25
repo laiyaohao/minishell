@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/25 17:20:31 by tiatan            #+#    #+#             */
+/*   Updated: 2025/02/25 17:20:41 by tiatan           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 ast_node	*create_ast_node(ast_type type)
@@ -15,11 +27,70 @@ ast_node	*create_ast_node(ast_type type)
 	return (node);
 }
 
-void	remove_quotes(char ***array)
+t_redirect	*create_rd(void)
+{
+	t_redirect	*rd;
+
+	rd = malloc(sizeof(t_redirect));
+	if (!rd)
+		return (NULL);
+	ft_memset(rd, 0, sizeof(t_redirect));
+	return (rd);
+}
+
+int	len_check(char *s)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (s[j])
+	{
+		if (s[j] == '\'' || s[j] == '"')
+		{
+			j++;
+		}
+		else
+		{
+			j++;
+			i++;
+		}
+	}
+	return (i);
+}
+
+char	*remove_quotes(char *s)
 {
 	int		i;
 	int		j;
-	int		k;
+	int		len;
+	char	*temp;
+
+	i = 0;
+	j = 0;
+	len = len_check(s);
+	temp = malloc(sizeof(char) * (len + 1));
+	if (!temp)
+		return (NULL);
+	while (s[i])
+	{
+		if (s[i] == '"' || s[i] == '\'')
+			i++;
+		else
+		{
+			temp[j] = s[i];
+			i++;
+			j++;
+		}
+	}
+	temp[j] = '\0';
+	return (temp);
+}
+
+void	process_args(char ***array)
+{
+	int		i;
 	char	*temp;
 
 	if (!(*array))
@@ -27,41 +98,11 @@ void	remove_quotes(char ***array)
 	i = 0;
 	while ((*array)[i])
 	{
-		j = 0;
-		k = 0;
-		while ((*array)[i][j])
-		{
-			if ((*array)[i][j] == '\'' || (*array)[i][j] == '"')
-			{
-				j++;
-			}
-			else
-			{
-				j++;
-				k++;
-			}
-		}
-		temp = malloc(sizeof(char) * (k + 1));
+		temp = remove_quotes((*array)[i]);
 		if (!temp)
 			return ;
-		j = 0;
-		k = 0;
-		while ((*array)[i][j])
-		{
-			if ((*array)[i][j] == '"' || (*array)[i][j] == '\'')
-				j++;
-			else
-			{
-				temp[k] = (*array)[i][j];
-				k++;
-				j++;
-			}
-		}
-		temp[k] = '\0';
 		free((*array)[i]);
 		(*array)[i] = temp;
 		i++;
 	}
-	
 }
-

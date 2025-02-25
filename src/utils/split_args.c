@@ -6,36 +6,46 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:15:26 by tiatan            #+#    #+#             */
-/*   Updated: 2025/02/25 16:16:10 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/02/25 17:40:39 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+void	skip_space(char **s)
+{
+	while (**s && ft_isspace(**s))
+		(*s)++;
+}
+
+void	skip_quote(char **s, int *word, int *i)
+{
+	char	c;
+
+	c = **s;
+	(*s)++;
+	if (!(*word))
+	{
+		(*i)++;
+		*word = 1;
+	}
+	while (**s && **s != c)
+		(*s)++;
+	if (**s == c)
+		(*s)++;
+}
+
 int	count_args(char *s)
 {
-	int		i;
-	int		word;
-	char	c;
+	int	i;
+	int	word;
 
 	i = 0;
 	word = 0;
 	while (*s)
 	{
 		if (*s == '"' || *s == '\'')
-		{
-			c = *s;
-			s++;
-			if (!word)
-			{
-				i++;
-				word = 1;
-			}
-			while (*s && *s != c)
-				s++;
-			if (*s == c)
-				s++;
-		}
+			skip_quote(&s, &word, &i);
 		else if (*s != ' ')
 		{
 			if (!word)
@@ -48,8 +58,7 @@ int	count_args(char *s)
 		else
 		{
 			word = 0;
-			while (*s == ' ')
-				s++;
+			skip_space(&s);
 		}
 	}
 	return (i);
@@ -83,32 +92,25 @@ char	**split_args(char *s)
 	char	**res;
 	int		i;
 	int		j;
-	int		k;
 
-	i = count_args(s);
-	res = malloc(sizeof(char *) * (i + 1));
+	res = malloc(sizeof(char *) * (count_args(s) + 1));
 	if (!res)
 		return (NULL);
-	j = 0;
+	i = 0;
 	while (*s)
 	{
-		while (ft_isspace(*s))
-			s++;
+		skip_space(&s);
 		if (*s)
 		{
-			k = word_len(s);
-			res[j] = ft_strndup(s, k);
-			if (!res[j])
-			{
-				free_2d(res);
-				return (NULL);
-			}
-			s += k;
-			while (ft_isspace(*s))
-				s++;
-			j++;
+			j = word_len(s);
+			res[i] = ft_strndup(s, j);
+			if (!res[i])
+				return (free_2d(res), NULL);
+			s += j;
+			skip_space(&s);
+			i++;
 		}
 	}
-	res[j] = NULL;
+	res[i] = NULL;
 	return (res);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/25 17:20:28 by tiatan            #+#    #+#             */
+/*   Updated: 2025/02/25 17:20:29 by tiatan           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 void	parse_word(char **buffer, char *s)
@@ -22,14 +34,19 @@ void	parse_redir(t_node **token, t_redirect **ast_rd)
 {
 	t_redirect	*new_rd;
 	t_redirect	*last;
+	char		*temp;
 
-	new_rd = malloc(sizeof(t_redirect));
-	if (!new_rd)
-		return ;
-	ft_memset(new_rd, 0, sizeof(t_redirect));
+	new_rd = create_rd();
 	new_rd->type = (*token)->type;
 	(*token) = (*token)->next;
-	new_rd->file = ft_strdup((*token)->value);
+	if (new_rd->type == T_HEREDOC)
+		new_rd->file = ft_strtrim((*token)->value, "'\"");
+	else
+	{
+		temp = handle_expand((*token)->value);
+		new_rd->file = ft_strtrim(temp, "'\"");
+		free(temp);
+	}
 	if (!(*ast_rd))
 		*ast_rd = new_rd;
 	else
@@ -64,7 +81,7 @@ ast_node	*parse_cmd(t_node **token)
 		*token = (*token)->next;
 	}
 	cmd->args = split_args(buffer);
-	remove_quotes(&cmd->args);
+	process_args(&cmd->args);
 	return (cmd);
 }
 
