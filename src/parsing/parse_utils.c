@@ -15,17 +15,53 @@ ast_node	*create_ast_node(ast_type type)
 	return (node);
 }
 
-int	count_args(t_node *tokens)
+void	remove_quotes(char ***array)
 {
-	t_node	*temp;
-	int		count;
+	int		i;
+	int		j;
+	int		k;
+	char	*temp;
 
-	count = 0;
-	temp = tokens;
-	while (temp && temp->type == T_WORD)
+	if (!(*array))
+		return ;
+	i = 0;
+	while ((*array)[i])
 	{
-		count++;
-		temp = temp->next;
+		j = 0;
+		k = 0;
+		while ((*array)[i][j])
+		{
+			if ((*array)[i][j] == '\'' || (*array)[i][j] == '"')
+			{
+				j++;
+			}
+			else
+			{
+				j++;
+				k++;
+			}
+		}
+		temp = malloc(sizeof(char) * (k + 1));
+		if (!temp)
+			return ;
+		j = 0;
+		k = 0;
+		while ((*array)[i][j])
+		{
+			if ((*array)[i][j] == '"' || (*array)[i][j] == '\'')
+				j++;
+			else
+			{
+				temp[k] = (*array)[i][j];
+				k++;
+				j++;
+			}
+		}
+		temp[k] = '\0';
+		free((*array)[i]);
+		(*array)[i] = temp;
+		i++;
 	}
-	return (count);
+	
 }
+

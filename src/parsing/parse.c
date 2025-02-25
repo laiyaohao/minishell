@@ -1,5 +1,23 @@
 #include "../../inc/minishell.h"
 
+void	parse_word(char **buffer, char *s)
+{
+	char	*temp;
+	char	*stash;
+
+	temp = *buffer;
+	stash = handle_expand(s);
+	if (!stash)
+		return ;
+	*buffer = ft_strjoin(temp, stash);
+	if (!(*buffer))
+		return ;
+	free(temp);
+	free(stash);
+	temp = NULL;
+	stash = NULL;
+}
+
 void	parse_redir(t_node **token, t_redirect **ast_rd)
 {
 	t_redirect	*new_rd;
@@ -26,29 +44,27 @@ void	parse_redir(t_node **token, t_redirect **ast_rd)
 ast_node	*parse_cmd(t_node **token)
 {
 	ast_node	*cmd;
-	int			count;
-	int			i;
+	char		*buffer;
 
 	cmd = create_ast_node(AST_CMD);
 	if (!cmd)
 		return (NULL);
-	i = 0;
-	count = count_args(*token);
-	cmd->args = malloc(sizeof(char *) * (count + 1));
-	if (!cmd->args)
+	buffer = ft_strdup("");
+	if (!buffer)
 		return (NULL);
 	while ((*token) && (*token)->type != T_PIPE && (*token)->type != T_EOF)
 	{
 		if ((*token)->type == T_WORD)
 		{
-			cmd->args[i] = handle_expand((*token)->value);
-			i++;
+			parse_word(&buffer, (*token)->value);
+			strcjoin(' ', &buffer);
 		}
 		else
 			parse_redir(token, &cmd->rd);
 		*token = (*token)->next;
 	}
-	cmd->args[i] = NULL;
+	cmd->args = split_args(buffer);
+	remove_quotes(&cmd->args);
 	return (cmd);
 }
 
@@ -94,3 +110,32 @@ ast_node	*parser(t_tok *list)
 	tree = parse_pipe(&list->head);
 	return (tree);
 }
+
+// ast_node	*parse_cmd(t_node **token)
+// {
+// 	ast_node	*cmd;
+// 	int			count;
+// 	int			i;
+
+// 	cmd = create_ast_node(AST_CMD);
+// 	if (!cmd)
+// 		return (NULL);
+// 	i = 0;
+// 	count = count_args(*token);
+// 	cmd->args = malloc(sizeof(char *) * (count + 1));
+// 	if (!cmd->args)
+// 		return (NULL);
+// 	while ((*token) && (*token)->type != T_PIPE && (*token)->type != T_EOF)
+// 	{
+// 		if ((*token)->type == T_WORD)
+// 		{
+// 			cmd->args[i] = handle_expand((*token)->value);
+// 			i++;
+// 		}
+// 		else
+// 			parse_redir(token, &cmd->rd);
+// 		*token = (*token)->next;
+// 	}
+// 	cmd->args[i] = NULL;
+// 	return (cmd);
+// }

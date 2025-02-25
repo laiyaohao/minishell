@@ -52,27 +52,39 @@ void	handle_var(char **s, char **res)
 
 void	handle_quote(char **s, char **res)
 {
+	strcjoin(**s, res);
 	(*s)++;
 	while (**s && (**s) != '\'')
 	{
 		strcjoin(**s, res);
 		(*s)++;
 	}
-	(*s)++;
+	if (**s)
+	{
+		strcjoin(**s, res);
+		(*s)++;
+	}
 }
 
 void	handle_dquote(char **s, char **res)
 {
+	strcjoin(**s, res);
 	(*s)++;
 	while (**s && (**s) != '"')
 	{
 		if ((**s) == '$')
 			handle_var(s, res);
 		else
+		{
 			strcjoin(**s, res);
+			(*s)++;
+		}
+	}
+	if (**s)
+	{
+		strcjoin(**s, res);
 		(*s)++;
 	}
-	(*s)++;
 }
 
 char	*handle_expand(char *s)

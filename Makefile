@@ -6,6 +6,10 @@ LIBFT_FOLDER := libft
 LIBFT := ${LIBFT_FOLDER}/libft.a
 # MAIN_FILE := ${SRC_FOLDER}/main.c
 
+ERROR_FOLDER := ${addprefix ${SRC_FOLDER}, /error/}
+ERROR_FILENAMES := error_handle.c
+ERROR_FILES := ${addprefix ${ERROR_FOLDER}, ${ERROR_FILENAMES}}
+
 PARSE_FOLDER := ${addprefix ${SRC_FOLDER}, /parsing/}
 PARSE_FILENAMES := expand.c parse.c parse_utils.c print_ast.c
 PARSE_FILES := ${addprefix ${PARSE_FOLDER}, ${PARSE_FILENAMES}}
@@ -19,7 +23,7 @@ SIGS_FILENAMES := signals.c
 SIGS_FILES := ${addprefix ${SIGS_FOLDER}, ${SIGS_FILENAMES}}
 
 UTILS_FOLDER := ${addprefix ${SRC_FOLDER}, /utils/}
-UTILS_FILENAMES := check_arg.c ft_isspace.c strcjoin.c
+UTILS_FILENAMES := check_arg.c ft_isspace.c ft_strndup.c strcjoin.c
 UTILS_FILES := ${addprefix ${UTILS_FOLDER}, ${UTILS_FILENAMES}}
 
 INIT_FOLDER := ${addprefix ${SRC_FOLDER}, /init/}
@@ -46,7 +50,7 @@ MAIN_FILES := ${addprefix ${MAIN_FOLDER}, ${MAIN_FILENAMES}}
 
 SRC_FILES := ${PARSE_FILES} ${LEX_FILES} ${SIGS_FILES} ${UTILS_FILES} ${MAIN_FILES} \
 						${INIT_FILES} ${TOKENS_FILES} ${ENV_FILES} \
-						${BUILTINS_FILES}
+						${BUILTINS_FILES} ${ERROR_FILES}
 
 OBJS := ${SRC_FILES:.c=.o}
 

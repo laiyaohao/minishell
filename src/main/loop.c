@@ -28,18 +28,21 @@ void  shell_loop(t_attr *attr)
 		if (*(attr->full_line))
 		{
 			if (check_line(attr))
-				printf("have error lah deh %s\n", (attr->full_line));
-			add_history((attr->full_line));
-			tokens = lexer(attr->full_line);
-			if (!tokens)
-				printf("Failed to tokenize\n");
-			if (grammar_check(tokens))
-				printf("Syntax error near unexpected token\n");
+				printf("have error lah deh: %s\n", (attr->full_line));
 			else
 			{
-				tree = parser(tokens);
-				debug_print_ast(tree);
+				tokens = lexer(attr->full_line);
+				if (!tokens)
+					printf("Failed to tokenize\n");
+				if (grammar_check(tokens))
+					printf("Syntax error near unexpected token\n");
+				else
+				{
+					tree = parser(tokens);
+					debug_print_ast(tree);
+				}
 			}
+			add_history((attr->full_line));
 		}
 		free(attr->full_line);
 	}

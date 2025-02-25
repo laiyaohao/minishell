@@ -96,11 +96,15 @@ void					handle_redir_in(char **s, int *i);
 void					handle_redir_out(char **s, int *i);
 t_tok					*lexer(char *input);
 int						grammar_check(t_tok *list);
-int						count_args(t_node *tokens);
+void					parse_word(char **buffer, char *s);
 ast_node				*create_ast_node(ast_type type);
 ast_node				*parser(t_tok *list);
 char					*handle_expand(char *s);
+char    				*ft_strndup(char *s, int len);
+char					**split_args(char *s);
+void					remove_quotes(char ***array);
 void					strcjoin(char s, char **res);
 void					debug_print_ast(ast_node *root);
+void					free_2d(char **memory);
 
 #endif
