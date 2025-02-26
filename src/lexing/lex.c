@@ -19,7 +19,7 @@ t_node	*create_token(int type, char *value)
 		return (NULL);
 	}
 	if (value)
-		token->value = value;
+		token->value = ft_strdup(value);
 	else
 		token->value = NULL;
 	token->type = type;
@@ -73,8 +73,6 @@ void	tokenize(t_tok *list, char *s)
 	char	*temp;
 	int		type;
 	
-	if (!list)
-		return ;
 	temp = NULL;
 	type = 0;
 	while (*s)
@@ -90,8 +88,9 @@ void	tokenize(t_tok *list, char *s)
 		else
 			handle_word(&s, &type, &temp);
 		add_token(list, type, temp);
-		temp = NULL;
 	}
+	free(temp);
+	temp = NULL;
 	type = T_EOF;
 	add_token(list, type, temp);
 }

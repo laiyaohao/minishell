@@ -40,6 +40,8 @@ void  shell_loop(t_attr *attr)
 				{
 					tree = parser(tokens);
 					debug_print_ast(tree);
+					free_tree(tree);
+					free_tlist(tokens);
 				}
 			}
 			add_history((attr->full_line));
@@ -47,4 +49,6 @@ void  shell_loop(t_attr *attr)
 		free(attr->full_line);
 	}
 	free(attr->full_line);
+	free(attr->working_dir);
+	free(attr->old_working_dir);
 }

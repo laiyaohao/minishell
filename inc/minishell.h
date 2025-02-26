@@ -71,6 +71,14 @@ typedef struct s_attr
 	char				*old_working_dir;
 }						t_attr;
 
+typedef struct s_shell
+{
+	t_tok				*list;
+	ast_node			*tree;
+	t_env				*env;
+	t_attr				*attr;
+}						t_shell;
+
 void					setup_sig(void);
 int						check_arg(int argc);
 void					shell_loop(t_attr *attr);
@@ -101,11 +109,13 @@ t_redirect				*create_rd(void);
 ast_node				*create_ast_node(ast_type type);
 ast_node				*parser(t_tok *list);
 char					*handle_expand(char *s);
-char    				*ft_strndup(char *s, int len);
+char					*ft_strndup(char *s, int len);
 char					**split_args(char *s);
 void					process_args(char ***array);
 void					strcjoin(char s, char **res);
 void					debug_print_ast(ast_node *root);
 void					free_2d(char **memory);
+void					free_tlist(t_tok *tokens);
+void					free_tree(ast_node *tree);
 
 #endif

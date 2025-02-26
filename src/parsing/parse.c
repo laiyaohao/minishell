@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:20:28 by tiatan            #+#    #+#             */
-/*   Updated: 2025/02/25 17:20:29 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/02/26 18:04:37 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ ast_node	*parse_cmd(t_node **token)
 		*token = (*token)->next;
 	}
 	cmd->args = split_args(buffer);
+	free(buffer);
 	process_args(&cmd->args);
 	return (cmd);
 }
@@ -123,8 +124,11 @@ ast_node	*parse_pipe(t_node **token)
 ast_node	*parser(t_tok *list)
 {
 	ast_node	*tree;
+	t_node		*start;
 
+	start = list->head;
 	tree = parse_pipe(&list->head);
+	list->head = start;
 	return (tree);
 }
 

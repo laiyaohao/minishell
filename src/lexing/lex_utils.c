@@ -10,6 +10,8 @@ void	add_value(char **s, int *j, char **temp)
 {
 	int	i;
 
+	if (*temp)
+		free(*temp);
 	*temp = malloc(sizeof(char) * (*j + 1));
 	if (!temp)
 		return ;

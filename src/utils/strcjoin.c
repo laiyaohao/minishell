@@ -6,7 +6,7 @@ void	strcjoin(char s, char **res)
 	char	*temp;
 
 	if (!(*res))
-		len = 0;
+		return ;
 	else
 		len = ft_strlen(*res);
 	temp = malloc(sizeof(char) * (len + 2));
