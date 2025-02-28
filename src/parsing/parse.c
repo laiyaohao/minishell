@@ -3,15 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ryannnaa <ryannnaa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:20:28 by tiatan            #+#    #+#             */
-/*   Updated: 2025/02/26 18:04:37 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/02/28 18:00:11 by ryannnaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+/**
+ * @brief Processes the value of the word token and concatenates it with the
+ * buffer.
+ *
+ * @param buffer The buffer whereby expanded word tokens' values are stored.
+ * @param s The value of the token.
+ *
+ * @details The functions takes the value of a word token and expands it if
+ * required. It then concatenates the buffer with the newly expanded word.
+ *
+ */
 void	parse_word(char **buffer, char *s)
 {
 	char	*temp;
@@ -30,6 +41,17 @@ void	parse_word(char **buffer, char *s)
 	stash = NULL;
 }
 
+/**
+ * @brief Creates a redirection node and appends it to the back of the list of redirections.
+ *
+ * @param token The address of the token to be parsed.
+ * @param ast_rd The list of redirections the new node is to be appended to.
+ *
+ * @details The function creates a redirect node by copying the type of the token,
+ * then processing the token after as the delimiter for heredoc, or the file for
+ * all other redirections.
+ *
+ */
 void	parse_redir(t_node **token, t_redirect **ast_rd)
 {
 	t_redirect	*new_rd;
@@ -58,6 +80,17 @@ void	parse_redir(t_node **token, t_redirect **ast_rd)
 	}
 }
 
+/**
+ * @brief Creates a command AST node.
+ *
+ * @param token The address of the token to be parsed.
+ *
+ * @details The function iterates through the token list processing all word
+ * and redirection tokens to construct the arguments of the command node and
+ * the linked list of redirections for the command node.
+ *
+ * @return A command AST node. NULL if failure.
+ */
 ast_node	*parse_cmd(t_node **token)
 {
 	ast_node	*cmd;
@@ -86,6 +119,23 @@ ast_node	*parse_cmd(t_node **token)
 	return (cmd);
 }
 
+/**
+ * @brief Creates a pipe AST node via recursive descent.
+ *
+ * @param token The address of the token to be parsed.
+ *
+ * @details A recursive descent parser uses recursion to call upon itself till
+ * it reaches the base case. The tokens can be interpreted and constructed as
+ * one of the following: pipe node, command node, redirection.
+ * 
+ * The function parses the token as a command. If a pipe token is present in
+ * the list of tokens to be parsed, a pipe node will be created and the command
+ * node created will be appended to the left of the pipe node while it calls upon 
+ * itself to construct the corresponding node to be appended to the right pointer.
+ *
+ * @return A pipe AST node if a pipe token is present in the list, else a command
+ * AST node. NULL if failure.
+ */
 ast_node	*parse_pipe(t_node **token)
 {
 	ast_node	*left;
@@ -112,12 +162,15 @@ ast_node	*parse_pipe(t_node **token)
 }
 
 /**
- * @brief Creates an Abstract Syntax Tree (AST) by parsing a list of tokens.
+ * @brief Creates an Abstract Syntax Tree (AST) via parsing.
  *
  * @param list The list of tokens to be parsed.
  *
- * @details Uses recursive descent to create a structure known as the AST,
- * which will allow for execution to be done in the correct precedence.
+ * @details Creates the AST by calling on the parse_pipe function which will
+ * recursively parse the list of tokens.
+ * 
+ * Keeps a pointer to the orignal head of the list of tokens, so that it can
+ * be freed later.
  *
  * @return The AST if successful, NULL if failure.
  */
@@ -131,32 +184,3 @@ ast_node	*parser(t_tok *list)
 	list->head = start;
 	return (tree);
 }
-
-// ast_node	*parse_cmd(t_node **token)
-// {
-// 	ast_node	*cmd;
-// 	int			count;
-// 	int			i;
-
-// 	cmd = create_ast_node(AST_CMD);
-// 	if (!cmd)
-// 		return (NULL);
-// 	i = 0;
-// 	count = count_args(*token);
-// 	cmd->args = malloc(sizeof(char *) * (count + 1));
-// 	if (!cmd->args)
-// 		return (NULL);
-// 	while ((*token) && (*token)->type != T_PIPE && (*token)->type != T_EOF)
-// 	{
-// 		if ((*token)->type == T_WORD)
-// 		{
-// 			cmd->args[i] = handle_expand((*token)->value);
-// 			i++;
-// 		}
-// 		else
-// 			parse_redir(token, &cmd->rd);
-// 		*token = (*token)->next;
-// 	}
-// 	cmd->args[i] = NULL;
-// 	return (cmd);
-// }
