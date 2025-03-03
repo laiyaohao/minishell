@@ -6,7 +6,7 @@
 /*   By: ryannnaa <ryannnaa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:20:28 by tiatan            #+#    #+#             */
-/*   Updated: 2025/02/28 18:00:11 by ryannnaa         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:44:09 by ryannnaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,14 @@ void	parse_redir(t_node **token, t_redirect **ast_rd)
 {
 	t_redirect	*new_rd;
 	t_redirect	*last;
-	char		*temp;
 
 	new_rd = create_rd();
 	new_rd->type = (*token)->type;
 	(*token) = (*token)->next;
 	if (new_rd->type == T_HEREDOC)
-		new_rd->file = ft_strtrim((*token)->value, "'\"");
+		new_rd->file = rd_expand((*token)->value, 0);
 	else
-	{
-		temp = handle_expand((*token)->value);
-		new_rd->file = ft_strtrim(temp, "'\"");
-		free(temp);
-	}
+		new_rd->file = rd_expand((*token)->value, 1);
 	if (!(*ast_rd))
 		*ast_rd = new_rd;
 	else
