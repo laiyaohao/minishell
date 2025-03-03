@@ -67,24 +67,3 @@ void	handle_redir_out(char **s, int *i)
 	else
 		*i = T_REDIR_OUT;
 }
-
-// void	handle_var(char **s, int *i, char **temp)
-// {
-// 	int	j;
-
-// 	j = 0;
-
-// 	while ((*s)[j] != ' ' && (*s)[j])
-// 		j++;
-// 	*i = 0;
-// 	*temp = malloc(sizeof(char) * (j + 1));
-// 	if (!(*temp))
-// 		return ;
-// 	while (*i < j)
-// 	{
-// 		(*temp)[*i] = (*s)[*i];
-// 		(*i)++;
-// 	}
-// 	*i = T_VAR;
-// 	(*s) += j;
-// }

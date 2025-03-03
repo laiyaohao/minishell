@@ -102,7 +102,6 @@ void	tokenize(t_tok *list, char *s)
  *
  * @details Tokens will be assigned with a type of the following:
  * T_WORD = "ls", "ls -l"
- * T_VAR = "$USER", "$a$b" (TBC if required)
  * T_PIPE = "|"
  * T_REDIR_OUT = ">"
  * T_REDIR_APP = ">>"

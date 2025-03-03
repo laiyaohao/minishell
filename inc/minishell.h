@@ -18,7 +18,6 @@ typedef enum
 	T_REDIR_IN,
 	T_HEREDOC,
 	T_WORD,
-	T_VAR,
 	T_EOF
 }						t_type;
 
