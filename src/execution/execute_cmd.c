@@ -1,7 +1,6 @@
 #include "../../inc/minishell.h"
 
-void    exec_pipe(ast_node *pipe)
+void    exec_cmd(ast_node *node)
 {
-    int pipe_fd[2];
 
 }

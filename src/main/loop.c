@@ -1,19 +1,6 @@
 #include "../../inc/minishell.h"
 
-void	parse(char *input)
-{
-	(void)input;
-}
 
-// void	reallocate(char **tbr, char **tbu)
-// {
-// 	char	*temp;
-
-// 	temp = ft_strdup(*tbr);
-// 	free(*tbr);
-// 	*tbr = ft_strjoin(temp, *tbu);
-// 	free(temp);
-// }
 
 void  shell_loop(t_attr *attr)
 {
@@ -52,3 +39,13 @@ void  shell_loop(t_attr *attr)
 	free(attr->working_dir);
 	free(attr->old_working_dir);
 }
+
+// void	reallocate(char **tbr, char **tbu)
+// {
+// 	char	*temp;
+
+// 	temp = ft_strdup(*tbr);
+// 	free(*tbr);
+// 	*tbr = ft_strjoin(temp, *tbu);
+// 	free(temp);
+// }
