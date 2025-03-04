@@ -45,7 +45,7 @@ char	*ft_strchr(const char *s, int c)
 	}
 	if (c_typed != 0)
 	{
-		return (0);
+		return (NULL);
 	}
 	return (s1_cpy);
 }

@@ -1,17 +1,29 @@
 NAME := minishell
-CC := gcc
+CC := cc
 CFLAGS := -Wall -Werror -Wextra -g
 SRC_FOLDER := src
 LIBFT_FOLDER := libft
 LIBFT := ${LIBFT_FOLDER}/libft.a
 # MAIN_FILE := ${SRC_FOLDER}/main.c
 
+ERROR_FOLDER := ${addprefix ${SRC_FOLDER}, /error/}
+ERROR_FILENAMES := error_handle.c
+ERROR_FILES := ${addprefix ${ERROR_FOLDER}, ${ERROR_FILENAMES}}
+
+PARSE_FOLDER := ${addprefix ${SRC_FOLDER}, /parsing/}
+PARSE_FILENAMES := cmd_expand.c parse.c parse_utils.c print_ast.c rd_expand.c
+PARSE_FILES := ${addprefix ${PARSE_FOLDER}, ${PARSE_FILENAMES}}
+
+LEX_FOLDER := ${addprefix ${SRC_FOLDER}, /lexing/}
+LEX_FILENAMES := lex.c lex_utils.c
+LEX_FILES := ${addprefix ${LEX_FOLDER}, ${LEX_FILENAMES}}
+
 SIGS_FOLDER := ${addprefix ${SRC_FOLDER}, /signals/}
 SIGS_FILENAMES := signals.c
 SIGS_FILES := ${addprefix ${SIGS_FOLDER}, ${SIGS_FILENAMES}}
 
 UTILS_FOLDER := ${addprefix ${SRC_FOLDER}, /utils/}
-UTILS_FILENAMES := check_arg.c
+UTILS_FILENAMES := check_arg.c ft_isspace.c ft_strndup.c split_args.c strcjoin.c
 UTILS_FILES := ${addprefix ${UTILS_FOLDER}, ${UTILS_FILENAMES}}
 
 INIT_FOLDER := ${addprefix ${SRC_FOLDER}, /init/}
@@ -22,11 +34,23 @@ TOKENS_FOLDER := ${addprefix ${SRC_FOLDER}, /tokens/}
 TOKENS_FILENAMES := check_line.c
 TOKENS_FILES := ${addprefix ${TOKENS_FOLDER}, ${TOKENS_FILENAMES}}
 
+ENV_FOLDER := ${addprefix ${SRC_FOLDER}, /env/}
+ENV_FILENAMES := setup_env.c free_env.c print_env.c add_env.c \
+									check_env.c del_env.c find_env.c update_env.c
+ENV_FILES := ${addprefix ${ENV_FOLDER}, ${ENV_FILENAMES}}
+
+BUILTINS_FOLDER := ${addprefix ${SRC_FOLDER}, /builtins/}
+BUILTINS_FILENAMES := bi_pwd.c bi_env.c bi_export.c bi_cd.c bi_echo.c \
+											bi_unset.c
+BUILTINS_FILES := ${addprefix ${BUILTINS_FOLDER}, ${BUILTINS_FILENAMES}}
+
 MAIN_FOLDER := ${addprefix ${SRC_FOLDER}, /main/}
 MAIN_FILENAMES := loop.c main.c
 MAIN_FILES := ${addprefix ${MAIN_FOLDER}, ${MAIN_FILENAMES}}
 
-SRC_FILES := ${SIGS_FILES} ${UTILS_FILES} ${MAIN_FILES} ${INIT_FILES} ${TOKENS_FILES}
+SRC_FILES := ${PARSE_FILES} ${LEX_FILES} ${SIGS_FILES} ${UTILS_FILES} ${MAIN_FILES} \
+						${INIT_FILES} ${TOKENS_FILES} ${ENV_FILES} \
+						${BUILTINS_FILES} ${ERROR_FILES}
 
 OBJS := ${SRC_FILES:.c=.o}
 

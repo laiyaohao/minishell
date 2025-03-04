@@ -15,11 +15,11 @@ void	parse(char *input)
 // 	free(temp);
 // }
 
-
-
 void  shell_loop(t_attr *attr)
 {
-  // char  *input;
+  t_tok		*tokens;
+  ast_node	*tree;
+  
   while (1)
 	{
 		attr->full_line = readline("minishell> ");
@@ -27,18 +27,28 @@ void  shell_loop(t_attr *attr)
 			break;
 		if (*(attr->full_line))
 		{
-			// line_con(attr, &(attr->full_line), &input);
-			// if (backslash(input))
-			// {
-			// 	strip(&(attr->full_line));
-			// 	attr->con_flag = 1;
-			// }
 			if (check_line(attr))
-				printf("error with %s\n", (attr->full_line));
+				printf("have error lah deh: %s\n", (attr->full_line));
+			else
+			{
+				tokens = lexer(attr->full_line);
+				if (!tokens)
+					printf("Failed to tokenize\n");
+				if (grammar_check(tokens))
+					printf("Syntax error near unexpected token\n");
+				else
+				{
+					tree = parser(tokens);
+					debug_print_ast(tree);
+					free_tree(tree);
+					free_tlist(tokens);
+				}
+			}
 			add_history((attr->full_line));
-			parse((attr->full_line));
 		}
 		free(attr->full_line);
 	}
 	free(attr->full_line);
+	free(attr->working_dir);
+	free(attr->old_working_dir);
 }
