@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   setup_sig.c                                        :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 16:57:10 by ylai              #+#    #+#             */
-/*   Updated: 2024/12/21 16:57:11 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/04 19:29:28 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+#include <signal.h>
 
 void handle_sigint(int sig)
 {
@@ -19,6 +20,34 @@ void handle_sigint(int sig)
 	rl_replace_line("", 1); // Clear the current input line
 	write(2, "\n", 1);
 	rl_redisplay();         // Redisplay the prompt
+}
+
+// should be called just before forking
+void	block_sig(void)
+{
+	sigset_t sigs;
+
+	sigemptyset(&sigs);
+	sigaddset(&sigs, SIGINT);
+	sigaddset(&sigs, SIGQUIT);
+	sigprocmask(SIG_BLOCK, &sigs, NULL);
+}
+
+// should be called just after forking
+void	unblock_sig(void)
+{
+	sigset_t sigs;
+
+	sigemptyset(&sigs);
+	sigaddset(&sigs, SIGINT);
+	sigaddset(&sigs, SIGQUIT);
+	sigprocmask(SIG_UNBLOCK, &sigs, NULL);
+}
+
+void	reset_signals_in_child(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }
 
 void	setup_sig(void)

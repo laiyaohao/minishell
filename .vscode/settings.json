@@ -1,11 +1,13 @@
 {
     "files.associations": {
-        "system_error": "c",
-        "array": "c",
-        "functional": "c",
-        "tuple": "c",
-        "type_traits": "c",
-        "utility": "c",
-        "minishell.h": "c"
-    }
+			"system_error": "c",
+			"array": "c",
+			"functional": "c",
+			"tuple": "c",
+			"type_traits": "c",
+			"utility": "c",
+			"minishell.h": "c",
+			"signal.h": "c",
+			"unistd.h": "c"
+		}
 }
