@@ -6,7 +6,7 @@
 /*   By: ryannnaa <ryannnaa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:20:28 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/03 16:44:09 by ryannnaa         ###   ########.fr       */
+/*   Updated: 2025/03/05 22:07:32 by ryannnaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	parse_word(char **buffer, char *s)
 	char	*stash;
 
 	temp = *buffer;
-	stash = handle_expand(s);
+	stash = cmd_expand(s);
 	if (!stash)
 		return ;
 	*buffer = ft_strjoin(temp, stash);

@@ -12,6 +12,14 @@
 # include <errno.h>
 # include <sys/wait.h>
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
+# ifndef OPEN_MAX
+#  define OPEN_MAX 1024
+# endif
+
 typedef enum
 {
 	T_PIPE,
@@ -125,7 +133,7 @@ void					parse_word(char **buffer, char *s);
 void					handle_var(char **s, char **res);
 void					debug_print_ast(ast_node *root);
 char					*get_var(char **s);
-char					*handle_expand(char *s);
+char					*cmd_expand(char *s);
 char					*rd_expand(char *s, int mode);
 ast_node				*create_ast_node(ast_type type);
 ast_node				*parser(t_tok *list);
@@ -137,7 +145,7 @@ void    				exec_ast(ast_node *node, t_shell *shell);
 void    				handle_redir(t_redirect *rd, int fd);
 void					extract_paths(t_exec *exec, t_list *env_ll);
 void					check_path(t_exec *exec, ast_node *node);
-int    					create_heredoc(void);
+int    					create_heredoc(t_redirect *rd);
 
 // Builtins
 void					bi_env(t_list **env_ll);
@@ -157,6 +165,7 @@ void					free_tree(ast_node *tree);
 void					process_args(char ***array);
 void					strcjoin(char s, char **res);
 int						ft_isspace(int c);
+char					*gnl(int fd);
 char					*ft_strndup(char *s, int len);
 char					**split_args(char *s);
 char					*ft_strdup_app(const char *s, size_t len, char c);

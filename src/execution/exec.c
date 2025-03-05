@@ -13,7 +13,7 @@ void    exec_rd(t_redirect *rd)
         else if (rd->type == T_REDIR_APP)
             fd = open(rd->file, O_CREAT | O_APPEND | O_WRONLY, 0644);
         else if (rd->type == T_HEREDOC)
-            fd = create_heredoc();
+            fd = create_heredoc(rd);
 
         if (fd < 0)
             ft_putstr_fd("Error: Failed to open fd\n", 2);
