@@ -15,7 +15,7 @@ t_node	*create_token(int type, char *value)
 	token = malloc(sizeof(t_node));
 	if (!token)
 	{
-		printf("Error: Unable to create token\n");
+		ft_putstr_fd("Error: Unable to create token\n", 2);
 		return (NULL);
 	}
 	if (value)
@@ -118,7 +118,7 @@ t_tok	*lexer(char *input)
 	token_list = malloc(sizeof(t_tok));
 	if (!token_list)
 	{
-		printf("Error: Failed to generate Token List\n");
+		ft_putstr_fd("Error: Failed to generate Token List\n", 2);
 		return (NULL);
 	}
 	ft_memset(token_list, 0, sizeof(t_tok));
