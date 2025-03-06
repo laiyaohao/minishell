@@ -48,86 +48,76 @@ void    exec_cmd(ast_node *node, t_shell *shell)
 {
     int     pid;
     t_exec  exec;
-
-    if (!node->args || !node->args[0])
-        return ;
+    
     pid = fork();
     if (pid == -1)
         ft_putstr_fd("Error: Failed to fork\n", 2);
     else if (pid == 0)
     {
         reset_signals_in_child();
-        if (node->rd)
-            exec_rd(node->rd);
-        extract_paths(&exec, shell->env_ll);
-        check_path(&exec, node);
-        if (execve(exec.cmd, node->args, shell->env) == -1)
-            ft_putstr_fd("Error: Execve failed\n", 2);
+        exec_rd(node->rd);
+        if (node->args && node->args[0])
+        {
+            extract_paths(&exec, shell->env_ll);
+            check_path(&exec, node);
+            shell->exit = execve(exec.cmd, node->args, shell->env);
+            if (shell->exit == -1)
+            {
+                ft_putstr_fd("Error: Execve failed\n", 2);
+                exit(WEXITSTATUS(shell->exit));
+            }
+        }
+        else
+            exit(0);
     }
     else
         waitpid(pid, &shell->exit, 0);
-        // wait(&shell->exit);
 }
 
 void    exec_pipe(ast_node *node, t_shell *shell)
 {
     int pipe_fd[2];
-    int std_out;
-    int std_in;
+    int pid_l;
+    int pid_r;
 
     if (pipe(pipe_fd) == -1)
-    {
         ft_putstr_fd("Error: Failed to pipe\n", 2);
-        return ;
-    }
-    // Redirect STDOUT to pipe write end (LEFT)
-    std_out = dup(STDOUT_FILENO);
-    if  (std_out == -1)
+    pid_l = fork();
+    if (pid_l < 0)
+        ft_putstr_fd("Error: Failed to fork left\n", 2);
+    else if (pid_l == 0)
     {
-        ft_putstr_fd("Error: Failed to dup STDOUT\n", 2);
-        return ;
-    }
-    if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
-    {
-        ft_putstr_fd("Error: Failed to dup2 write end\n", 2);
         close(pipe_fd[0]);
+        if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
+        {
+            close(pipe_fd[1]);
+            ft_putstr_fd("Error: Failed to dup2 left\n", 2);
+            exit (1);
+        }
         close(pipe_fd[1]);
-        return ;
+        exec_ast(node->left, shell);
+        exit(0);
     }
-    close(pipe_fd[1]);
-    exec_ast(node->left, shell);
-    // Restore STDOUT
-    if (dup2(std_out, STDOUT_FILENO) == -1)
+    pid_r = fork();
+    if (pid_r < 0)
+        ft_putstr_fd("Error: Failed to fork right\n", 2);
+    else if (pid_r == 0)
     {
-        ft_putstr_fd("Error: Failed to restore STDOUT\n", 2);
-        close(std_out);
-        return ;
-    }
-    close(std_out);
-    // Redirect STDOUT to pipe write end (RIGHT)
-    std_in = dup(STDIN_FILENO);
-    if (std_in == -1)
-    {
-        ft_putstr_fd("Error: Failed to dup STDIN\n", 2);
-        return ;
-    }
-    if (dup2(pipe_fd[0], STDIN_FILENO) == -1)
-    {
-        ft_putstr_fd("Error: Failed to dup2 read end\n", 2);
+        close(pipe_fd[1]);
+        if (dup2(pipe_fd[0], STDIN_FILENO) == -1)
+        {
+            close(pipe_fd[0]);
+            ft_putstr_fd("Error: Failed to dup2 right\n", 2);
+            exit (1);
+        }
         close(pipe_fd[0]);
-        close(pipe_fd[1]);
-        return ;
+        exec_ast(node->right, shell);
+        exit(0);
     }
     close(pipe_fd[0]);
-    exec_ast(node->right, shell);
-    // Restore STDIN
-    if (dup2(std_in, STDIN_FILENO) == -1)
-    {
-        ft_putstr_fd("Error: Failed to restore STDIN\n", 2);
-        close(std_in);
-        return ;
-    }
-    close(std_in);
+    close(pipe_fd[1]);
+    waitpid(pid_l, NULL, 0);
+    waitpid(pid_r, &shell->exit, 0);
 }
 
 void    exec_ast(ast_node *node, t_shell *shell)
