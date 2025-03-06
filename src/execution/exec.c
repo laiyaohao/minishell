@@ -1,8 +1,9 @@
 #include "../../inc/minishell.h"
 
-void    exec_rd(t_redirect *rd)
+void exec_rd(t_redirect *rd)
 {
-    int fd;
+    int fd = -1;
+    int last_heredoc_fd = -1;
 
     while (rd)
     {
@@ -13,13 +14,34 @@ void    exec_rd(t_redirect *rd)
         else if (rd->type == T_REDIR_APP)
             fd = open(rd->file, O_CREAT | O_APPEND | O_WRONLY, 0644);
         else if (rd->type == T_HEREDOC)
-            fd = create_heredoc(rd);
+        {
+            // Close previous heredoc since we only use the last one
+            if (last_heredoc_fd != -1)
+                close(last_heredoc_fd);
+
+            last_heredoc_fd = create_heredoc(rd);
+            if (last_heredoc_fd == -1)
+            {
+                ft_putstr_fd("Error: Failed to create heredoc\n", 2);
+                return;
+            }
+            fd = last_heredoc_fd;
+        }
 
         if (fd < 0)
+        {
             ft_putstr_fd("Error: Failed to open fd\n", 2);
-        handle_redir(rd, fd);
+            return;
+        }
+
+        // Apply redirection for output files immediately
+        if (rd->type == T_REDIR_OUT || rd->type == T_REDIR_APP || rd->type == T_REDIR_IN)
+            handle_redir(rd, fd);
         rd = rd->next;
     }
+    // Redirect only the last heredoc to STDIN
+    if (last_heredoc_fd != -1)
+        handle_redir(NULL, last_heredoc_fd);
 }
 
 void    exec_cmd(ast_node *node, t_shell *shell)
@@ -34,7 +56,9 @@ void    exec_cmd(ast_node *node, t_shell *shell)
         ft_putstr_fd("Error: Failed to fork\n", 2);
     else if (pid == 0)
     {
-        exec_rd(node->rd);
+        reset_signals_in_child();
+        if (node->rd)
+            exec_rd(node->rd);
         extract_paths(&exec, shell->env_ll);
         check_path(&exec, node);
         if (execve(exec.cmd, node->args, shell->env) == -1)
@@ -42,6 +66,7 @@ void    exec_cmd(ast_node *node, t_shell *shell)
     }
     else
         waitpid(pid, &shell->exit, 0);
+        // wait(&shell->exit);
 }
 
 void    exec_pipe(ast_node *node, t_shell *shell)

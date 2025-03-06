@@ -28,7 +28,10 @@ int    create_heredoc(t_redirect *rd)
     char    *temp;
 
     if (pipe(pipe_fd) == -1)
+    {
         ft_putstr_fd("Error: Failed to pipe\n", 2);
+        return (-1);
+    }
     ft_putstr_fd(">", 0);
     while ((line = gnl(0)))
     {
@@ -40,6 +43,7 @@ int    create_heredoc(t_redirect *rd)
         free(temp);
         ft_putstr_fd(">", 0);
     }
+    free(line);
     close(pipe_fd[1]);
     return (pipe_fd[0]);
 }

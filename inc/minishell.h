@@ -98,11 +98,13 @@ typedef struct s_shell
 
 // Main
 void    				init_shell(t_shell *shell, char **env);
-void					setup_sig(void);
 void					shell_loop(t_shell *shell);
 void					init_attr(t_attr *attr, t_list **env_ll);
 int						check_arg(int argc);
 
+// Signals
+void					setup_sig(void);
+void					reset_signals_in_child(void);
 
 // Env
 void					setup_env(t_list **env_ll, char **env);

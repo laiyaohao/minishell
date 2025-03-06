@@ -2,7 +2,7 @@
 
 void    handle_redir(t_redirect *rd, int fd)
 {
-    if (rd->type == T_REDIR_IN || rd->type == T_HEREDOC)
+    if (!rd || rd->type == T_REDIR_IN || rd->type == T_HEREDOC)
     {
         if (dup2(fd, STDIN_FILENO) == -1)
         {
@@ -11,7 +11,7 @@ void    handle_redir(t_redirect *rd, int fd)
 			return ;
         }
     }
-    else
+    else if (rd->type == T_REDIR_OUT || rd->type == T_REDIR_APP)
     {
         if (dup2(fd, STDOUT_FILENO) == -1)
         {
