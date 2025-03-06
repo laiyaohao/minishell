@@ -41,6 +41,7 @@ typedef struct s_redirect
 {
 	t_type				type;
 	char				*file;
+	int					fd;
 	struct s_redirect	*next;
 }						t_redirect;
 
@@ -134,6 +135,7 @@ t_tok					*lexer(char *input);
 void					parse_word(char **buffer, char *s);
 void					handle_var(char **s, char **res);
 void					debug_print_ast(ast_node *root);
+int    					create_heredoc(const char *delim);
 char					*get_var(char **s);
 char					*cmd_expand(char *s);
 char					*rd_expand(char *s, int mode);
@@ -144,10 +146,8 @@ t_redirect				*create_rd(void);
 
 // Execution
 void    				exec_ast(ast_node *node, t_shell *shell);
-void    				handle_redir(t_redirect *rd, int fd);
-void					extract_paths(t_exec *exec, t_list *env_ll);
-void					check_path(t_exec *exec, ast_node *node);
-int    					create_heredoc(t_redirect *rd);
+void					exec_cmd(ast_node *node, t_shell *shell);
+void					exec_rd(t_redirect *rd);
 
 // Builtins
 void					bi_env(t_list **env_ll);

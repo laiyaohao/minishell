@@ -38,6 +38,8 @@ void	free_rd(t_redirect *rd)
 		temp = rd;
 		rd = rd->next;
 		free(temp->file);
+		if (temp->fd != 0)
+			close(temp->fd);
 		free(temp);
 	}
 }

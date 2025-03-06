@@ -21,7 +21,7 @@ char	*heredoc_expand(char *s)
 	return (res);
 }
 
-int    create_heredoc(t_redirect *rd)
+int    create_heredoc(const char *delim)
 {
     int     pipe_fd[2];
     char    *line;
@@ -35,7 +35,7 @@ int    create_heredoc(t_redirect *rd)
     ft_putstr_fd(">", 0);
     while ((line = gnl(0)))
     {
-        if (!(ft_strncmp(line, rd->file, ft_strlen(rd->file))))
+        if (!(ft_strncmp(line, delim, ft_strlen(delim))))
             break ;
         temp = heredoc_expand(line);
         write(pipe_fd[1], temp, ft_strlen(temp));

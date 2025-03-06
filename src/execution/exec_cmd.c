@@ -1,28 +1,5 @@
 #include "../../inc/minishell.h"
 
-void    handle_redir(t_redirect *rd, int fd)
-{
-    if (!rd || rd->type == T_REDIR_IN || rd->type == T_HEREDOC)
-    {
-        if (dup2(fd, STDIN_FILENO) == -1)
-        {
-            ft_putstr_fd("Error: Failed to dup2\n", 2);
-            close(fd);
-			return ;
-        }
-    }
-    else if (rd->type == T_REDIR_OUT || rd->type == T_REDIR_APP)
-    {
-        if (dup2(fd, STDOUT_FILENO) == -1)
-        {
-            ft_putstr_fd("Error: Failed to dup2\n", 2);
-            close(fd);
-			return ;
-        }
-    }
-    close(fd);
-}
-
 void	extract_paths(t_exec *exec, t_list *env_ll)
 {
 	t_list  *env;
@@ -67,4 +44,33 @@ void	check_path(t_exec *exec, ast_node *node)
 	}
 	if (!exec->cmd)
 		exec->cmd = ft_strdup(node->args[0]);
+}
+
+void    exec_cmd(ast_node *node, t_shell *shell)
+{
+    int     pid;
+    t_exec  exec;
+    
+    pid = fork();
+    if (pid == -1)
+        ft_putstr_fd("Error: Failed to fork\n", 2);
+    else if (pid == 0)
+    {
+        (reset_signals_in_child(), exec_rd(node->rd));
+        if (node->args && node->args[0])
+        {
+            extract_paths(&exec, shell->env_ll);
+            check_path(&exec, node);
+            shell->exit = execve(exec.cmd, node->args, shell->env);
+            if (shell->exit == -1)
+            {
+                ft_putstr_fd("Error: Execve failed\n", 2);
+                exit(WEXITSTATUS(shell->exit));
+            }
+        }
+        else
+            exit(0);
+    }
+    else
+        waitpid(pid, &shell->exit, 0);
 }

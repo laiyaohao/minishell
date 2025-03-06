@@ -7,7 +7,7 @@ LIBFT := ${LIBFT_FOLDER}/libft.a
 # MAIN_FILE := ${SRC_FOLDER}/main.c
 
 EXEC_FOLDER := ${addprefix ${SRC_FOLDER}, /execution/}
-EXEC_FILENAMES := exec.c exec_utils.c heredoc.c
+EXEC_FILENAMES := exec_cmd.c exec_pipe.c exec_rd.c
 EXEC_FILES := ${addprefix ${EXEC_FOLDER}, ${EXEC_FILENAMES}}
 
 ERROR_FOLDER := ${addprefix ${SRC_FOLDER}, /error/}
@@ -15,7 +15,8 @@ ERROR_FILENAMES := error_handle.c
 ERROR_FILES := ${addprefix ${ERROR_FOLDER}, ${ERROR_FILENAMES}}
 
 PARSE_FOLDER := ${addprefix ${SRC_FOLDER}, /parsing/}
-PARSE_FILENAMES := cmd_expand.c parse.c parse_utils.c print_ast.c rd_expand.c
+PARSE_FILENAMES := cmd_expand.c parse.c parse_utils.c print_ast.c \
+									rd_expand.c heredoc.c
 PARSE_FILES := ${addprefix ${PARSE_FOLDER}, ${PARSE_FILENAMES}}
 
 LEX_FOLDER := ${addprefix ${SRC_FOLDER}, /lexing/}
