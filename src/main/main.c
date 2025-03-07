@@ -30,7 +30,8 @@ int main(int argc, char **argv, char **env)
 	if (!check_arg(argc))
 		return (0);
 	setup_env(&env_ll, env);
-	bi_env(&env_ll);
+	// need increase $SHLVL
+	bi_env(&env_ll, argv);
 	setup_sig();
 	init_attr(&attr, &env_ll);
 	shell_loop(&attr);

@@ -11,6 +11,8 @@
 # include <unistd.h>
 # include <sys/wait.h>
 
+extern int last_exit_code;
+
 typedef enum
 {
 	T_PIPE,
@@ -96,7 +98,7 @@ void					free_node(t_env *node);
 void					del_env(char **env, int i, t_list **env_ll);
 void					print_env(t_list **env_ll, int expo);
 void					update_value(t_list **env_ll, char *key, char *new_v);
-void					bi_env(t_list **env_ll);
+void					bi_env(t_list **env_ll, char **args);
 int						ft_isspace(int c);
 void					handle_pipe(char **s, int *i);
 void					handle_word(char **s, int *i, char **temp);
@@ -120,5 +122,6 @@ void					debug_print_ast(ast_node *root);
 void					free_2d(char **memory);
 void					free_tlist(t_tok *tokens);
 void					free_tree(ast_node *tree);
+int						is_flag(char *arg, char c);
 
 #endif

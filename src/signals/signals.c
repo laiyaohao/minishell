@@ -22,29 +22,29 @@ void handle_sigint(int sig)
 	rl_redisplay();         // Redisplay the prompt
 }
 
-// should be called just before forking
-void	block_sig(void)
-{
-	sigset_t sigs;
+// // should be called just before forking
+// void	block_sig(void)
+// {
+// 	sigset_t sigs;
 
-	sigemptyset(&sigs);
-	sigaddset(&sigs, SIGINT);
-	sigaddset(&sigs, SIGQUIT);
-	sigprocmask(SIG_BLOCK, &sigs, NULL);
-}
+// 	sigemptyset(&sigs);
+// 	sigaddset(&sigs, SIGINT);
+// 	sigaddset(&sigs, SIGQUIT);
+// 	sigprocmask(SIG_BLOCK, &sigs, NULL);
+// }
 
-// should be called just after forking
-void	unblock_sig(void)
-{
-	sigset_t sigs;
+// // should be called just after forking
+// void	unblock_sig(void)
+// {
+// 	sigset_t sigs;
 
-	sigemptyset(&sigs);
-	sigaddset(&sigs, SIGINT);
-	sigaddset(&sigs, SIGQUIT);
-	sigprocmask(SIG_UNBLOCK, &sigs, NULL);
-}
+// 	sigemptyset(&sigs);
+// 	sigaddset(&sigs, SIGINT);
+// 	sigaddset(&sigs, SIGQUIT);
+// 	sigprocmask(SIG_UNBLOCK, &sigs, NULL);
+// }
 
-void	reset_signals_in_child(void)
+void	reset_child_sig(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
