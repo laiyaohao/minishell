@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 16:50:41 by ylai              #+#    #+#             */
-/*   Updated: 2025/02/24 13:55:02 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/08 19:43:26 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ int main(int argc, char **argv, char **env)
 	(void)argv;
 	env_ll = NULL;
 	if (!check_arg(argc))
-		return (0);
+	return (0);
 	setup_env(&env_ll, env);
+	
 	// need increase $SHLVL
-	bi_env(&env_ll, argv);
+	bi_env(&env_ll);
 	setup_sig();
 	init_attr(&attr, &env_ll);
 	shell_loop(&attr);

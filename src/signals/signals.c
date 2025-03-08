@@ -6,12 +6,11 @@
 /*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 16:57:10 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/04 19:29:28 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/08 13:32:04 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-#include <signal.h>
 
 void handle_sigint(int sig)
 {

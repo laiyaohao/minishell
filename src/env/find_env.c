@@ -16,6 +16,7 @@ char  *find_value(t_list **env_ll, char *key)
     list = list->next;
     node = list->content;
   }
+  printf("fafdf\n");
   return (NULL);
 }
 
