@@ -20,9 +20,9 @@ void	fill_value(t_env *key_v, int val_len, char *env)
 {
 	char  *value;
 	int i;
-	int full_len;
+	// int full_len;
 
-	full_len = ft_strlen(env);
+	// full_len = ft_strlen(env);
 	value = malloc(val_len + 1);
 	i = 0;
 	while (i < val_len)

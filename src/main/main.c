@@ -28,10 +28,8 @@ int main(int argc, char **argv, char **env)
 	(void)argv;
 	env_ll = NULL;
 	if (!check_arg(argc))
-	return (0);
+		return (0);
 	setup_env(&env_ll, env);
-	
-	// need increase $SHLVL
 	bi_env(&env_ll);
 	setup_sig();
 	init_attr(&attr, &env_ll);

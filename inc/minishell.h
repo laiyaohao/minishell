@@ -77,7 +77,7 @@ typedef struct s_shell
 {
 	t_tok				*list;
 	ast_node			*tree;
-	t_env				*env;
+	t_list				*env_ll;
 	t_attr				*attr;
 }						t_shell;
 
@@ -124,5 +124,6 @@ void					free_2d(char **memory);
 void					free_tlist(t_tok *tokens);
 void					free_tree(ast_node *tree);
 int						is_flag(char *arg, char c);
+void					free_every(t_shell *sh_atr);
 
 #endif

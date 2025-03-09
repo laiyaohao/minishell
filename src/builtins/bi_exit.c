@@ -27,7 +27,7 @@ int isdigit_str(char *args)
  *	@args: array of command arguments where args[0] is "exit" and args[1]
  *	is the optional exit status.
  */
-void  bi_exit(char **args)
+void  bi_exit(t_shell *sh_atr, char **args)
 {
   int status;
   int err;
@@ -43,15 +43,12 @@ void  bi_exit(char **args)
     }
     status = ft_atoi(args[1]) % 256;
     if (status < 0)
-    status = status + 256;
-    exit(status);
+      status = status + 256;
   }
   else
   {
-    // args[1] is NULL, means exit will run with status last function exit code
-    // but need to free everything...
     status = last_exit_code;
-    // free everything here
-    exit(status);
   }
+  free_every(sh_atr);
+  exit(status);
 }

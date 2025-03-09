@@ -19,15 +19,11 @@ void  free_env(t_list **env_ll)
 	while (list->next != NULL)
 	{
 		next = list->next;
-    // next_n = next->content;
-		// printf("key: %s\n", node->key);
-		// printf("value: %s\n", node->value);
     free_node(node);
     free(list);
     list = next;
 		node = list->content;
 	}
-  // free(*env_ll);
   free_node(node);
   free(list);
 }

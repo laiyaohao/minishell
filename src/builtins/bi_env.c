@@ -2,7 +2,6 @@
 
 /**
  * bi_env - prints out the environment variables
- * need handle -i
  * @env_ll: linked list that contains key-value pairs of env variables
  *
  * Return: void
