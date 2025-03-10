@@ -20,7 +20,7 @@ void  shell_loop(t_shell *shell)
 					ft_putstr_fd("Syntax error near unexpected token\n", 2);
 				else
 				{
-					shell->tree = parser(shell->tokens);
+					shell->tree = parser(shell->tokens, shell);
 					// debug_print_ast(shell->tree);
 					exec_ast(shell->tree, shell);
 					free_tree(shell->tree);

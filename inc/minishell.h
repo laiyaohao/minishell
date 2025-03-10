@@ -132,15 +132,15 @@ t_tok					*lexer(char *input);
 
 
 // Parsing
-void					parse_word(char **buffer, char *s);
-void					handle_var(char **s, char **res);
+void					parse_word(char **buffer, char *s, t_shell *shell);
+void					handle_var(char **s, char **res, t_shell *shell);
 void					debug_print_ast(ast_node *root);
-int    					create_heredoc(const char *delim);
-char					*get_var(char **s);
-char					*cmd_expand(char *s);
-char					*rd_expand(char *s, int mode);
+int    					check_quote(char *s);
+int    					create_heredoc(char *delim, t_shell *shell, int mode);
+char					*cmd_expand(char *s, t_shell *shell);
+char					*rd_expand(char *s, int mode, t_shell *shell);
 ast_node				*create_ast_node(ast_type type);
-ast_node				*parser(t_tok *list);
+ast_node				*parser(t_tok *list, t_shell *shell);
 t_redirect				*create_rd(void);
 
 
@@ -161,6 +161,7 @@ void					del_env(char **env, int i, t_list **env_ll);
 void					free_2d(char **memory);
 void					free_tlist(t_tok *tokens);
 void					free_tree(ast_node *tree);
+void    				free_shell(t_shell *shell);
 
 
 // Utils

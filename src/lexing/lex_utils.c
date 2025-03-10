@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lex_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/10 20:06:28 by tiatan            #+#    #+#             */
+/*   Updated: 2025/03/10 20:06:32 by tiatan           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 void	handle_pipe(char **s, int *i)
@@ -47,7 +59,7 @@ void	handle_word(char **s, int *i, char **temp)
 void	handle_redir_in(char **s, int *i)
 {
 	(*s)++;
-    if (**s == '<')
+	if (**s == '<')
 	{
 		*i = T_HEREDOC;
 		(*s)++;
@@ -59,7 +71,7 @@ void	handle_redir_in(char **s, int *i)
 void	handle_redir_out(char **s, int *i)
 {
 	(*s)++;
-    if (**s == '>')
+	if (**s == '>')
 	{
 		*i = T_REDIR_APP;
 		(*s)++;

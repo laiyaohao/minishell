@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ryannnaa <ryannnaa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:20:28 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/06 17:41:28 by ryannnaa         ###   ########.fr       */
+/*   Updated: 2025/03/10 20:49:55 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,14 @@
  *
  * @details The functions takes the value of a word token and expands it if
  * required. It then concatenates the buffer with the newly expanded word.
- *
  */
-void	parse_word(char **buffer, char *s)
+void	parse_word(char **buffer, char *s, t_shell *shell)
 {
 	char	*temp;
 	char	*stash;
 
 	temp = *buffer;
-	stash = cmd_expand(s);
+	stash = cmd_expand(s, shell);
 	if (!stash)
 		return ;
 	*buffer = ft_strjoin(temp, stash);
@@ -42,31 +41,33 @@ void	parse_word(char **buffer, char *s)
 }
 
 /**
- * @brief Creates a redirection node and appends it to the back of the list of redirections.
+ * @brief Creates a redirection node and appends it to the back of the
+ * list of redirections.
  *
  * @param token The address of the token to be parsed.
  * @param ast_rd The list of redirections the new node is to be appended to.
  *
- * @details The function creates a redirect node by copying the type of the token,
- * then processing the token after as the delimiter for heredoc, or the file for
- * all other redirections.
- *
+ * @details The function creates a redirect node by copying the type of the
+ * token, then processing the token after as the delimiter for heredoc
+ * or the file for all other redirections.
  */
-void	parse_redir(t_node **token, t_redirect **ast_rd)
+void	parse_redir(t_node **token, t_redirect **ast_rd, t_shell *shell)
 {
 	t_redirect	*new_rd;
 	t_redirect	*last;
+	int			mode;
 
 	new_rd = create_rd();
 	new_rd->type = (*token)->type;
 	(*token) = (*token)->next;
 	if (new_rd->type == T_HEREDOC)
 	{
-		new_rd->file = rd_expand((*token)->value, 0);
-		new_rd->fd = create_heredoc(new_rd->file);
+		mode = check_quote((*token)->value);
+		new_rd->file = rd_expand((*token)->value, 0, shell);
+		new_rd->fd = create_heredoc(new_rd->file, shell, mode);
 	}
 	else
-		new_rd->file = rd_expand((*token)->value, 1);
+		new_rd->file = rd_expand((*token)->value, 1, shell);
 	if (!(*ast_rd))
 		*ast_rd = new_rd;
 	else
@@ -89,7 +90,7 @@ void	parse_redir(t_node **token, t_redirect **ast_rd)
  *
  * @return A command AST node. NULL if failure.
  */
-ast_node	*parse_cmd(t_node **token)
+ast_node	*parse_cmd(t_node **token, t_shell *shell)
 {
 	ast_node	*cmd;
 	char		*buffer;
@@ -104,11 +105,11 @@ ast_node	*parse_cmd(t_node **token)
 	{
 		if ((*token)->type == T_WORD)
 		{
-			parse_word(&buffer, (*token)->value);
+			parse_word(&buffer, (*token)->value, shell);
 			strcjoin(' ', &buffer);
 		}
 		else
-			parse_redir(token, &cmd->rd);
+			parse_redir(token, &cmd->rd, shell);
 		*token = (*token)->next;
 	}
 	cmd->args = split_args(buffer);
@@ -128,19 +129,19 @@ ast_node	*parse_cmd(t_node **token)
  * 
  * The function parses the token as a command. If a pipe token is present in
  * the list of tokens to be parsed, a pipe node will be created and the command
- * node created will be appended to the left of the pipe node while it calls upon 
- * itself to construct the corresponding node to be appended to the right pointer.
+ * node created will be appended to the left of the pipe node while it calls upon
+ * itself to construct the node to be appended to the right pointer.
  *
- * @return A pipe AST node if a pipe token is present in the list, else a command
- * AST node. NULL if failure.
+ * @return A pipe AST node if a pipe token is present in the list,
+ * else a command AST node. NULL if failure.
  */
-ast_node	*parse_pipe(t_node **token)
+ast_node	*parse_pipe(t_node **token, t_shell *shell)
 {
 	ast_node	*left;
 	ast_node	*right;
 	ast_node	*pipe;
 
-	left = parse_cmd(token);
+	left = parse_cmd(token, shell);
 	if (!left)
 		return (NULL);
 	while (*token && (*token)->type == T_PIPE)
@@ -148,7 +149,7 @@ ast_node	*parse_pipe(t_node **token)
 		*token = (*token)->next;
 		if ((*token)->type == T_EOF)
 			return (NULL);
-		right = parse_pipe(token);
+		right = parse_pipe(token, shell);
 		if (!right)
 			return (NULL);
 		pipe = create_ast_node(AST_PIPE);
@@ -172,13 +173,16 @@ ast_node	*parse_pipe(t_node **token)
  *
  * @return The AST if successful, NULL if failure.
  */
-ast_node	*parser(t_tok *list)
+ast_node	*parser(t_tok *list, t_shell *shell)
 {
 	ast_node	*tree;
 	t_node		*start;
 
+	tree = NULL;
 	start = list->head;
-	tree = parse_pipe(&list->head);
+	tree = parse_pipe(&list->head, shell);
+	if (!tree)
+		ft_putstr_fd("Error: Failed to create AST\n", 2);
 	list->head = start;
 	return (tree);
 }
