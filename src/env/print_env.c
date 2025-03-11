@@ -19,9 +19,9 @@ void	print_env(t_list **env_ll, int expo)
 	t_env	*node;
 
 	list = *env_ll;
-	node = list->content;
-	while (list->next != NULL)
+	while (list != NULL)
 	{
+		node = list->content;
 		if (!expo && node->value == NULL)
 		{
 			list = list->next;
@@ -35,6 +35,5 @@ void	print_env(t_list **env_ll, int expo)
 		printf("%s\n", node->value);
 		if_expo(expo);
 		list = list->next;
-		node = list->content;
 	}
 }

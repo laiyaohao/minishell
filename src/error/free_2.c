@@ -1,19 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*   free_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/11 12:24:20 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/11 15:20:45 by tiatan           ###   ########.fr       */
+/*   Created: 2025/03/10 20:58:47 by tiatan            #+#    #+#             */
+/*   Updated: 2025/03/11 12:25:27 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	ft_isspace(int c)
+void	free_shell(t_shell *shell)
 {
-	return (c == '\t' || c == '\r' || c == '\n' || c == '\v' || c == '\f'
-		|| c == ' ');
+	if (shell->env_ll)
+		free_env(&shell->env_ll);
+	if (shell->attr)
+		free(shell->attr);
+	free(shell);
 }

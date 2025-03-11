@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lex.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/10 20:07:13 by tiatan            #+#    #+#             */
+/*   Updated: 2025/03/10 20:09:17 by tiatan           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 /**
@@ -11,11 +23,11 @@
 t_node	*create_token(int type, char *value)
 {
 	t_node	*token;
-	
+
 	token = malloc(sizeof(t_node));
 	if (!token)
 	{
-		printf("Error: Unable to create token\n");
+		ft_putstr_fd("Error: Unable to create token\n", 2);
 		return (NULL);
 	}
 	if (value)
@@ -41,7 +53,7 @@ void	add_token(t_tok *list, int type, char *value)
 {
 	t_node	*temp;
 	t_node	*token;
-	
+
 	token = create_token(type, value);
 	if (!token)
 		return ;
@@ -63,16 +75,17 @@ void	add_token(t_tok *list, int type, char *value)
  * @param list Pointer to where the linked list will be stored.
  * @param s String to be converted.
  *
- * @details The function iterates through the string, skipping additional spaces except for 
- * when the characters are encased in a pair of "" quotes. It then identifies the character
- * which will determine what type is assigned to the token to be created. After which, it
- * will create the list of tokens to be stored.
+ * @details The function iterates through the string, skipping 
+ * additional spaces except for when the characters are encased
+ * in a pair of "" quotes. It then identifies the character which
+ * will determine what type is assigned to the token to be created.
+ * After which, it will create the list of tokens to be stored.
  */
 void	tokenize(t_tok *list, char *s)
 {
 	char	*temp;
 	int		type;
-	
+
 	temp = NULL;
 	type = 0;
 	while (*s)
@@ -98,7 +111,7 @@ void	tokenize(t_tok *list, char *s)
 /**
  * @brief Creates a list of tokens using a string.
  *
- * @param input The string used to create the list of tokens. (Current assumption that the string will always be '\0' terminated)
+ * @param input The string used to create the list of tokens.
  *
  * @details Tokens will be assigned with a type of the following:
  * T_WORD = "ls", "ls -l"
@@ -108,37 +121,40 @@ void	tokenize(t_tok *list, char *s)
  * T_REDIR_IN = "<"
  * T_HEREDOC = "<<"
  * T_EOF = End of token list ('\0')
- * 
+ *
  * @return List of tokens if successful, NULL if failure.
  */
 t_tok	*lexer(char *input)
 {
 	t_tok	*token_list;
-	
+
 	token_list = malloc(sizeof(t_tok));
 	if (!token_list)
 	{
-		printf("Error: Failed to generate Token List\n");
+		ft_putstr_fd("Error: Failed to generate Token List\n", 2);
 		return (NULL);
 	}
 	ft_memset(token_list, 0, sizeof(t_tok));
 	tokenize(token_list, input);
 	return (token_list);
 }
+
 /**
- * @brief Iterates through a token list, and checks if there are any invalid token orders.
+ * @brief Iterates through a token list,
+	and checks if there are any invalid token orders.
  *
  * @param list The list of tokens to be checked.
  *
- * @details The function checks if there are any invalid token orders. This is achieved by checking
- * that the first token is not T_PIPE, and proceeds to iterate through the list and setting the
- * state based on what the encountered token type is.
- * 
+ * @details The function checks if there are any invalid token orders.
+ * This is achieved by checking that the first token is not T_PIPE,
+ * and proceeds to iterate through the list and setting the state based
+ * on what the encountered token type is.
+ *
  * Examples of invalid token orders:
  * T_PIPE cannot be the first or last token.
  * T_WORD has no restrictions.
  * Any redirect tokens have to be followed by a T_WORD
- * 
+ *
  * @return 0 if the grammar is valid, 1 if there are any errors.
  */
 int	grammar_check(t_tok *list)
@@ -159,7 +175,8 @@ int	grammar_check(t_tok *list)
 			state = 2;
 		if (state == 1 && temp->next->type != T_WORD)
 			return (1);
-		else if (state == 2 && (temp->next->type == T_PIPE || temp->next->type == T_EOF))
+		else if (state == 2 && (temp->next->type == T_PIPE
+				|| temp->next->type == T_EOF))
 			return (1);
 		temp = temp->next;
 	}

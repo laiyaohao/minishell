@@ -1,66 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
+/*   cmd_expand.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ryannnaa <ryannnaa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:20:34 by tiatan            #+#    #+#             */
-/*   Updated: 2025/02/28 15:47:14 by ryannnaa         ###   ########.fr       */
+/*   Updated: 2025/03/10 20:16:54 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-char	*get_var(char **s)
-{
-	char	*temp;
-	int		i;
-	int		j;
-
-	i = 0;
-	while (ft_isalnum((*s)[i]) || (*s)[i] == '_')
-		i++;
-	temp = malloc(sizeof(char) * (i + 1));
-	if (!temp)
-		return (NULL);
-	j = 0;
-	while (j < i)
-	{
-		temp[j] = (*s)[j];
-		j++;
-	}
-	temp[j] = '\0';
-	(*s) += i;
-	return (temp);
-}
-
-void	handle_var(char **s, char **res)
-{
-	char	*temp;
-	char	*var;
-
-	var = NULL;
-	(*s)++;
-	if (!ft_isalnum(**s) && (**s) != '_')
-	{
-		strcjoin('$', res);
-		strcjoin(**s, res);
-		(*s)++;
-	}
-	else
-	{
-		temp = get_var(s);
-		var = getenv(temp);
-		free(temp);
-		temp = *res;
-		if (!var)
-			*res = ft_strjoin(temp, "");
-		else
-			*res = ft_strjoin(temp, var);
-		free(temp);
-	}
-}
 
 void	handle_quote(char **s, char **res)
 {
@@ -78,14 +28,14 @@ void	handle_quote(char **s, char **res)
 	}
 }
 
-void	handle_dquote(char **s, char **res)
+void	handle_dquote(char **s, char **res, t_shell *shell)
 {
 	strcjoin(**s, res);
 	(*s)++;
 	while (**s && (**s) != '"')
 	{
 		if ((**s) == '$')
-			handle_var(s, res);
+			handle_var(s, res, shell);
 		else
 		{
 			strcjoin(**s, res);
@@ -99,7 +49,7 @@ void	handle_dquote(char **s, char **res)
 	}
 }
 
-char	*handle_expand(char *s)
+char	*cmd_expand(char *s, t_shell *shell)
 {
 	char	*res;
 
@@ -111,9 +61,9 @@ char	*handle_expand(char *s)
 		if (*s == '\'')
 			handle_quote(&s, &res);
 		else if (*s == '"')
-			handle_dquote(&s, &res);
+			handle_dquote(&s, &res, shell);
 		else if (*s == '$')
-			handle_var(&s, &res);
+			handle_var(&s, &res, shell);
 		else
 		{
 			strcjoin(*s, &res);
@@ -123,7 +73,3 @@ char	*handle_expand(char *s)
 	strcjoin('\0', &res);
 	return (res);
 }
-
-// variable expansion also has to handle $? for the exit code of
-// the last execution
-// will be implemented once execution and signals been integrated fully

@@ -6,12 +6,17 @@ LIBFT_FOLDER := libft
 LIBFT := ${LIBFT_FOLDER}/libft.a
 # MAIN_FILE := ${SRC_FOLDER}/main.c
 
+EXEC_FOLDER := ${addprefix ${SRC_FOLDER}, /execution/}
+EXEC_FILENAMES := exec_cmd.c exec_pipe.c exec_rd.c
+EXEC_FILES := ${addprefix ${EXEC_FOLDER}, ${EXEC_FILENAMES}}
+
 ERROR_FOLDER := ${addprefix ${SRC_FOLDER}, /error/}
-ERROR_FILENAMES := error_handle.c
+ERROR_FILENAMES := free_1.c free_2.c
 ERROR_FILES := ${addprefix ${ERROR_FOLDER}, ${ERROR_FILENAMES}}
 
 PARSE_FOLDER := ${addprefix ${SRC_FOLDER}, /parsing/}
-PARSE_FILENAMES := cmd_expand.c parse.c parse_utils.c print_ast.c rd_expand.c
+PARSE_FILENAMES := cmd_expand.c parse.c parse_utils.c print_ast.c \
+									rd_expand.c expand_utils.c heredoc.c
 PARSE_FILES := ${addprefix ${PARSE_FOLDER}, ${PARSE_FILENAMES}}
 
 LEX_FOLDER := ${addprefix ${SRC_FOLDER}, /lexing/}
@@ -23,11 +28,13 @@ SIGS_FILENAMES := signals.c
 SIGS_FILES := ${addprefix ${SIGS_FOLDER}, ${SIGS_FILENAMES}}
 
 UTILS_FOLDER := ${addprefix ${SRC_FOLDER}, /utils/}
-UTILS_FILENAMES := check_arg.c ft_isspace.c ft_strndup.c split_args.c strcjoin.c
+UTILS_FILENAMES := check_arg.c ft_isspace.c ft_strndup.c split_args.c \
+									strcjoin.c ft_split_app.c ft_strdup_app.c \
+									gnl.c is_flag.c free_every.c
 UTILS_FILES := ${addprefix ${UTILS_FOLDER}, ${UTILS_FILENAMES}}
 
 INIT_FOLDER := ${addprefix ${SRC_FOLDER}, /init/}
-INIT_FILENAMES := init.c
+INIT_FILENAMES := init.c init_shell.c
 INIT_FILES := ${addprefix ${INIT_FOLDER}, ${INIT_FILENAMES}}
 
 TOKENS_FOLDER := ${addprefix ${SRC_FOLDER}, /tokens/}
@@ -50,7 +57,7 @@ MAIN_FILES := ${addprefix ${MAIN_FOLDER}, ${MAIN_FILENAMES}}
 
 SRC_FILES := ${PARSE_FILES} ${LEX_FILES} ${SIGS_FILES} ${UTILS_FILES} ${MAIN_FILES} \
 						${INIT_FILES} ${TOKENS_FILES} ${ENV_FILES} \
-						${BUILTINS_FILES} ${ERROR_FILES}
+						${BUILTINS_FILES} ${ERROR_FILES} ${EXEC_FILES}
 
 OBJS := ${SRC_FILES:.c=.o}
 

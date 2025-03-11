@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rd_expand.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/10 20:16:04 by tiatan            #+#    #+#             */
+/*   Updated: 2025/03/10 20:16:10 by tiatan           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 void	rd_quote(char **s, char **res)
@@ -12,13 +24,13 @@ void	rd_quote(char **s, char **res)
 		(*s)++;
 }
 
-void	rd_dquote(char **s, char **res)
+void	rd_dquote(char **s, char **res, t_shell *shell)
 {
 	(*s)++;
 	while (**s && **s != '"')
 	{
 		if ((**s) == '$')
-			handle_var(s, res);
+			handle_var(s, res, shell);
 		else
 		{
 			strcjoin(**s, res);
@@ -28,6 +40,7 @@ void	rd_dquote(char **s, char **res)
 	if (**s == '"')
 		(*s)++;
 }
+
 void	hd_dquote(char **s, char **res)
 {
 	(*s)++;
@@ -42,7 +55,7 @@ void	hd_dquote(char **s, char **res)
 		(*s)++;
 }
 
-char	*rd_expand(char *s, int mode)
+char	*rd_expand(char *s, int mode, t_shell *shell)
 {
 	char	*res;
 
@@ -54,11 +67,11 @@ char	*rd_expand(char *s, int mode)
 		if (*s == '\'')
 			rd_quote(&s, &res);
 		else if (*s == '"' && !mode)
-            hd_dquote(&s, &res);
-        else if (*s == '"' && mode)
-			rd_dquote(&s, &res);
+			hd_dquote(&s, &res);
+		else if (*s == '"' && mode)
+			rd_dquote(&s, &res, shell);
 		else if (*s == '$' && mode)
-			handle_var(&s, &res);
+			handle_var(&s, &res, shell);
 		else
 		{
 			strcjoin(*s, &res);

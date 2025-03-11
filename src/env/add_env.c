@@ -16,19 +16,18 @@ void	fill_key(t_env *key_v, int key_len, char *env)
 	key_v->key = key;
 }
 
-void	fill_value(t_env *key_v, int key_len, char *env)
+void	fill_value(t_env *key_v, int val_len, char *env)
 {
 	char  *value;
 	int i;
-	int full_len;
+	// int full_len;
 
-	full_len = ft_strlen(env);
-	value = malloc(full_len - key_len + 1);
+	// full_len = ft_strlen(env);
+	value = malloc(val_len + 1);
 	i = 0;
-	while (key_len < full_len)
+	while (i < val_len)
 	{
-		value[i] = env[key_len];
-		key_len++;
+		value[i] = env[i];
 		i++;
 	}
 	value[i] = '\0';
@@ -59,13 +58,25 @@ void	add_empty_key(char **env, int i, t_list **env_ll)
 	ft_lstadd_back(env_ll, node);
 }
 
+void	add_env_direct(t_list **env_ll, char *k, char *v)
+{
+	t_env *key_v;
+	t_list  *node;
+
+	key_v = malloc(sizeof(t_env));
+	fill_key(key_v, ft_strlen(k), k);
+	fill_value(key_v, ft_strlen(v), v);
+	node = ft_lstnew(key_v);
+	ft_lstadd_back(env_ll, node);
+}
+
 void	add_env(char **env, int i, t_list **env_ll)
 {
 	t_list  *node;
 	t_env *key_v;
 	char  *eq;
 	int key_len;
-	// t_env  *sample;
+	int  val_len;
 
 	// find first equal sign
 	eq = ft_strchr(env[i], '='); // will be NULL if not found
@@ -80,10 +91,10 @@ void	add_env(char **env, int i, t_list **env_ll)
 	if (key_len == 0 || check_key(key_len, env[i]) || 
 			check_value(key_len + 1, env[i]))
 		return ;
-	// value_len = ft_strchr(env[i], '\0') - eq;
+	val_len = ft_strlen(env[i]) - key_len;
 	key_v = malloc(sizeof(t_env));
 	fill_key(key_v, key_len, env[i]);
-	fill_value(key_v, key_len + 1, env[i]);
+	fill_value(key_v, val_len, env[i] + key_len + 1);
 	node = ft_lstnew(key_v);
 	ft_lstadd_back(env_ll, node);
 }

@@ -1,22 +1,5 @@
 #include "../../inc/minishell.h"
 
-int	is_n_flag(char *arg)
-{
-	int		i;
-	int	n_flag;
-
-	n_flag = 0;
-	i = 0;
-	if (arg[i] != '-')
-		return (n_flag);
-	i++;
-	while (arg[i] && arg[i] == 'n')
-		i++;
-	if (arg[i] == '\0')
-		n_flag = 1;
-	return (n_flag);
-}
-
 /* print_args:
 *	Prints the given array of aruments to STDOUT.
 */
@@ -51,7 +34,7 @@ int	bi_echo(char **args)
 
 	n_flag = 0;
 	i = 1;
-	while (args[i] && is_n_flag(args[i]))
+	while (args[i] && is_flag(args[i], 'n'))
 	{
 		n_flag = 1;
 		i++;

@@ -6,6 +6,7 @@
         "tuple": "c",
         "type_traits": "c",
         "utility": "c",
-        "minishell.h": "c"
+        "minishell.h": "c",
+        "stdio.h": "c"
     }
 }

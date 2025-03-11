@@ -1,19 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*   ft_strdup_app.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/11 12:24:20 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/11 15:20:45 by tiatan           ###   ########.fr       */
+/*   Created: 2025/03/11 12:24:06 by tiatan            #+#    #+#             */
+/*   Updated: 2025/03/11 12:24:07 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	ft_isspace(int c)
+char	*ft_strdup_app(const char *s, size_t len, char c)
 {
-	return (c == '\t' || c == '\r' || c == '\n' || c == '\v' || c == '\f'
-		|| c == ' ');
+	char			*dest;
+	unsigned int	i;
+
+	i = 0;
+	dest = (char *)malloc(sizeof(char) * (len + 2));
+	if (dest == NULL)
+		return (NULL);
+	while (*(s + i) != '\0' && *(s + i) != c)
+	{
+		dest[i] = s[i];
+		i++;
+	}
+	dest[len] = '/';
+	dest[len + 1] = '\0';
+	return (dest);
 }
