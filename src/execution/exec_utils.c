@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:00:58 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/11 18:02:19 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/11 18:55:10 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,30 +59,6 @@ void	check_path(t_exec *exec, ast_node *node)
 	}
 	if (!exec->cmd)
 		exec->cmd = ft_strdup(node->args[0]);
-}
-
-void	exec_err(ast_node *node, t_shell *shell)
-{
-	if (errno == EACCES)
-	{
-		ft_putstr_fd("Error: Permission denied: ", 2);
-		ft_putstr_fd(node->args[0], 2);
-		ft_putstr_fd("\n", 2);
-		shell->exit = 126;
-		exit(shell->exit);
-	}
-	else if (errno == ENOENT)
-	{
-		ft_putstr_fd("Error: Command not found: ", 2);
-		ft_putstr_fd(node->args[0], 2);
-		ft_putstr_fd("\n", 2);
-		shell->exit = 127;
-		exit(shell->exit);
-	}
-	else
-		ft_putstr_fd("Error: execve failed\n", 2);
-	shell->exit = 1;
-	exit(shell->exit);
 }
 
 int	count_keys(t_list *env_ll)

@@ -11,6 +11,7 @@
 # include <unistd.h>
 # include <errno.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42

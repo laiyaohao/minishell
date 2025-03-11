@@ -7,7 +7,7 @@ LIBFT := ${LIBFT_FOLDER}/libft.a
 # MAIN_FILE := ${SRC_FOLDER}/main.c
 
 EXEC_FOLDER := ${addprefix ${SRC_FOLDER}, /execution/}
-EXEC_FILENAMES := exec_cmd.c exec_pipe.c exec_rd.c exec_utils.c
+EXEC_FILENAMES := exec_cmd.c exec_pipe.c exec_rd.c exec_utils.c exec_err.c
 EXEC_FILES := ${addprefix ${EXEC_FOLDER}, ${EXEC_FILENAMES}}
 
 ERROR_FOLDER := ${addprefix ${SRC_FOLDER}, /error/}
