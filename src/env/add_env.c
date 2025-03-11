@@ -45,13 +45,14 @@ void	add_empty_key(char **env, int i, t_list **env_ll)
 
 	key_v = malloc(sizeof(t_env));
 	full_len = ft_strlen(env[i]);
-	key = malloc(sizeof(full_len));
+	key = malloc(sizeof(full_len) + 1);
 	j = 0;
 	while (j < full_len)
 	{
 		key[j] = env[i][j];
 		j++;
 	}
+	key[j] = '\0';
 	key_v->key = key;
 	key_v->value = NULL;
 	node = ft_lstnew(key_v);
@@ -78,23 +79,37 @@ void	add_env(char **env, int i, t_list **env_ll)
 	int key_len;
 	int  val_len;
 
-	// find first equal sign
-	eq = ft_strchr(env[i], '='); // will be NULL if not found
-	// i.e. export VAR
+	eq = ft_strchr(env[i], '=');
+	key_len = eq - env[i];
+	val_len = ft_strlen(env[i]) - key_len;
+	char *key = ft_substr(env[i], 0, key_len);
+	char *value = ft_substr(env[i], key_len + 1, val_len);
+	// need free the 2 variables above
 	if (eq == NULL)
 	{
-		add_empty_key(env, i, env_ll);
+		t_env	*temp = find_node(env_ll, key);
+		if (temp == NULL)
+			add_empty_key(env, i, env_ll);
+		else
+		{
+			temp->value = NULL;
+		}
 		return ;
 	}
 	// length of key
-	key_len = eq - env[i];
 	if (key_len == 0 || check_key(key_len, env[i]) || 
 			check_value(key_len + 1, env[i]))
 		return ;
-	val_len = ft_strlen(env[i]) - key_len;
-	key_v = malloc(sizeof(t_env));
-	fill_key(key_v, key_len, env[i]);
-	fill_value(key_v, val_len, env[i] + key_len + 1);
-	node = ft_lstnew(key_v);
-	ft_lstadd_back(env_ll, node);
+	if (find_node(env_ll, key) == NULL)
+	{
+		key_v = malloc(sizeof(t_env));
+		fill_key(key_v, key_len, env[i]);
+		fill_value(key_v, val_len, env[i] + key_len + 1);
+		node = ft_lstnew(key_v);
+		ft_lstadd_back(env_ll, node);
+	}
+	else
+	{
+		update_value(env_ll, key, value);
+	}
 }
