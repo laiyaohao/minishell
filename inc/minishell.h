@@ -150,6 +150,11 @@ void					exec_cmd(ast_node *node, t_shell *shell);
 void					exec_rd(t_redirect *rd);
 
 // Builtins
+int						bi_echo(char **args);
+void					bi_cd(t_list **env_ll, t_attr *attr, char **args);
+void  					bi_pwd(void);
+void  					bi_export(t_list **env_ll, char **args);
+void  					bi_unset(t_list **env_ll, char **args);
 void					bi_env(t_list **env_ll);
 void					print_env(t_list **env_ll, int expo);
 

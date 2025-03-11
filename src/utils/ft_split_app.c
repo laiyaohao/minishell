@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split_app.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/11 12:24:12 by tiatan            #+#    #+#             */
+/*   Updated: 2025/03/11 12:24:15 by tiatan           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
-static	int	word_count(char const *s, char c)
+static int	word_count(char const *s, char c)
 {
 	int	count;
 
@@ -19,7 +31,7 @@ static	int	word_count(char const *s, char c)
 	return (count);
 }
 
-static	size_t	word_len(char const *s, char c)
+static size_t	word_len(char const *s, char c)
 {
 	size_t	len;
 
@@ -32,7 +44,7 @@ static	size_t	word_len(char const *s, char c)
 	return (len);
 }
 
-static	void	array_free(char **dest)
+static void	array_free(char **dest)
 {
 	char	**temp;
 
@@ -48,7 +60,7 @@ static	void	array_free(char **dest)
 	}
 }
 
-static	char	**word_split(char const *s, char c, char **dest)
+static char	**word_split(char const *s, char c, char **dest)
 {
 	size_t	len;
 	int		s_count;

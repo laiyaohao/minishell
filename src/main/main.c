@@ -6,13 +6,13 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 16:50:41 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/10 21:03:41 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/11 12:23:08 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int main(int argc, char **argv, char **env)
+int	main(int argc, char **argv, char **env)
 {
 	t_shell	*shell;
 
@@ -28,6 +28,6 @@ int main(int argc, char **argv, char **env)
 	init_attr(shell->attr, &shell->env_ll);
 	shell_loop(shell);
 	free_shell(shell);
-	rl_clear_history();	
+	rl_clear_history();
 	return (0);
 }
