@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ryannnaa <ryannnaa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 16:57:10 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/06 12:37:35 by ryannnaa         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:14:40 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,29 @@ void handle_sigint(int sig)
 	rl_redisplay();         // Redisplay the prompt
 }
 
-void	reset_signals_in_child(void)
+// // should be called just before forking
+// void	block_sig(void)
+// {
+// 	sigset_t sigs;
+
+// 	sigemptyset(&sigs);
+// 	sigaddset(&sigs, SIGINT);
+// 	sigaddset(&sigs, SIGQUIT);
+// 	sigprocmask(SIG_BLOCK, &sigs, NULL);
+// }
+
+// // should be called just after forking
+// void	unblock_sig(void)
+// {
+// 	sigset_t sigs;
+
+// 	sigemptyset(&sigs);
+// 	sigaddset(&sigs, SIGINT);
+// 	sigaddset(&sigs, SIGQUIT);
+// 	sigprocmask(SIG_UNBLOCK, &sigs, NULL);
+// }
+
+void	reset_child_sig(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);

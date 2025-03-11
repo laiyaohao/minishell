@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/11 12:39:59 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/11 15:23:13 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	exec_ve(ast_node *node, t_shell *shell)
 		ft_putstr_fd("Error: Failed to fork\n", 2);
 	else if (pid == 0)
 	{
-		(reset_signals_in_child(), exec_rd(node->rd));
+		(reset_child_sig(), exec_rd(node->rd));
 		if (node->args && node->args[0])
 		{
 			extract_paths(&exec, shell->env_ll);

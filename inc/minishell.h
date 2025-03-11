@@ -20,6 +20,8 @@
 #  define OPEN_MAX 1024
 # endif
 
+extern int last_exit_code;
+
 typedef enum
 {
 	T_PIPE,
@@ -105,12 +107,13 @@ int						check_arg(int argc);
 
 // Signals
 void					setup_sig(void);
-void					reset_signals_in_child(void);
+void					reset_child_sig(void);
 
 // Env
 void					setup_env(t_list **env_ll, char **env);
 void					add_env(char **env, int i, t_list **env_ll);
 void					update_value(t_list **env_ll, char *key, char *new_v);
+void					add_env_direct(t_list **env_ll, char *k, char *v);
 int						check_key(int key_len, char *env);
 int						check_value(int key_len, char *env);
 char					*find_value(t_list **env_ll, char *key);
@@ -167,6 +170,7 @@ void					free_2d(char **memory);
 void					free_tlist(t_tok *tokens);
 void					free_tree(ast_node *tree);
 void    				free_shell(t_shell *shell);
+void					free_every(t_shell *sh_atr);
 
 
 // Utils
@@ -178,5 +182,6 @@ char					*ft_strndup(char *s, int len);
 char					**split_args(char *s);
 char					*ft_strdup_app(const char *s, size_t len, char c);
 char					**ft_split_app(char const *s, char c);
+int						is_flag(char *arg, char c);
 
 #endif

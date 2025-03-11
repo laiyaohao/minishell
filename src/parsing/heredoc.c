@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:23:31 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/11 12:48:15 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/11 15:23:44 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	heredoc_rl(char *delim, t_shell *shell, int mode, int pipe_fd)
 	line = NULL;
 	while (1)
 	{
-		reset_signals_in_child();
+		reset_child_sig();
 		line = readline("> ");
 		if (!line)
 			break ;
