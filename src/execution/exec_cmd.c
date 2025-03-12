@@ -6,20 +6,23 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/11 18:05:46 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/12 21:33:34 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	child_ve(ast_node *node, t_shell *shell, t_exec *exec)
+void	child_ve(ast_node *node, t_shell *shell)
 {
 	char	**env;
+	t_exec	exec;
 
-	extract_paths(exec, shell->env_ll);
-	check_path(exec, node);
+	exec.cmd = NULL;
+	exec.paths = NULL;
+	extract_paths(&exec, shell->env_ll);
 	env = env_arr(shell->env_ll);
-	execve(exec->cmd, node->args, env);
+	check_path(&exec, node);
+	execve(exec.cmd, node->args, env);
 	free_2d(env);
 	exec_err(node, shell);
 }
@@ -27,16 +30,18 @@ void	child_ve(ast_node *node, t_shell *shell, t_exec *exec)
 void	exec_ve(ast_node *node, t_shell *shell)
 {
 	int		pid;
-	t_exec	exec;
 
 	pid = fork();
 	if (pid == -1)
 		ft_putstr_fd("Error: Failed to fork\n", 2);
 	else if (pid == 0)
 	{
+		close(shell->std_in);
+		close(shell->std_out);
+		close_rd(shell->tree);
 		reset_child_sig();
 		if (node->args && node->args[0])
-			child_ve(node, shell, &exec);
+			child_ve(node, shell);
 		else
 			exit(0);
 	}
@@ -70,28 +75,25 @@ void	what_exec(ast_node *node, t_shell *shell)
 
 void	exec_cmd(ast_node *node, t_shell *shell)
 {
-	int	saved_stdout;
-	int	saved_stdin;
-
-	saved_stdout = dup(STDOUT_FILENO);
-	saved_stdin = dup(STDIN_FILENO);
-	if (saved_stdout < 0 || saved_stdin < 0)
+	shell->std_in = dup(STDIN_FILENO);
+	shell->std_out = dup(STDOUT_FILENO);
+	if (shell->std_in < 0 || shell->std_out < 0)
 	{
 		ft_putstr_fd("Error: Failed to save stdout or stdin\n", 2);
 		exit(-1);
 	}
 	exec_rd(node->rd);
 	what_exec(node, shell);
-	if (dup2(saved_stdout, STDOUT_FILENO) < 0)
-	{
-		ft_putstr_fd("Error: Failed to restore stdout\n", 2);
-		exit(-1);
-	}
-	if (dup2(saved_stdin, STDIN_FILENO) < 0)
+	if (dup2(shell->std_out, STDIN_FILENO) < 0)
 	{
 		ft_putstr_fd("Error: Failed to restore stdin\n", 2);
 		exit(-1);
 	}
-	close(saved_stdout);
-	close(saved_stdin);
+	if (dup2(shell->std_in, STDOUT_FILENO) < 0)
+	{
+		ft_putstr_fd("Error: Failed to restore stdout\n", 2);
+		exit(-1);
+	}
+	close(shell->std_in);
+	close(shell->std_out);
 }

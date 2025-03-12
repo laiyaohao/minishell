@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:06:04 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/11 16:42:11 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/12 19:46:01 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	handle_redir(t_redirect *rd, int fd)
 {
-	if (!rd || rd->type == T_REDIR_IN || rd->type == T_HEREDOC)
+	if (rd->type == T_REDIR_IN || rd->type == T_HEREDOC)
 	{
 		if (dup2(fd, STDIN_FILENO) == -1)
 		{
@@ -90,7 +90,7 @@ void	exec_rd(t_redirect *rd)
 			|| current->type == T_REDIR_IN)
 			handle_redir(current, fd);
 		if (current->type == T_HEREDOC && current == last_hd)
-			handle_redir(NULL, fd);
+			handle_redir(current, fd);
 		current = current->next;
 	}
 }

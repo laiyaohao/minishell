@@ -98,6 +98,8 @@ typedef struct s_shell
 	ast_node			*tree;
 	char				**env;
 	int					exit;
+	int					std_in;
+	int					std_out;
 }						t_shell;
 
 // Main
@@ -179,7 +181,8 @@ void					free_tlist(t_tok *tokens);
 void					free_tree(ast_node *tree);
 void    				free_shell(t_shell *shell);
 void					free_every(t_shell *sh_atr);
-
+void					free_rd(t_redirect *rd);
+void					close_rd(ast_node *tree);
 
 // Utils
 void					process_args(char ***array);

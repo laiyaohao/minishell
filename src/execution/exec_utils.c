@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:00:58 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/11 18:55:10 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/12 21:29:58 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	check_path(t_exec *exec, ast_node *node)
 			i++;
 		}
 	}
-	if (!exec->cmd)
+	if (!exec->cmd || !exec->paths)
 		exec->cmd = ft_strdup(node->args[0]);
 }
 

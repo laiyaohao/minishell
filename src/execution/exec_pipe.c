@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:59 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/11 16:10:03 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/12 16:45:56 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	handle_child(int mode, int pipe_fd[2], ast_node *node, t_shell *shell)
 		}
 		close(pipe_fd[1]);
 		exec_ast(node->left, shell);
-		exit(0);
 	}
 	else
 	{
@@ -36,8 +35,9 @@ void	handle_child(int mode, int pipe_fd[2], ast_node *node, t_shell *shell)
 		}
 		close(pipe_fd[0]);
 		exec_ast(node->right, shell);
-		exit(0);
 	}
+	free_tree(shell->tree);
+	exit (0);
 }
 
 void	exec_pipe(ast_node *node, t_shell *shell)

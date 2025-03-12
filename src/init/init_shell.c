@@ -10,4 +10,6 @@ void    init_shell(t_shell *shell, char **env)
     shell->tree = NULL;
     shell->env = env;
     shell->exit = 0;
+    shell->std_in = 0;
+    shell->std_out = 0;
 }
