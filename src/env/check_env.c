@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_env.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/12 16:35:34 by ylai              #+#    #+#             */
+/*   Updated: 2025/03/12 16:35:35 by ylai             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 int	check_key(int key_len, char *env)
@@ -18,11 +30,11 @@ int	check_key(int key_len, char *env)
 	return (err);
 }
 
-int check_value(int key_len, char *env)
+int	check_value(int key_len, char *env)
 {
-	int i;
-	int full_len;
-	int status;
+	int	i;
+	int	full_len;
+	int	status;
 
 	full_len = ft_strlen(env);
 	i = 0;
