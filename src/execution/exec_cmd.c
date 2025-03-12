@@ -6,83 +6,22 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/11 15:23:13 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/11 18:05:46 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	extract_paths(t_exec *exec, t_list *env_ll)
+void	child_ve(ast_node *node, t_shell *shell, t_exec *exec)
 {
-	t_list	*env;
-	t_env	*env_var;
+	char	**env;
 
-	exec->paths = NULL;
-	env = env_ll;
-	while (env)
-	{
-		env_var = (t_env *)env->content;
-		if (env_var && env_var->key && ft_strncmp(env_var->key, "PATH", 5) == 0)
-		{
-			if (env_var->value)
-				exec->paths = ft_split_app(env_var->value, ':');
-			break ;
-		}
-		env = env->next;
-	}
-}
-
-void	check_path(t_exec *exec, ast_node *node)
-{
-	int	i;
-
-	i = 0;
-	if (exec->paths)
-	{
-		while (exec->paths[i])
-		{
-			if (node->args[0][0] != '.')
-				exec->cmd = ft_strjoin(exec->paths[i], node->args[0]);
-			else
-				exec->cmd = ft_strdup(node->args[0]);
-			if (!exec->cmd)
-			{
-				ft_putstr_fd("Error: Path creation issue\n", 2);
-				return ;
-			}
-			if (access(exec->cmd, F_OK) == 0)
-				break ;
-			free(exec->cmd);
-			exec->cmd = NULL;
-			i++;
-		}
-	}
-	if (!exec->cmd)
-		exec->cmd = ft_strdup(node->args[0]);
-}
-
-void	exec_err(ast_node *node, t_shell *shell)
-{
-	if (errno == EACCES)
-	{
-		ft_putstr_fd("Error: Permission denied: ", 2);
-		ft_putstr_fd(node->args[0], 2);
-		ft_putstr_fd("\n", 2);
-		shell->exit = 126;
-		exit(shell->exit);
-	}
-	else if (errno == ENOENT)
-	{
-		ft_putstr_fd("Error: Command not found: ", 2);
-		ft_putstr_fd(node->args[0], 2);
-		ft_putstr_fd("\n", 2);
-		shell->exit = 127;
-		exit(shell->exit);
-	}
-	else
-		ft_putstr_fd("Error: execve failed\n", 2);
-	shell->exit = 1;
-	exit(shell->exit);
+	extract_paths(exec, shell->env_ll);
+	check_path(exec, node);
+	env = env_arr(shell->env_ll);
+	execve(exec->cmd, node->args, env);
+	free_2d(env);
+	exec_err(node, shell);
 }
 
 void	exec_ve(ast_node *node, t_shell *shell)
@@ -95,14 +34,9 @@ void	exec_ve(ast_node *node, t_shell *shell)
 		ft_putstr_fd("Error: Failed to fork\n", 2);
 	else if (pid == 0)
 	{
-		(reset_child_sig(), exec_rd(node->rd));
+		reset_child_sig();
 		if (node->args && node->args[0])
-		{
-			extract_paths(&exec, shell->env_ll);
-			check_path(&exec, node);
-			execve(exec.cmd, node->args, shell->env);
-			exec_err(node, shell);
-		}
+			child_ve(node, shell, &exec);
 		else
 			exit(0);
 	}
@@ -114,7 +48,7 @@ void	exec_ve(ast_node *node, t_shell *shell)
 	}
 }
 
-void	exec_cmd(ast_node *node, t_shell *shell)
+void	what_exec(ast_node *node, t_shell *shell)
 {
 	if (ft_strncmp(node->args[0], "echo", 5) == 0)
 		shell->exit = bi_echo(node->args);
@@ -128,8 +62,36 @@ void	exec_cmd(ast_node *node, t_shell *shell)
 		bi_unset(&shell->env_ll, node->args);
 	else if (ft_strncmp(node->args[0], "env", 4) == 0)
 		bi_env(&shell->env_ll);
-	// else if (ft_strncmp(node->args[0], "exit", ft_strlen(node->args[0])))
-	// 	bi_exit(shell, node->args);
+	else if (ft_strncmp(node->args[0], "exit", 5) == 0)
+		bi_exit(shell, node->args);
 	else
 		exec_ve(node, shell);
+}
+
+void	exec_cmd(ast_node *node, t_shell *shell)
+{
+	int	saved_stdout;
+	int	saved_stdin;
+
+	saved_stdout = dup(STDOUT_FILENO);
+	saved_stdin = dup(STDIN_FILENO);
+	if (saved_stdout < 0 || saved_stdin < 0)
+	{
+		ft_putstr_fd("Error: Failed to save stdout or stdin\n", 2);
+		exit(-1);
+	}
+	exec_rd(node->rd);
+	what_exec(node, shell);
+	if (dup2(saved_stdout, STDOUT_FILENO) < 0)
+	{
+		ft_putstr_fd("Error: Failed to restore stdout\n", 2);
+		exit(-1);
+	}
+	if (dup2(saved_stdin, STDIN_FILENO) < 0)
+	{
+		ft_putstr_fd("Error: Failed to restore stdin\n", 2);
+		exit(-1);
+	}
+	close(saved_stdout);
+	close(saved_stdin);
 }

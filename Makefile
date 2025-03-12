@@ -7,7 +7,7 @@ LIBFT := ${LIBFT_FOLDER}/libft.a
 # MAIN_FILE := ${SRC_FOLDER}/main.c
 
 EXEC_FOLDER := ${addprefix ${SRC_FOLDER}, /execution/}
-EXEC_FILENAMES := exec_cmd.c exec_pipe.c exec_rd.c
+EXEC_FILENAMES := exec_cmd.c exec_pipe.c exec_rd.c exec_utils.c exec_err.c
 EXEC_FILES := ${addprefix ${EXEC_FOLDER}, ${EXEC_FILENAMES}}
 
 ERROR_FOLDER := ${addprefix ${SRC_FOLDER}, /error/}
@@ -43,11 +43,11 @@ TOKENS_FILES := ${addprefix ${TOKENS_FOLDER}, ${TOKENS_FILENAMES}}
 
 ENV_FOLDER := ${addprefix ${SRC_FOLDER}, /env/}
 ENV_FILENAMES := setup_env.c free_env.c print_env.c add_env.c \
-									check_env.c del_env.c find_env.c update_env.c
+									check_env.c del_env.c find_env.c update_env.c fill_env.c
 ENV_FILES := ${addprefix ${ENV_FOLDER}, ${ENV_FILENAMES}}
 
 BUILTINS_FOLDER := ${addprefix ${SRC_FOLDER}, /builtins/}
-BUILTINS_FILENAMES := bi_pwd.c bi_env.c bi_export.c bi_cd.c bi_echo.c \
+BUILTINS_FILENAMES := bi_pwd.c bi_env.c bi_export.c bi_cd.c bi_echo.c bi_exit.c \
 											bi_unset.c
 BUILTINS_FILES := ${addprefix ${BUILTINS_FOLDER}, ${BUILTINS_FILENAMES}}
 

@@ -13,8 +13,9 @@ void  bi_unset(t_list **env_ll, char **args)
   {
     // if (getenv(args[i] != NULL)) // will it with variables
     // created in minishell?
-    if (check_key(ft_strlen(args[i]), args[i]) && find_value(env_ll, args[i]))
+    if (!check_key(ft_strlen(args[i]), args[i]))
     {
+      printf("you are in\n");
       del_env(args, i, env_ll);
     }
     i++;

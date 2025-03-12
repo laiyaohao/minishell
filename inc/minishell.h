@@ -11,6 +11,7 @@
 # include <unistd.h>
 # include <errno.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
@@ -118,6 +119,8 @@ int						check_key(int key_len, char *env);
 int						check_value(int key_len, char *env);
 char					*find_value(t_list **env_ll, char *key);
 t_env					*find_node(t_list **env_ll, char *key);
+void					fill_value(t_env *key_v, int val_len, char *env);
+void					fill_key(t_env *key_v, int key_len, char *env);
 
 
 // Input Validation
@@ -151,6 +154,10 @@ t_redirect				*create_rd(void);
 void    				exec_ast(ast_node *node, t_shell *shell);
 void					exec_cmd(ast_node *node, t_shell *shell);
 void					exec_rd(t_redirect *rd);
+void					exec_err(ast_node *node, t_shell *shell);
+void					extract_paths(t_exec *exec, t_list *env_ll);
+void					check_path(t_exec *exec, ast_node *node);
+char    				**env_arr(t_list *env_ll);
 
 // Builtins
 int						bi_echo(char **args);
@@ -159,6 +166,7 @@ void  					bi_pwd(void);
 void  					bi_export(t_list **env_ll, char **args);
 void  					bi_unset(t_list **env_ll, char **args);
 void					bi_env(t_list **env_ll);
+void  					bi_exit(t_shell *sh_atr, char **args);
 void					print_env(t_list **env_ll, int expo);
 
 

@@ -25,15 +25,19 @@ void	print_env(t_list **env_ll, int expo)
 		if (!expo && node->value == NULL)
 		{
 			list = list->next;
-			node = list->content;
 			continue;
 		}
 		if (expo)
 			printf("declare -x ");
-		printf("%s=", node->key);
-		if_expo(expo);
-		printf("%s\n", node->value);
-		if_expo(expo);
+		printf("%s", node->key);
+		if (node->value)
+		{
+			printf("=");
+			if_expo(expo);
+			printf("%s", node->value);
+			if_expo(expo);
+		}
+		printf("\n");
 		list = list->next;
 	}
 }

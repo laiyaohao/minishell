@@ -47,7 +47,7 @@ void  bi_exit(t_shell *sh_atr, char **args)
   }
   else
   {
-    status = last_exit_code;
+    status = sh_atr->exit;
   }
   free_every(sh_atr);
   exit(status);

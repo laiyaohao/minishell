@@ -22,8 +22,9 @@ int	more_args(char **args)
 		return (0);
 }
 
-void	update_attr(t_attr *attr, char *ret)
+void	update_attr(t_list **env_ll, t_attr *attr, char *ret)
 {
+	update_value(env_ll, "OLDPWD", ft_strdup(attr->working_dir));
 	if (attr->old_working_dir)
 	{
 		free(attr->old_working_dir);
@@ -34,7 +35,6 @@ void	update_attr(t_attr *attr, char *ret)
 		free(attr->working_dir);
 		attr->working_dir = ft_strdup(ret);
 	}
-	free(ret);
 }
 
 void	change_dir(t_attr *attr, t_list **env_ll, char *path)
@@ -57,7 +57,7 @@ void	change_dir(t_attr *attr, t_list **env_ll, char *path)
 	}
 	else
 		ret = ft_strdup(cwd);
-	update_attr(attr, ret);
+	update_attr(env_ll, attr, ret);
 	update_value(env_ll, "PWD", ret);
 }
 
@@ -70,7 +70,7 @@ void	bi_cd(t_list **env_ll, t_attr *attr, char **args)
 	char	*target_dir;
 
 	path = args[1];
-	if (more_args(args))
+	if (more_args(args) || !path[0])
 		return ;
 	if (!path || ft_strncmp(path, "--", 3) == 0 ||
 			ft_strncmp(path, "~", 2) == 0 || ft_isspace(path[0]) ||
@@ -85,7 +85,7 @@ void	bi_cd(t_list **env_ll, t_attr *attr, char **args)
 		}
 		change_dir(attr, env_ll, target_dir);
 	}
-	else if (ft_strncmp(path, "-", 2)) // go to OLDPWD
+	else if (ft_strncmp(path, "-", 2) == 0) // go to OLDPWD
 	{
 		target_dir = find_value(env_ll, "OLDPWD");
 		if (!target_dir || target_dir[0] == '\0' ||
