@@ -70,7 +70,7 @@ void	bi_cd(t_list **env_ll, t_attr *attr, char **args)
 	char	*target_dir;
 
 	path = args[1];
-	if (more_args(args))
+	if (more_args(args) || !path[0])
 		return ;
 	if (!path || ft_strncmp(path, "--", 3) == 0 ||
 			ft_strncmp(path, "~", 2) == 0 || ft_isspace(path[0]) ||

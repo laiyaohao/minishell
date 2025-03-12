@@ -118,6 +118,8 @@ int						check_key(int key_len, char *env);
 int						check_value(int key_len, char *env);
 char					*find_value(t_list **env_ll, char *key);
 t_env					*find_node(t_list **env_ll, char *key);
+void					fill_value(t_env *key_v, int val_len, char *env);
+void					fill_key(t_env *key_v, int key_len, char *env);
 
 
 // Input Validation
