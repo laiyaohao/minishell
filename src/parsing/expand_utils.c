@@ -6,11 +6,27 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:17:01 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/10 21:14:43 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/12 15:59:22 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+char	*get_env(t_list *env_ll, char *key)
+{
+	t_list	*temp;
+	t_env	*pair;
+
+	temp = env_ll;
+	while (temp)
+	{
+		pair = (t_env *)temp->content;
+		if (ft_strncmp(pair->key, key, ft_strlen(key)) == 0)
+			return (pair->value);
+		temp = temp->next;
+	}
+	return (NULL);
+}
 
 char	*get_var(char **s)
 {
@@ -59,20 +75,20 @@ void	handle_var(char **s, char **res, t_shell *shell)
 		handle_exit(s, res, shell);
 	else if (!ft_isalnum(**s) && (**s) != '_')
 	{
-		strcjoin('$', res);
-		strcjoin(**s, res);
+		(strcjoin('$', res), strcjoin(**s, res));
 		(*s)++;
 	}
 	else
 	{
 		temp = get_var(s);
-		var = getenv(temp);
+		var = get_env(shell->env_ll, temp);
 		free(temp);
 		temp = *res;
 		if (!var)
 			*res = ft_strjoin(temp, "");
 		else
 			*res = ft_strjoin(temp, var);
-		free(temp);
+		if (temp)
+			free(temp);
 	}
 }
