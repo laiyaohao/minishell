@@ -2,6 +2,9 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
+# include <sys/wait.h>
+# include <sys/stat.h>
+# include <sys/types.h>
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -10,8 +13,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <errno.h>
-# include <sys/wait.h>
-# include <sys/stat.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
@@ -21,7 +22,7 @@
 #  define OPEN_MAX 1024
 # endif
 
-extern int last_exit_code;
+extern volatile sig_atomic_t in_heredoc;
 
 typedef enum
 {
@@ -98,6 +99,8 @@ typedef struct s_shell
 	ast_node			*tree;
 	char				**env;
 	int					exit;
+	int					std_in;
+	int					std_out;
 }						t_shell;
 
 // Main
@@ -107,8 +110,11 @@ void					init_attr(t_attr *attr, t_list **env_ll);
 int						check_arg(int argc);
 
 // Signals
-void					setup_sig(void);
-void					reset_child_sig(void);
+void					sigint_handler(int sig);
+void					sigquit_handler(int sig);
+void					setup_sig_interactive(void);
+void					setup_sig_exec(void);
+void					setup_sig_heredoc(void);
 
 // Env
 void					setup_env(t_list **env_ll, char **env);
@@ -153,12 +159,12 @@ t_redirect				*create_rd(void);
 
 
 // Execution
-void    				exec_ast(ast_node *node, t_shell *shell);
-void					exec_cmd(ast_node *node, t_shell *shell);
-void					exec_rd(t_redirect *rd);
-void					exec_err(ast_node *node, t_shell *shell);
 void					extract_paths(t_exec *exec, t_list *env_ll);
 void					check_path(t_exec *exec, ast_node *node);
+void    				exec_ast(ast_node *node, t_shell *shell);
+void					exec_cmd(ast_node *node, t_shell *shell);
+void					exec_err(ast_node *node, t_shell *shell);
+int						exec_rd(t_redirect *rd, t_shell *shell);
 char    				**env_arr(t_list *env_ll);
 
 // Builtins
@@ -181,7 +187,8 @@ void					free_tlist(t_tok *tokens);
 void					free_tree(ast_node *tree);
 void    				free_shell(t_shell *shell);
 void					free_every(t_shell *sh_atr);
-
+void					free_rd(t_redirect *rd);
+void					close_rd(ast_node *tree);
 
 // Utils
 void					process_args(char ***array);

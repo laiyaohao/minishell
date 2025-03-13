@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:54:43 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/11 19:16:16 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/12 17:31:03 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,18 +57,18 @@ void	exec_err(ast_node *node, t_shell *shell)
 	{
 		handle_acc(node);
 		shell->exit = 126;
-		exit(shell->exit);
 	}
 	else if (errno == ENOENT)
 	{
 		handle_no_ent(node);
 		shell->exit = 127;
-		exit(shell->exit);
 	}
 	else
 	{
 		ft_putstr_fd("Error: execve failed\n", 2);
 		shell->exit = 1;
-		exit(shell->exit);
 	}
+	close(shell->std_in);
+	close(shell->std_out);
+	exit(shell->exit);
 }

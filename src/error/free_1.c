@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_function.c                                    :+:      :+:    :+:   */
+/*   free_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:58:52 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/10 20:58:53 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/13 21:03:02 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	free_rd(t_redirect *rd)
 		temp = rd;
 		rd = rd->next;
 		free(temp->file);
-		if (temp->fd != 0)
+		if (temp->fd != -1)
 			close(temp->fd);
 		free(temp);
 	}
