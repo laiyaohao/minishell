@@ -6,16 +6,18 @@
 /*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 23:51:37 by ylai              #+#    #+#             */
-/*   Updated: 2024/06/04 14:21:11 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/12 19:35:05 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 /**
- * @brief allocates memory for an array of nmemb elements of size bytes each and
+ * @brief allocates memory for an array of nmemb elements of size bytes each
+ * and
  * 		returns a pointer to the allocated memory. The memory is set to zero. If
- * 		nmemb or size is 0, then calloc() returns either NULL, or a unique pointer
+ * 		nmemb or size is 0, then calloc() returns either NULL, or a unique
+ * pointer
  * 		value that can later be successfully passed to free() (this is due to the
  * 		use of malloc(), which states that it returns NULL on error). If the
  * 		multiplication of nmemb and size would result in integer overflow, then

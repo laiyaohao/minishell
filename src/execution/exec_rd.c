@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:06:04 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/12 19:46:01 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/13 17:52:26 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	prep_fd(t_redirect *current, int *fd)
 	}
 }
 
-void	exec_rd(t_redirect *rd)
+int	exec_rd(t_redirect *rd, t_shell *shell)
 {
 	int			fd;
 	t_redirect	*current;
@@ -83,8 +83,10 @@ void	exec_rd(t_redirect *rd)
 		prep_fd(current, &fd);
 		if (fd < 0)
 		{
-			ft_putstr_fd("Error: Failed to open fd\n", 2);
-			exit(-1);
+			ft_putstr_fd(rd->file, 2);
+			ft_putstr_fd(" :No such file or directory\n", 2);
+			shell->exit = 1;
+			return (1);
 		}
 		if (current->type == T_REDIR_OUT || current->type == T_REDIR_APP
 			|| current->type == T_REDIR_IN)
@@ -93,4 +95,5 @@ void	exec_rd(t_redirect *rd)
 			handle_redir(current, fd);
 		current = current->next;
 	}
+	return (0);
 }

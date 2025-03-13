@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:22:56 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/13 11:20:44 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/13 17:14:06 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ void	shell_loop(t_shell *shell)
 	{
 		shell->attr->full_line = readline("minishell> ");
 		if (!shell->attr->full_line)
+		{
+			write(STDOUT_FILENO, "exit\n", 6);
 			break ;
+		}
 		if (*(shell->attr->full_line))
 		{
 			if (check_line(shell->attr))

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_env.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/12 16:23:53 by ylai              #+#    #+#             */
+/*   Updated: 2025/03/12 16:23:54 by ylai             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 void	if_expo(int expo)
@@ -15,7 +27,7 @@ void	if_expo(int expo)
  */
 void	print_env(t_list **env_ll, int expo)
 {
-	t_list *list;
+	t_list	*list;
 	t_env	*node;
 
 	list = *env_ll;
@@ -25,7 +37,7 @@ void	print_env(t_list **env_ll, int expo)
 		if (!expo && node->value == NULL)
 		{
 			list = list->next;
-			continue;
+			continue ;
 		}
 		if (expo)
 			printf("declare -x ");

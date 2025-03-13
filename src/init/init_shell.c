@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_shell.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/12 19:06:33 by ylai              #+#    #+#             */
+/*   Updated: 2025/03/13 14:32:10 by tiatan           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
-void    init_shell(t_shell *shell, char **env)
+void	init_shell(t_shell *shell, char **env)
 {
     shell->env_ll = NULL;
     shell->attr = malloc(sizeof(t_attr));

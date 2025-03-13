@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/13 11:21:25 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/13 17:50:25 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	exec_ve(ast_node *node, t_shell *shell)
 		close(shell->std_in);
 		close(shell->std_out);
 		close_rd(shell->tree);
-		reset_child_sig();
+		setup_sig_exec();
 		if (node->args && node->args[0])
 			child_ve(node, shell);
 		else
@@ -84,8 +84,8 @@ void	exec_cmd(ast_node *node, t_shell *shell)
 		ft_putstr_fd("Error: Failed to save stdout or stdin\n", 2);
 		exit(-1);
 	}
-	exec_rd(node->rd);
-	what_exec(node, shell);
+	if (exec_rd(node->rd, shell) == 0)
+		what_exec(node, shell);
 	if (dup2(shell->std_out, STDIN_FILENO) < 0)
 	{
 		ft_putstr_fd("Error: Failed to restore stdin\n", 2);

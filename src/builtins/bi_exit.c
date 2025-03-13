@@ -1,19 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bi_exit.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/12 18:45:03 by ylai              #+#    #+#             */
+/*   Updated: 2025/03/12 18:45:58 by ylai             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
-int isdigit_str(char *args)
+int	isdigit_str(char *args)
 {
-  int i;
+	int	i;
 
-  i = 0;
-  while (args[i] != '\0')
-  {
-    if (!ft_isdigit(args[i]))
-    {
-      return (1);
-    }
-    i++;
-  }
-  return (0);
+	i = 0;
+	while (args[i] != '\0')
+	{
+		if (!ft_isdigit(args[i]))
+		{
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }
 
 /**
@@ -27,28 +39,28 @@ int isdigit_str(char *args)
  *	@args: array of command arguments where args[0] is "exit" and args[1]
  *	is the optional exit status.
  */
-void  bi_exit(t_shell *sh_atr, char **args)
+void	bi_exit(t_shell *sh_atr, char **args)
 {
-  int status;
-  int err;
+	int	status;
+	int	err;
 
-  status = 0;
-  err = 0;
-  if (args != NULL || args[1] != NULL)
-  {
-    if (isdigit_str(args[1]))
-    {
-      printf("bash: exit: %s: numeric argument required\n", args[1]);
-      return ;
-    }
-    status = ft_atoi(args[1]) % 256;
-    if (status < 0)
-      status = status + 256;
-  }
-  else
-  {
-    status = sh_atr->exit;
-  }
-  free_every(sh_atr);
-  exit(status);
+	status = 0;
+	err = 0;
+	if (args != NULL || args[1] != NULL)
+	{
+		if (isdigit_str(args[1]))
+		{
+			printf("bash: exit: %s: numeric argument required\n", args[1]);
+			return ;
+		}
+		status = ft_atoi(args[1]) % 256;
+		if (status < 0)
+			status = status + 256;
+	}
+	else
+	{
+		status = sh_atr->exit;
+	}
+	free_every(sh_atr);
+	exit(status);
 }

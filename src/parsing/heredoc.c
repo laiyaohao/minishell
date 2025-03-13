@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:23:31 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/11 15:23:44 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/13 17:19:34 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,10 @@ void	heredoc_rl(char *delim, t_shell *shell, int mode, int pipe_fd)
 	line = NULL;
 	while (1)
 	{
-		reset_child_sig();
 		line = readline("> ");
 		if (!line)
 			break ;
-		if (ft_strncmp(line, delim, ft_strlen(delim)) == 0)
+		if (ft_strncmp(line, delim, ft_strlen(line)) == 0)
 		{
 			free(line);
 			break ;
@@ -85,6 +84,7 @@ int	create_heredoc(char *delim, t_shell *shell, int mode)
 		ft_putstr_fd("Error: Failed to pipe\n", 2);
 		return (-1);
 	}
+	setup_sig_heredoc();
 	heredoc_rl(delim, shell, mode, pipe_fd[1]);
 	close(pipe_fd[1]);
 	return (pipe_fd[0]);
