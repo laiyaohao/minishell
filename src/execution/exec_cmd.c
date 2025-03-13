@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/12 21:33:34 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/13 11:21:25 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ void	what_exec(ast_node *node, t_shell *shell)
 
 void	exec_cmd(ast_node *node, t_shell *shell)
 {
+	if (!node->args[0])
+		return ;
 	shell->std_in = dup(STDIN_FILENO);
 	shell->std_out = dup(STDOUT_FILENO);
 	if (shell->std_in < 0 || shell->std_out < 0)
