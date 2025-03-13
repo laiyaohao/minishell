@@ -1,4 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/12 19:07:44 by ylai              #+#    #+#             */
+/*   Updated: 2025/03/12 19:18:35 by ylai             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
+
+void	print_no_space(char *dir)
+{
+	if (!dir)
+	{
+		printf("no space\n");
+		return ;
+	}
+}
 
 /* init_wds:
 *	Initializes working directory variables as a safeguard against
@@ -13,32 +34,20 @@ void	init_wds(t_attr *attr, t_list **env_ll)
 
 	wd = getcwd(buff, 4096);
 	attr->working_dir = ft_strdup(wd);
-	if (!attr->working_dir)
-	{
-		printf("no space to strdup working dir\n");
-		return ;
-	}
+	print_no_space(attr->working_dir);
 	if (find_value(env_ll, "OLDPWD") != NULL)
 	{
 		attr->old_working_dir = ft_strdup(find_value(env_ll, "OLDPWD"));
-		if (!attr->old_working_dir)
-		{
-			printf("no space to strdup OLDPWD\n");
-			return ;
-		}
+		print_no_space(attr->old_working_dir);
 	}
 	else
 	{
 		attr->old_working_dir = ft_strdup(wd);
-		if (!attr->old_working_dir)
-		{
-			printf("no space to strdup working dir\n");
-			return ;
-		}
+		print_no_space(attr->old_working_dir);
 	}
 }
 
-void  init_attr(t_attr *attr, t_list **env_ll)
+void	init_attr(t_attr *attr, t_list **env_ll)
 {
 	attr->full_line = NULL;
 	init_wds(attr, env_ll);

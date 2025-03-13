@@ -6,7 +6,7 @@
 /*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:50:37 by ylai              #+#    #+#             */
-/*   Updated: 2024/10/21 17:48:56 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/12 19:34:46 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
  * 		string is converted to a long value in the obvious manner, stopping at
  * 		the first character which is not a valid digit in the given base.
  * @return	Returns the result of the convertion, unless the value would
- * 		underflow or overflow.  If an underflow occurs, strtol() returns LONG_MIN.
+ * 		underflow or overflow.  If an underflow occurs, strtol() returns
+ * LONG_MIN.
  * 		If an overflow occurs, strtol() returns LONG_MAX.
 */
 long	ft_atol(const char *nptr)

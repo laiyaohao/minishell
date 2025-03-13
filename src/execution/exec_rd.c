@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_rd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:06:04 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/11 16:42:11 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/13 20:34:46 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	handle_redir(t_redirect *rd, int fd)
 {
-	if (!rd || rd->type == T_REDIR_IN || rd->type == T_HEREDOC)
+	if (rd->type == T_REDIR_IN || rd->type == T_HEREDOC)
 	{
 		if (dup2(fd, STDIN_FILENO) == -1)
 		{
@@ -69,7 +69,7 @@ void	prep_fd(t_redirect *current, int *fd)
 	}
 }
 
-void	exec_rd(t_redirect *rd)
+int	exec_rd(t_redirect *rd, t_shell *shell)
 {
 	int			fd;
 	t_redirect	*current;
@@ -83,14 +83,17 @@ void	exec_rd(t_redirect *rd)
 		prep_fd(current, &fd);
 		if (fd < 0)
 		{
-			ft_putstr_fd("Error: Failed to open fd\n", 2);
-			exit(-1);
+			ft_putstr_fd(rd->file, 2);
+			ft_putstr_fd(" :No such file or directory\n", 2);
+			shell->exit = 1;
+			return (1);
 		}
 		if (current->type == T_REDIR_OUT || current->type == T_REDIR_APP
 			|| current->type == T_REDIR_IN)
 			handle_redir(current, fd);
 		if (current->type == T_HEREDOC && current == last_hd)
-			handle_redir(NULL, fd);
+			handle_redir(current, fd);
 		current = current->next;
 	}
+	return (0);
 }

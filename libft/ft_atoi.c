@@ -6,7 +6,7 @@
 /*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:50:37 by ylai              #+#    #+#             */
-/*   Updated: 2024/06/02 19:33:23 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/12 19:33:44 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 /**
  * @brief	Converts the initial portion of the string pointed to by nptr to an
- * 		integer.
+ * integer.
  * @param	nptr The string to be converted. The string may begin with an
- * 		arbituary amount of white space as determined by isspace(3)
+ * arbituary amount of white space as determined by isspace(3)
  * 		followed by an optional minus sign or plus sign. The remainder of the
  * 		string is converted to a long value in the obvious manner, stopping at
  * 		the first character which is not a valid digit in the given base.
  * @return	Returns the result of the convertion, unless the value would
- * 		underflow or overflow.  If an underflow occurs, strtol() returns LONG_MIN.
+ * 		underflow or overflow.  If an underflow occurs, strtol() returns 
+ * 		LONG_MIN.
  * 		If an overflow occurs, strtol() returns LONG_MAX.
 */
 int	ft_atoi(const char *nptr)
