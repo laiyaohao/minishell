@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:38:46 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/12 16:39:40 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/13 23:52:19 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,16 @@
 void	up_shlvl(t_list **env_ll)
 {
 	char	*shlvl;
+	char	*key;
+	char	*value;
 
 	shlvl = find_value(env_ll, "SHLVL");
 	if (shlvl == NULL)
 	{
-		add_env_direct(env_ll, "SHLVL", "1");
+		key = ft_strdup("SHLVL");
+		value = ft_strdup("1");
+		if (key && value)
+			add_env_direct(env_ll, key, value);
 	}
 	else
 	{
