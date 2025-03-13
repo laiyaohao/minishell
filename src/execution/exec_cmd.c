@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/13 17:50:25 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/13 21:04:19 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,16 +86,22 @@ void	exec_cmd(ast_node *node, t_shell *shell)
 	}
 	if (exec_rd(node->rd, shell) == 0)
 		what_exec(node, shell);
-	if (dup2(shell->std_out, STDIN_FILENO) < 0)
+	if (shell->std_out != -1)
 	{
-		ft_putstr_fd("Error: Failed to restore stdin\n", 2);
-		exit(-1);
+		if (dup2(shell->std_in, STDIN_FILENO) < 0)
+		{
+			ft_putstr_fd("Error: Failed to restore stdin\n", 2);
+			exit(-1);
+		}
+		close(shell->std_in);
 	}
-	if (dup2(shell->std_in, STDOUT_FILENO) < 0)
+	if (shell->std_out != -1)
 	{
-		ft_putstr_fd("Error: Failed to restore stdout\n", 2);
-		exit(-1);
+		if (dup2(shell->std_out, STDOUT_FILENO) < 0)
+		{
+			ft_putstr_fd("Error: Failed to restore stdout\n", 2);
+			exit(-1);
+		}
+		close(shell->std_out);
 	}
-	close(shell->std_in);
-	close(shell->std_out);
 }

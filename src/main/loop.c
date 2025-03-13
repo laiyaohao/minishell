@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:22:56 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/13 17:14:06 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/13 19:42:50 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ void	process_input(t_shell *shell)
 	if (!shell->tokens)
 		ft_putstr_fd("Failed to tokenize\n", 2);
 	if (grammar_check(shell->tokens))
+	{
 		ft_putstr_fd("Syntax error near unexpected token\n", 2);
+		free_tlist(shell->tokens);
+	}
 	else
 	{
 		shell->tree = parser(shell->tokens, shell);

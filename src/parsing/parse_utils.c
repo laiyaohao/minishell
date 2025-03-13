@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:20:31 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/10 21:09:02 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/13 20:44:30 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_redirect	*create_rd(void)
 	if (!rd)
 		return (NULL);
 	ft_memset(rd, 0, sizeof(t_redirect));
+	rd->fd = -1;
 	return (rd);
 }
 

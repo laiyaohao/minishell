@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:06:33 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/13 14:32:10 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/13 20:43:27 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,6 @@ void	init_shell(t_shell *shell, char **env)
     shell->tree = NULL;
     shell->env = env;
     shell->exit = 0;
-    shell->std_in = 0;
-    shell->std_out = 0;
+    shell->std_in = -1;
+    shell->std_out = -1;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:58:47 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/12 21:01:59 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/13 21:10:38 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,21 @@
 
 void	close_rd(ast_node *tree)
 {
+	t_redirect	*temp;
+	
+	temp = NULL;
 	if (!tree)
 		return ;
 	close_rd(tree->left);
 	close_rd(tree->right);
 	if (tree->rd)
-		close(tree->rd->fd);
+		temp = tree->rd;
+	while (temp)
+	{
+		if (temp->fd != -1)
+			close(temp->fd);
+		temp = temp->next;
+	}
 }
 
 void	free_shell(t_shell *shell)
