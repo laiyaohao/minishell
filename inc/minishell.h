@@ -193,5 +193,6 @@ char					**split_args(char *s);
 char					*ft_strdup_app(const char *s, size_t len, char c);
 char					**ft_split_app(char const *s, char c);
 int						is_flag(char *arg, char c);
+int						more_args(char **args);
 
 #endif
