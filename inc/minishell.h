@@ -153,6 +153,7 @@ int    					check_quote(char *s);
 int    					create_heredoc(char *delim, t_shell *shell, int mode);
 char					*cmd_expand(char *s, t_shell *shell);
 char					*rd_expand(char *s, int mode, t_shell *shell);
+char					*get_env(t_list *env_ll, char *key);
 ast_node				*create_ast_node(ast_type type);
 ast_node				*parser(t_tok *list, t_shell *shell);
 t_redirect				*create_rd(void);
@@ -175,8 +176,8 @@ void  					bi_export(t_list **env_ll, char **args);
 void  					bi_unset(t_list **env_ll, char **args);
 void					bi_env(t_list **env_ll);
 void  					bi_exit(t_shell *sh_atr, char **args);
+void    				bi_dot(ast_node *node);
 void					print_env(t_list **env_ll, int expo);
-
 
 // Memory
 void					free_env(t_list **env_ll);

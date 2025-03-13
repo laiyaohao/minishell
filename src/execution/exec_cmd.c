@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/13 21:04:19 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/13 23:13:35 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,19 @@
 void	child_ve(ast_node *node, t_shell *shell)
 {
 	char	**env;
+	char	*path;
 	t_exec	exec;
 
 	exec.cmd = NULL;
 	exec.paths = NULL;
 	extract_paths(&exec, shell->env_ll);
+	path = get_env(shell->env_ll, "PATH");
 	env = env_arr(shell->env_ll);
 	check_path(&exec, node);
-	execve(exec.cmd, node->args, env);
+	if (path != NULL && (exec.cmd[0] == '/' || exec.cmd[0] == '.'))
+		execve(exec.cmd, node->args, env);
+	else if (path == NULL)
+		execve(exec.cmd, node->args, env);
 	free_2d(env);
 	exec_err(node, shell);
 }
@@ -69,6 +74,8 @@ void	what_exec(ast_node *node, t_shell *shell)
 		bi_env(&shell->env_ll);
 	else if (ft_strncmp(node->args[0], "exit", 5) == 0)
 		bi_exit(shell, node->args);
+	else if (ft_strncmp(node->args[0], ".", 2) == 0)
+		bi_dot(node);
 	else
 		exec_ve(node, shell);
 }
@@ -86,22 +93,16 @@ void	exec_cmd(ast_node *node, t_shell *shell)
 	}
 	if (exec_rd(node->rd, shell) == 0)
 		what_exec(node, shell);
-	if (shell->std_out != -1)
+	if (dup2(shell->std_in, STDIN_FILENO) < 0)
 	{
-		if (dup2(shell->std_in, STDIN_FILENO) < 0)
-		{
-			ft_putstr_fd("Error: Failed to restore stdin\n", 2);
-			exit(-1);
-		}
-		close(shell->std_in);
+		ft_putstr_fd("Error: Failed to restore stdin\n", 2);
+		exit(-1);
 	}
-	if (shell->std_out != -1)
+	close(shell->std_in);
+	if (dup2(shell->std_out, STDOUT_FILENO) < 0)
 	{
-		if (dup2(shell->std_out, STDOUT_FILENO) < 0)
-		{
-			ft_putstr_fd("Error: Failed to restore stdout\n", 2);
-			exit(-1);
-		}
-		close(shell->std_out);
+		ft_putstr_fd("Error: Failed to restore stdout\n", 2);
+		exit(-1);
 	}
+	close(shell->std_out);
 }
