@@ -1,43 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_arg.c                                        :+:      :+:    :+:   */
+/*   signals2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/12 18:58:28 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/14 17:26:13 by tiatan           ###   ########.fr       */
+/*   Created: 2025/03/14 16:40:21 by tiatan            #+#    #+#             */
+/*   Updated: 2025/03/14 16:51:57 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	check_arg(int argc)
+volatile sig_atomic_t	g_sigint;
+
+void	sigint_heredoc(int sig)
 {
-	if (argc != 1)
-		return (0);
-	return (1);
+	(void)sig;
+	g_sigint = 1;
+	rl_done = 1;
 }
 
-/**
- * Checks if there are more arguments than needed in the array of arguments.
- *
- * @param args The array of arguments
- * @return 1 if there are more arguments than needed, 0 otherwise
- */
-int	more_args(char **args, int cd)
+int	heredoc_rl_event(void)
 {
-	int	i;
-
-	i = 0;
-	while (args[i] != NULL)
-		i++;
-	if (i > 2)
+	if (g_sigint)
 	{
-		if (cd)
-			ft_putstr_fd("more arguments than needed.\n", 2);
-		return (1);
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
-	else
-		return (0);
+	return (0);
+}
+
+void	sigint_handler(int sig)
+{
+	(void)sig;
+	g_sigint = 1;
+	write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }

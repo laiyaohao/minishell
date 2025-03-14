@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   bi_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 18:45:03 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/13 21:25:34 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/14 17:56:44 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+void	print_exit(t_shell *sh_atr)
+{
+	ast_node	*temp;
+	int			check;
+
+	check = 0;
+	temp = sh_atr->tree;
+	while (temp)
+	{
+		if (temp->type == AST_PIPE)
+		{
+			check = 1;
+			break ;
+		}
+		temp = temp->right;
+	}
+	if (!check)
+		printf("exit\n");
+}
 
 /**
  * isdigit_str:
@@ -25,6 +45,8 @@ int	isdigit_str(char *args)
 	i = 0;
 	while (args[i] != '\0')
 	{
+		if (args[0] == '+' || args[0] == '-')
+			i++;
 		if (!ft_isdigit(args[i]))
 		{
 			return (1);
@@ -36,10 +58,22 @@ int	isdigit_str(char *args)
 
 void	numeric_arg(t_shell *sh_atr, char **args)
 {
-	printf("exit\n");
-	printf("bash: exit: %s: numeric argument required\n", args[1]);
+	print_exit(sh_atr);
+	ft_putstr_fd("bash: exit: ", 2);
+	ft_putstr_fd(args[1], 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
+	close(sh_atr->std_in);
+	close(sh_atr->std_out);
 	free_every(sh_atr);
 	exit(2);
+}
+
+void	byebye(t_shell *sh_atr)
+{
+	close(sh_atr->std_in);
+	close(sh_atr->std_out);
+	free_every(sh_atr);
+	print_exit(sh_atr);
 }
 
 /**
@@ -58,12 +92,12 @@ void	bi_exit(t_shell *sh_atr, char **args)
 	int	status;
 
 	status = 0;
-	if (more_args(args))
+	if (more_args(args, 0))
 	{
 		if (isdigit_str(args[1]))
 			numeric_arg(sh_atr, args);
-		printf("exit\n");
-		printf("bash: exit: too many arguments\n");
+		print_exit(sh_atr);
+		ft_putstr_fd("bash: exit: too many arguments\n", 2);
 		sh_atr->exit = 1;
 		return ;
 	}
@@ -77,5 +111,6 @@ void	bi_exit(t_shell *sh_atr, char **args)
 	}
 	else
 		status = sh_atr->exit;
-	(free_every(sh_atr), printf("exit\n"), exit(status));
+	byebye(sh_atr);
+	exit(status);
 }

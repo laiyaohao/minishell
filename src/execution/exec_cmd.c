@@ -6,11 +6,32 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/14 13:00:19 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/14 16:55:43 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+void	handle_parent(int pid, t_shell *shell)
+{
+	int		term_sig;
+
+	term_sig = 0;
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	waitpid(pid, &shell->exit, 0);
+	if (WIFEXITED(shell->exit))
+		shell->exit = WEXITSTATUS(shell->exit);
+	else if (WIFSIGNALED(shell->exit))
+	{
+		term_sig = WTERMSIG(shell->exit);
+		shell->exit = 128 + term_sig;
+		if (term_sig == SIGQUIT)
+			write(STDOUT_FILENO, "Quit (core dumped)\n", 19);
+		else if (term_sig == SIGINT)
+			write(STDOUT_FILENO, "\n", 1);
+	}
+}
 
 void	child_ve(ast_node *node, t_shell *shell)
 {
@@ -35,7 +56,6 @@ void	child_ve(ast_node *node, t_shell *shell)
 void	exec_ve(ast_node *node, t_shell *shell)
 {
 	int		pid;
-	int		term_sig;
 
 	pid = fork();
 	if (pid == -1)
@@ -52,24 +72,13 @@ void	exec_ve(ast_node *node, t_shell *shell)
 			exit(0);
 	}
 	else
-	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-		waitpid(pid, &shell->exit, 0);
-		if (WIFEXITED(shell->exit))
-			shell->exit = WEXITSTATUS(shell->exit);
-		else if (WIFSIGNALED(shell->exit))
-		{
-			term_sig = WTERMSIG(shell->exit);
-			shell->exit = 128 + term_sig;
-			if (term_sig == SIGQUIT)
-				write(STDOUT_FILENO, "Quit (core dumped)\n", 19);
-		}
-	}
+		handle_parent(pid, shell);
 }
 
 void	what_exec(ast_node *node, t_shell *shell)
 {
+	if (g_sigint)
+		return ;
 	if (ft_strncmp(node->args[0], "echo", 5) == 0)
 		shell->exit = bi_echo(node->args);
 	else if (ft_strncmp(node->args[0], "cd", 3) == 0)

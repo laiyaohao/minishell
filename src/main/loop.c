@@ -6,11 +6,18 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:22:56 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/14 12:46:54 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/14 16:49:19 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+void	free_stuff(t_shell *shell)
+{
+	free(shell->attr->full_line);
+	free(shell->attr->working_dir);
+	free(shell->attr->old_working_dir);
+}
 
 void	process_input(t_shell *shell)
 {
@@ -25,7 +32,8 @@ void	process_input(t_shell *shell)
 	else
 	{
 		shell->tree = parser(shell->tokens, shell);
-		exec_ast(shell->tree, shell);
+		if (!g_sigint)
+			exec_ast(shell->tree, shell);
 		free_tree(shell->tree);
 		free_tlist(shell->tokens);
 	}
@@ -37,10 +45,10 @@ void	shell_loop(t_shell *shell)
 	{
 		setup_sig_interactive();
 		shell->attr->full_line = readline("minishell> ");
-		if (global_sigint)
+		if (g_sigint)
 		{
 			shell->exit = 130;
-			global_sigint = 0;
+			g_sigint = 0;
 		}
 		if (!shell->attr->full_line)
 		{
@@ -57,9 +65,7 @@ void	shell_loop(t_shell *shell)
 		}
 		free(shell->attr->full_line);
 	}
-	free(shell->attr->full_line);
-	free(shell->attr->working_dir);
-	free(shell->attr->old_working_dir);
+	free_stuff(shell);
 }
 
 // void	reallocate(char **tbr, char **tbu)

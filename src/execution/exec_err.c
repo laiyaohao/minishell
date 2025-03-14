@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_err.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:54:43 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/13 23:37:39 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/14 16:35:52 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	no_ent_err(ast_node *node, char *path)
 void	handle_no_ent(ast_node *node, t_shell *shell)
 {
 	struct stat	file_stat;
-	char	*path;
+	char		*path;
 
 	path = get_env(shell->env_ll, "PATH");
 	if (ft_strncmp(node->args[0], "./", 2) == 0)

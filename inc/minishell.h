@@ -22,7 +22,7 @@
 #  define OPEN_MAX 1024
 # endif
 
-extern volatile sig_atomic_t global_sigint;
+extern volatile sig_atomic_t g_sigint;
 
 typedef enum
 {
@@ -110,10 +110,11 @@ void					init_attr(t_attr *attr, t_list **env_ll);
 int						check_arg(int argc);
 
 // Signals
-void					sigint_handler(int sig);
 void					setup_sig_interactive(void);
 void					setup_sig_exec(void);
 void					setup_sig_heredoc(void);
+void					sigint_handler(int sig);
+void					sigint_heredoc(int sig);
 int    					heredoc_rl_event(void);
 
 // Env
@@ -150,7 +151,6 @@ void					parse_word(char **buffer, char *s, t_shell *shell);
 void					handle_var(char **s, char **res, t_shell *shell);
 void					debug_print_ast(ast_node *root);
 int    					check_quote(char *s);
-int    					create_heredoc(char *delim, t_shell *shell, int mode);
 char					*cmd_expand(char *s, t_shell *shell);
 char					*rd_expand(char *s, int mode, t_shell *shell);
 char					*get_env(t_list *env_ll, char *key);
@@ -158,6 +158,11 @@ ast_node				*create_ast_node(ast_type type);
 ast_node				*parser(t_tok *list, t_shell *shell);
 t_redirect				*create_rd(void);
 
+// Heredoc
+int    					create_heredoc(char *delim, t_shell *shell, int mode);
+int						check_quote(char *s);
+char					*heredoc_expand(char *s, t_shell *shell);
+void					rl_null(char *delim);
 
 // Execution
 void					extract_paths(t_exec *exec, t_list *env_ll);
@@ -194,13 +199,14 @@ void					close_rd(ast_node *tree);
 // Utils
 void					process_args(char ***array);
 void					strcjoin(char s, char **res);
-int						ft_isspace(int c);
 char					*gnl(int fd);
 char					*ft_strndup(char *s, int len);
 char					**split_args(char *s);
 char					*ft_strdup_app(const char *s, size_t len, char c);
 char					**ft_split_app(char const *s, char c);
+int						ft_atoll(const char *str, long long *result);
 int						is_flag(char *arg, char c);
-int						more_args(char **args);
+int						more_args(char **args, int cd);
+int						ft_isspace(int c);
 
 #endif

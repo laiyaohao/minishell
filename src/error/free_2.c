@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:58:47 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/13 21:10:38 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/14 16:35:40 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	close_rd(ast_node *tree)
 {
 	t_redirect	*temp;
-	
+
 	temp = NULL;
 	if (!tree)
 		return ;

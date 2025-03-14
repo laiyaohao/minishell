@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:59 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/13 19:41:16 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/14 16:50:24 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	exec_pipe(ast_node *node, t_shell *shell)
 
 void	exec_ast(ast_node *node, t_shell *shell)
 {
-	if (!node)
+	if (!node || g_sigint)
 		return ;
 	if (node->type == AST_CMD)
 		exec_cmd(node, shell);
