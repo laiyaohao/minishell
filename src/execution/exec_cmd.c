@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/13 23:13:35 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/14 12:05:36 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ void	exec_ve(ast_node *node, t_shell *shell)
 	}
 	else
 	{
+		signal(SIGINT, SIG_IGN);
 		waitpid(pid, &shell->exit, 0);
+		signal(SIGINT, sigint_handler);
+		signal(SIGQUIT, sigquit_handler);
 		if (WIFEXITED(shell->exit))
 			shell->exit = WEXITSTATUS(shell->exit);
 	}
