@@ -32,30 +32,6 @@ void	print_exit(t_shell *sh_atr)
 		printf("exit\n");
 }
 
-/**
- * isdigit_str:
- *	Checks if a given string is composed only of digits.
- *	@args: string to check
- *	Returns: 0 if the string is composed only of digits, 1 otherwise
- */
-int	isdigit_str(char *args)
-{
-	int	i;
-
-	i = 0;
-	while (args[i] != '\0')
-	{
-		if (args[0] == '+' || args[0] == '-')
-			i++;
-		if (!ft_isdigit(args[i]))
-		{
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-
 void	numeric_arg(t_shell *sh_atr, char **args)
 {
 	print_exit(sh_atr);
@@ -90,12 +66,13 @@ void	byebye(t_shell *sh_atr)
 void	bi_exit(t_shell *sh_atr, char **args)
 {
 	int	status;
+	int	too_b_s;
 
 	status = 0;
+	too_b_s = 0;
 	if (more_args(args, 0))
 	{
-		if (isdigit_str(args[1]))
-			numeric_arg(sh_atr, args);
+		handle_non_numeric(sh_atr, args);
 		print_exit(sh_atr);
 		ft_putstr_fd("bash: exit: too many arguments\n", 2);
 		sh_atr->exit = 1;
@@ -103,14 +80,14 @@ void	bi_exit(t_shell *sh_atr, char **args)
 	}
 	else if (args != NULL && args[1] != NULL)
 	{
-		if (isdigit_str(args[1]))
-			numeric_arg(sh_atr, args);
-		status = ft_atoi(args[1]) % 256;
+		handle_non_numeric(sh_atr, args);
+		status = ft_atoi_long(args[1], &too_b_s) % 256;
 		if (status < 0)
 			status = status + 256;
+		if (too_b_s)
+			numeric_arg(sh_atr, args);
 	}
 	else
 		status = sh_atr->exit;
-	byebye(sh_atr);
-	exit(status);
+	(byebye(sh_atr), exit(status));
 }

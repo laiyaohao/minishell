@@ -183,6 +183,10 @@ void					bi_env(t_list **env_ll);
 void  					bi_exit(t_shell *sh_atr, char **args);
 void    				bi_dot(ast_node *node);
 void					print_env(t_list **env_ll, int expo);
+int						check_out_of_range(int neg, unsigned long long num, int *error);
+int						ft_atoi_long(const char *str, int *error);
+void					handle_non_numeric(t_shell *sh_atr, char **args);
+void					numeric_arg(t_shell *sh_atr, char **args);
 
 // Memory
 void					free_env(t_list **env_ll);

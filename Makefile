@@ -49,7 +49,7 @@ ENV_FILES := ${addprefix ${ENV_FOLDER}, ${ENV_FILENAMES}}
 
 BUILTINS_FOLDER := ${addprefix ${SRC_FOLDER}, /builtins/}
 BUILTINS_FILENAMES := bi_pwd.c bi_env.c bi_export.c bi_cd.c bi_echo.c bi_exit.c \
-											bi_unset.c bi_dot.c
+											bi_unset.c bi_dot.c bi_exit_helper.c
 BUILTINS_FILES := ${addprefix ${BUILTINS_FOLDER}, ${BUILTINS_FILENAMES}}
 
 MAIN_FOLDER := ${addprefix ${SRC_FOLDER}, /main/}
