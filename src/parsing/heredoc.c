@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:23:31 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/13 17:19:34 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/14 15:38:52 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,14 @@ int	check_quote(char *s)
 	return (i);
 }
 
+void	rl_null(char *delim)
+{
+	ft_putstr_fd("warning: here-document at line ", 2);
+	ft_putstr_fd("delimited by end-of-file (wanted `", 2);
+	ft_putstr_fd(delim, 2);
+	ft_putstr_fd("')\n", 2);
+}
+
 void	heredoc_rl(char *delim, t_shell *shell, int mode, int pipe_fd)
 {
 	char	*line;
@@ -54,11 +62,24 @@ void	heredoc_rl(char *delim, t_shell *shell, int mode, int pipe_fd)
 
 	temp = NULL;
 	line = NULL;
+	global_sigint = 0;
+	setup_sig_heredoc();
+	rl_event_hook = heredoc_rl_event;
 	while (1)
 	{
+		if (global_sigint)
+		{
+			free(line);
+			shell->exit = 130;
+			global_sigint = 0;
+			break ;
+		}
 		line = readline("> ");
 		if (!line)
+		{
+			rl_null(delim);
 			break ;
+		}
 		if (ft_strncmp(line, delim, ft_strlen(line)) == 0)
 		{
 			free(line);
@@ -68,11 +89,10 @@ void	heredoc_rl(char *delim, t_shell *shell, int mode, int pipe_fd)
 			temp = heredoc_expand(line, shell);
 		else
 			temp = ft_strdup(line);
-		write(pipe_fd, temp, ft_strlen(temp));
-		write(pipe_fd, "\n", 1);
-		free(line);
-		free(temp);
+		(write(pipe_fd, temp, ft_strlen(temp)), write(pipe_fd, "\n", 1));
+		(free(line), free(temp));
 	}
+	rl_event_hook = NULL;
 }
 
 int	create_heredoc(char *delim, t_shell *shell, int mode)
@@ -84,7 +104,6 @@ int	create_heredoc(char *delim, t_shell *shell, int mode)
 		ft_putstr_fd("Error: Failed to pipe\n", 2);
 		return (-1);
 	}
-	setup_sig_heredoc();
 	heredoc_rl(delim, shell, mode, pipe_fd[1]);
 	close(pipe_fd[1]);
 	return (pipe_fd[0]);

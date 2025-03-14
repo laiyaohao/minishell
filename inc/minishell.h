@@ -22,7 +22,7 @@
 #  define OPEN_MAX 1024
 # endif
 
-extern volatile sig_atomic_t in_heredoc;
+extern volatile sig_atomic_t global_sigint;
 
 typedef enum
 {
@@ -111,10 +111,10 @@ int						check_arg(int argc);
 
 // Signals
 void					sigint_handler(int sig);
-void					sigquit_handler(int sig);
 void					setup_sig_interactive(void);
 void					setup_sig_exec(void);
 void					setup_sig_heredoc(void);
+int    					heredoc_rl_event(void);
 
 // Env
 void					setup_env(t_list **env_ll, char **env);

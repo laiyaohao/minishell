@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:22:56 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/13 19:42:50 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/14 12:46:54 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,13 @@ void	shell_loop(t_shell *shell)
 {
 	while (1)
 	{
+		setup_sig_interactive();
 		shell->attr->full_line = readline("minishell> ");
+		if (global_sigint)
+		{
+			shell->exit = 130;
+			global_sigint = 0;
+		}
 		if (!shell->attr->full_line)
 		{
 			write(STDOUT_FILENO, "exit\n", 6);

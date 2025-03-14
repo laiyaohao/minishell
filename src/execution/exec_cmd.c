@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/14 12:05:36 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/14 13:00:19 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	child_ve(ast_node *node, t_shell *shell)
 void	exec_ve(ast_node *node, t_shell *shell)
 {
 	int		pid;
+	int		term_sig;
 
 	pid = fork();
 	if (pid == -1)
@@ -53,11 +54,17 @@ void	exec_ve(ast_node *node, t_shell *shell)
 	else
 	{
 		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
 		waitpid(pid, &shell->exit, 0);
-		signal(SIGINT, sigint_handler);
-		signal(SIGQUIT, sigquit_handler);
 		if (WIFEXITED(shell->exit))
 			shell->exit = WEXITSTATUS(shell->exit);
+		else if (WIFSIGNALED(shell->exit))
+		{
+			term_sig = WTERMSIG(shell->exit);
+			shell->exit = 128 + term_sig;
+			if (term_sig == SIGQUIT)
+				write(STDOUT_FILENO, "Quit (core dumped)\n", 19);
+		}
 	}
 }
 
