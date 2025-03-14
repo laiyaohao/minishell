@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 16:57:10 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/13 14:36:56 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/14 11:58:19 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	sigint_handler(int sig)
 void	sigquit_handler(int sig)
 {
 	(void)sig;
-	write(STDOUT_FILENO, "QUIT (core dumped)", 18);
+	write(STDOUT_FILENO, "Quit (core dumped)\n", 19);
 }
 
 void	setup_sig_interactive(void)
@@ -58,7 +58,6 @@ void	setup_sig_exec(void)
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = 0;
     sigaction(SIGINT, &sa, NULL);
-    sigaction(SIGQUIT, &sa, NULL);
 }
 
 void	setup_sig_heredoc(void)
