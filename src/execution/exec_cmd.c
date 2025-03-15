@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/15 15:09:21 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/15 16:21:44 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	what_exec(t_ast *node, t_shell *shell)
 	if (ft_strncmp(node->args[0], "echo", 5) == 0)
 		shell->exit = bi_echo(node->args);
 	else if (ft_strncmp(node->args[0], "cd", 3) == 0)
-		bi_cd(&shell->env_ll, shell->attr, node->args);
+		bi_cd(&shell->env_ll, shell, node->args);
 	else if (ft_strncmp(node->args[0], "pwd", 4) == 0)
 		bi_pwd();
 	else if (ft_strncmp(node->args[0], "export", 7) == 0)

@@ -3,31 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   bi_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 18:44:28 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/14 17:27:41 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/15 16:30:18 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	update_attr(t_list **env_ll, t_attr *attr, char *ret)
+void	update_attr(t_list **env_ll, t_shell *shell, char *ret)
 {
-	update_value(env_ll, "OLDPWD", ft_strdup(attr->working_dir));
-	if (attr->old_working_dir)
+	update_value(env_ll, "OLDPWD", ft_strdup(shell->attr->working_dir));
+	if (shell->attr->old_working_dir)
 	{
-		free(attr->old_working_dir);
-		attr->old_working_dir = ft_strdup(attr->working_dir);
+		free(shell->attr->old_working_dir);
+		shell->attr->old_working_dir = ft_strdup(shell->attr->working_dir);
 	}
-	if (attr->working_dir)
+	if (shell->attr->working_dir)
 	{
-		free(attr->working_dir);
-		attr->working_dir = ft_strdup(ret);
+		free(shell->attr->working_dir);
+		shell->attr->working_dir = ft_strdup(ret);
 	}
 }
 
-void	change_dir_helper(t_attr *attr, t_list **env_ll, char *path)
+void	cd_err(t_shell *shell, char *path)
+{
+	if (errno == EACCES)
+	{
+		ft_putstr_fd(path, 2);
+		ft_putstr_fd(" : Permission denied\n", 2);
+	}
+	else
+	{
+		ft_putstr_fd(path, 2);
+		ft_putstr_fd(" : No such file or directory\n", 2);
+	}
+	shell->exit = 1;
+}
+
+void	change_dir_helper(t_shell *shell, t_list **env_ll, char *path)
 {
 	char	*ret;
 	char	*tmp;
@@ -35,23 +50,26 @@ void	change_dir_helper(t_attr *attr, t_list **env_ll, char *path)
 
 	ret = NULL;
 	if (chdir(path) != 0)
+	{
+		cd_err(shell, path);
 		return ;
+	}
 	ret = getcwd(cwd, 4096);
 	if (!ret)
 	{
 		ft_putstr_fd("cd: error retrieving current directory\n", 2);
-		ret = ft_strjoin(attr->working_dir, "/");
+		ret = ft_strjoin(shell->attr->working_dir, "/");
 		tmp = ret;
 		ret = ft_strjoin(tmp, path);
 		free(tmp);
 	}
 	else
 		ret = ft_strdup(cwd);
-	update_attr(env_ll, attr, ret);
+	update_attr(env_ll, shell, ret);
 	update_value(env_ll, "PWD", ret);
 }
 
-void	change_dir(t_attr *attr, t_list **env_ll, char *key)
+void	change_dir(t_shell *shell, t_list **env_ll, char *key)
 {
 	char	*target_dir;
 
@@ -62,13 +80,13 @@ void	change_dir(t_attr *attr, t_list **env_ll, char *key)
 		ft_putstr_fd(" env variable have error\n", 2);
 		return ;
 	}
-	change_dir_helper(attr, env_ll, target_dir);
+	change_dir_helper(shell, env_ll, target_dir);
 }
 
 /**
  * change the OLDPWD variable
  */
-void	bi_cd(t_list **env_ll, t_attr *attr, char **args)
+void	bi_cd(t_list **env_ll, t_shell *shell, char **args)
 {
 	char	*path;
 
@@ -81,12 +99,12 @@ void	bi_cd(t_list **env_ll, t_attr *attr, char **args)
 		|| ft_strncmp(path, "~", 2) == 0 || ft_isspace(path[0])
 		|| path[0] == '\0')
 	{
-		change_dir(attr, env_ll, "HOME");
+		change_dir(shell, env_ll, "HOME");
 	}
 	else if (ft_strncmp(path, "-", 2) == 0)
 	{
-		change_dir(attr, env_ll, "OLDPWD");
+		change_dir(shell, env_ll, "OLDPWD");
 	}
 	else
-		change_dir_helper(attr, env_ll, path);
+		change_dir_helper(shell, env_ll, path);
 }

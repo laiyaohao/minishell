@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 15:05:37 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/15 15:12:36 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/15 16:19:44 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ void							exec_err(t_ast *node, t_shell *shell);
 int								exec_rd(t_redirect *rd, t_shell *shell);
 char							**env_arr(t_list *env_ll);
 int								bi_echo(char **args);
-void							bi_cd(t_list **env_ll, t_attr *attr,
+void							bi_cd(t_list **env_ll, t_shell *shell,
 									char **args);
 void							bi_pwd(void);
 void							bi_export(t_list **env_ll, char **args);
