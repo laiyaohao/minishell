@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_rd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:06:04 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/13 20:34:46 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/15 15:52:32 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,20 @@ void	prep_fd(t_redirect *current, int *fd)
 	}
 }
 
+void	rd_err(t_redirect *rd)
+{
+	if (errno == EACCES)
+	{
+		ft_putstr_fd(rd->file, 2);
+		ft_putstr_fd(" : Permission denied\n", 2);
+	}
+	else
+	{
+		ft_putstr_fd(rd->file, 2);
+		ft_putstr_fd(" : No such file or directory\n", 2);
+	}
+}
+
 int	exec_rd(t_redirect *rd, t_shell *shell)
 {
 	int			fd;
@@ -83,8 +97,7 @@ int	exec_rd(t_redirect *rd, t_shell *shell)
 		prep_fd(current, &fd);
 		if (fd < 0)
 		{
-			ft_putstr_fd(rd->file, 2);
-			ft_putstr_fd(" :No such file or directory\n", 2);
+			rd_err(rd);
 			shell->exit = 1;
 			return (1);
 		}
