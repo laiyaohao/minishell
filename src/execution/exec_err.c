@@ -6,13 +6,13 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:54:43 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/14 16:35:52 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/15 15:09:21 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	handle_ddot(ast_node *node, t_shell *shell)
+void	handle_ddot(t_ast *node, t_shell *shell)
 {
 	char	*path;
 
@@ -33,7 +33,7 @@ void	handle_ddot(ast_node *node, t_shell *shell)
 	}
 }
 
-void	handle_acc(ast_node *node)
+void	handle_acc(t_ast *node)
 {
 	struct stat	file_stat;
 
@@ -51,7 +51,7 @@ void	handle_acc(ast_node *node)
 	}
 }
 
-void	no_ent_err(ast_node *node, char *path)
+void	no_ent_err(t_ast *node, char *path)
 {
 	if (!path)
 	{
@@ -67,7 +67,7 @@ void	no_ent_err(ast_node *node, char *path)
 	ft_putstr_fd("\n", 2);
 }
 
-void	handle_no_ent(ast_node *node, t_shell *shell)
+void	handle_no_ent(t_ast *node, t_shell *shell)
 {
 	struct stat	file_stat;
 	char		*path;
@@ -87,7 +87,7 @@ void	handle_no_ent(ast_node *node, t_shell *shell)
 		no_ent_err(node, path);
 }
 
-void	exec_err(ast_node *node, t_shell *shell)
+void	exec_err(t_ast *node, t_shell *shell)
 {
 	if (ft_strncmp(node->args[0], "..", 3) == 0)
 		handle_ddot(node, shell);

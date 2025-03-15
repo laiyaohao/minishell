@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:20:28 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/10 20:49:55 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/15 15:14:00 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,12 @@ void	parse_redir(t_node **token, t_redirect **ast_rd, t_shell *shell)
  *
  * @return A command AST node. NULL if failure.
  */
-ast_node	*parse_cmd(t_node **token, t_shell *shell)
+t_ast	*parse_cmd(t_node **token, t_shell *shell)
 {
-	ast_node	*cmd;
-	char		*buffer;
+	t_ast	*cmd;
+	char	*buffer;
 
-	cmd = create_ast_node(AST_CMD);
+	cmd = create_t_ast(AST_CMD);
 	if (!cmd)
 		return (NULL);
 	buffer = ft_strdup("");
@@ -126,7 +126,7 @@ ast_node	*parse_cmd(t_node **token, t_shell *shell)
  * @details A recursive descent parser uses recursion to call upon itself till
  * it reaches the base case. The tokens can be interpreted and constructed as
  * one of the following: pipe node, command node, redirection.
- * 
+ *
  * The function parses the token as a command. If a pipe token is present in
  * the list of tokens to be parsed, a pipe node will be created and the command
  * node created will be appended to the left of the pipe node while it calls upon
@@ -135,11 +135,11 @@ ast_node	*parse_cmd(t_node **token, t_shell *shell)
  * @return A pipe AST node if a pipe token is present in the list,
  * else a command AST node. NULL if failure.
  */
-ast_node	*parse_pipe(t_node **token, t_shell *shell)
+t_ast	*parse_pipe(t_node **token, t_shell *shell)
 {
-	ast_node	*left;
-	ast_node	*right;
-	ast_node	*pipe;
+	t_ast	*left;
+	t_ast	*right;
+	t_ast	*pipe;
 
 	left = parse_cmd(token, shell);
 	if (!left)
@@ -152,7 +152,7 @@ ast_node	*parse_pipe(t_node **token, t_shell *shell)
 		right = parse_pipe(token, shell);
 		if (!right)
 			return (NULL);
-		pipe = create_ast_node(AST_PIPE);
+		pipe = create_t_ast(AST_PIPE);
 		pipe->left = left;
 		pipe->right = right;
 		left = pipe;
@@ -167,16 +167,16 @@ ast_node	*parse_pipe(t_node **token, t_shell *shell)
  *
  * @details Creates the AST by calling on the parse_pipe function which will
  * recursively parse the list of tokens.
- * 
+ *
  * Keeps a pointer to the orignal head of the list of tokens, so that it can
  * be freed later.
  *
  * @return The AST if successful, NULL if failure.
  */
-ast_node	*parser(t_tok *list, t_shell *shell)
+t_ast	*parser(t_tok *list, t_shell *shell)
 {
-	ast_node	*tree;
-	t_node		*start;
+	t_ast	*tree;
+	t_node	*start;
 
 	tree = NULL;
 	start = list->head;

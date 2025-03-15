@@ -15,7 +15,7 @@ ERROR_FILENAMES := free_1.c free_2.c
 ERROR_FILES := ${addprefix ${ERROR_FOLDER}, ${ERROR_FILENAMES}}
 
 PARSE_FOLDER := ${addprefix ${SRC_FOLDER}, /parsing/}
-PARSE_FILENAMES := cmd_expand.c parse.c parse_utils.c print_ast.c \
+PARSE_FILENAMES := cmd_expand.c parse.c parse_utils.c \
 									rd_expand.c expand_utils.c heredoc.c heredoc_utils.c
 PARSE_FILES := ${addprefix ${PARSE_FOLDER}, ${PARSE_FILENAMES}}
 

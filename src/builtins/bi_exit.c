@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 18:45:03 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/14 17:56:44 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/15 15:13:27 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	print_exit(t_shell *sh_atr)
 {
-	ast_node	*temp;
-	int			check;
+	t_ast	*temp;
+	int		check;
 
 	check = 0;
 	temp = sh_atr->tree;

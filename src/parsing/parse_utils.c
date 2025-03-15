@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:20:31 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/13 20:44:30 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/15 15:12:25 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-ast_node	*create_ast_node(ast_type type)
+t_ast	*create_t_ast(t_ast_type type)
 {
-	ast_node	*node;
+	t_ast	*node;
 
-	node = malloc(sizeof(ast_node));
+	node = malloc(sizeof(t_ast));
 	if (!node)
 		return (NULL);
 	node->type = type;

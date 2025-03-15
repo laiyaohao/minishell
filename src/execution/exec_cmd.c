@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/14 16:55:43 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/15 15:09:21 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	handle_parent(int pid, t_shell *shell)
 	}
 }
 
-void	child_ve(ast_node *node, t_shell *shell)
+void	child_ve(t_ast *node, t_shell *shell)
 {
 	char	**env;
 	char	*path;
@@ -53,7 +53,7 @@ void	child_ve(ast_node *node, t_shell *shell)
 	exec_err(node, shell);
 }
 
-void	exec_ve(ast_node *node, t_shell *shell)
+void	exec_ve(t_ast *node, t_shell *shell)
 {
 	int		pid;
 
@@ -75,7 +75,7 @@ void	exec_ve(ast_node *node, t_shell *shell)
 		handle_parent(pid, shell);
 }
 
-void	what_exec(ast_node *node, t_shell *shell)
+void	what_exec(t_ast *node, t_shell *shell)
 {
 	if (g_sigint)
 		return ;
@@ -99,7 +99,7 @@ void	what_exec(ast_node *node, t_shell *shell)
 		exec_ve(node, shell);
 }
 
-void	exec_cmd(ast_node *node, t_shell *shell)
+void	exec_cmd(t_ast *node, t_shell *shell)
 {
 	if (!node->args[0])
 		return ;
