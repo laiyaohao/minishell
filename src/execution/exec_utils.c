@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:00:58 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/12 21:29:58 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/15 15:09:21 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	extract_paths(t_exec *exec, t_list *env_ll)
 	}
 }
 
-void	check_path(t_exec *exec, ast_node *node)
+void	check_path(t_exec *exec, t_ast *node)
 {
 	int	i;
 

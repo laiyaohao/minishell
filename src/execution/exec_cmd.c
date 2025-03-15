@@ -3,31 +3,57 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/13 21:04:19 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/15 15:09:21 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	child_ve(ast_node *node, t_shell *shell)
+void	handle_parent(int pid, t_shell *shell)
+{
+	int		term_sig;
+
+	term_sig = 0;
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	waitpid(pid, &shell->exit, 0);
+	if (WIFEXITED(shell->exit))
+		shell->exit = WEXITSTATUS(shell->exit);
+	else if (WIFSIGNALED(shell->exit))
+	{
+		term_sig = WTERMSIG(shell->exit);
+		shell->exit = 128 + term_sig;
+		if (term_sig == SIGQUIT)
+			write(STDOUT_FILENO, "Quit (core dumped)\n", 19);
+		else if (term_sig == SIGINT)
+			write(STDOUT_FILENO, "\n", 1);
+	}
+}
+
+void	child_ve(t_ast *node, t_shell *shell)
 {
 	char	**env;
+	char	*path;
 	t_exec	exec;
 
 	exec.cmd = NULL;
 	exec.paths = NULL;
 	extract_paths(&exec, shell->env_ll);
+	path = get_env(shell->env_ll, "PATH");
 	env = env_arr(shell->env_ll);
 	check_path(&exec, node);
-	execve(exec.cmd, node->args, env);
+	if (path != NULL && (exec.cmd[0] == '/' || exec.cmd[0] == '.'))
+		execve(exec.cmd, node->args, env);
+	else if (path == NULL)
+		execve(exec.cmd, node->args, env);
 	free_2d(env);
 	exec_err(node, shell);
 }
 
-void	exec_ve(ast_node *node, t_shell *shell)
+void	exec_ve(t_ast *node, t_shell *shell)
 {
 	int		pid;
 
@@ -46,15 +72,13 @@ void	exec_ve(ast_node *node, t_shell *shell)
 			exit(0);
 	}
 	else
-	{
-		waitpid(pid, &shell->exit, 0);
-		if (WIFEXITED(shell->exit))
-			shell->exit = WEXITSTATUS(shell->exit);
-	}
+		handle_parent(pid, shell);
 }
 
-void	what_exec(ast_node *node, t_shell *shell)
+void	what_exec(t_ast *node, t_shell *shell)
 {
+	if (g_sigint)
+		return ;
 	if (ft_strncmp(node->args[0], "echo", 5) == 0)
 		shell->exit = bi_echo(node->args);
 	else if (ft_strncmp(node->args[0], "cd", 3) == 0)
@@ -69,11 +93,13 @@ void	what_exec(ast_node *node, t_shell *shell)
 		bi_env(&shell->env_ll);
 	else if (ft_strncmp(node->args[0], "exit", 5) == 0)
 		bi_exit(shell, node->args);
+	else if (ft_strncmp(node->args[0], ".", 2) == 0)
+		bi_dot(node);
 	else
 		exec_ve(node, shell);
 }
 
-void	exec_cmd(ast_node *node, t_shell *shell)
+void	exec_cmd(t_ast *node, t_shell *shell)
 {
 	if (!node->args[0])
 		return ;
@@ -86,22 +112,16 @@ void	exec_cmd(ast_node *node, t_shell *shell)
 	}
 	if (exec_rd(node->rd, shell) == 0)
 		what_exec(node, shell);
-	if (shell->std_out != -1)
+	if (dup2(shell->std_in, STDIN_FILENO) < 0)
 	{
-		if (dup2(shell->std_in, STDIN_FILENO) < 0)
-		{
-			ft_putstr_fd("Error: Failed to restore stdin\n", 2);
-			exit(-1);
-		}
-		close(shell->std_in);
+		ft_putstr_fd("Error: Failed to restore stdin\n", 2);
+		exit(-1);
 	}
-	if (shell->std_out != -1)
+	close(shell->std_in);
+	if (dup2(shell->std_out, STDOUT_FILENO) < 0)
 	{
-		if (dup2(shell->std_out, STDOUT_FILENO) < 0)
-		{
-			ft_putstr_fd("Error: Failed to restore stdout\n", 2);
-			exit(-1);
-		}
-		close(shell->std_out);
+		ft_putstr_fd("Error: Failed to restore stdout\n", 2);
+		exit(-1);
 	}
+	close(shell->std_out);
 }

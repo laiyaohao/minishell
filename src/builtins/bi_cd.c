@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bi_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 18:44:28 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/13 21:37:32 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/14 17:27:41 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	change_dir_helper(t_attr *attr, t_list **env_ll, char *path)
 	ret = getcwd(cwd, 4096);
 	if (!ret)
 	{
-		printf("cd: error retrieving current directory\n");
+		ft_putstr_fd("cd: error retrieving current directory\n", 2);
 		ret = ft_strjoin(attr->working_dir, "/");
 		tmp = ret;
 		ret = ft_strjoin(tmp, path);
@@ -58,7 +58,8 @@ void	change_dir(t_attr *attr, t_list **env_ll, char *key)
 	target_dir = find_value(env_ll, key);
 	if (!target_dir || target_dir[0] == '\0' || ft_isspace(target_dir[0]))
 	{
-		printf("%s env variable have error\n", key);
+		ft_putstr_fd(key, 2);
+		ft_putstr_fd(" env variable have error\n", 2);
 		return ;
 	}
 	change_dir_helper(attr, env_ll, target_dir);
@@ -72,7 +73,7 @@ void	bi_cd(t_list **env_ll, t_attr *attr, char **args)
 	char	*path;
 
 	path = args[1];
-	if (more_args(args) || (path != NULL && !path[0]))
+	if (more_args(args, 1) || (path != NULL && !path[0]))
 	{
 		return ;
 	}

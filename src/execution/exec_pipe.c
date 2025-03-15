@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:59 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/13 19:41:16 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/15 15:09:21 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	handle_child(int mode, int pipe_fd[2], ast_node *node, t_shell *shell)
+void	handle_child(int mode, int pipe_fd[2], t_ast *node, t_shell *shell)
 {
 	if (mode == 1)
 	{
@@ -40,7 +40,7 @@ void	handle_child(int mode, int pipe_fd[2], ast_node *node, t_shell *shell)
 	exit (0);
 }
 
-void	exec_pipe(ast_node *node, t_shell *shell)
+void	exec_pipe(t_ast *node, t_shell *shell)
 {
 	int	pipe_fd[2];
 	int	pid_l;
@@ -64,9 +64,9 @@ void	exec_pipe(ast_node *node, t_shell *shell)
 	waitpid(pid_r, &shell->exit, 0);
 }
 
-void	exec_ast(ast_node *node, t_shell *shell)
+void	exec_ast(t_ast *node, t_shell *shell)
 {
-	if (!node)
+	if (!node || g_sigint)
 		return ;
 	if (node->type == AST_CMD)
 		exec_cmd(node, shell);

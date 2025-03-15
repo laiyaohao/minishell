@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:58:52 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/13 21:03:02 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/15 15:09:21 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	free_rd(t_redirect *rd)
 	}
 }
 
-void	free_ast(ast_node *node)
+void	free_ast(t_ast *node)
 {
 	if (!node)
 		return ;
@@ -67,7 +67,7 @@ void	free_ast(ast_node *node)
 	free(node);
 }
 
-void	free_tree(ast_node *tree)
+void	free_tree(t_ast *tree)
 {
 	if (!tree)
 		return ;

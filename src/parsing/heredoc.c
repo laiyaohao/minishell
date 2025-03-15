@@ -6,73 +6,53 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:23:31 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/13 17:19:34 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/14 16:49:10 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-char	*heredoc_expand(char *s, t_shell *shell)
+void	write_to_fd(int mode, int pipe_fd, char **line, t_shell *shell)
 {
-	char	*res;
+	char	*temp;
 
-	res = ft_strdup("");
-	if (!res)
-		return (NULL);
-	while (s && *s)
-	{
-		if (*s == '$')
-			handle_var(&s, &res, shell);
-		else
-		{
-			strcjoin(*s, &res);
-			s++;
-		}
-	}
-	strcjoin('\0', &res);
-	return (res);
-}
-
-int	check_quote(char *s)
-{
-	int	i;
-
-	i = 0;
-	while (*s)
-	{
-		if (*s == '\'' || *s == '"')
-			i = 1;
-		s++;
-	}
-	return (i);
+	temp = NULL;
+	if (mode == 0)
+		temp = heredoc_expand(*line, shell);
+	else
+		temp = ft_strdup(*line);
+	write(pipe_fd, temp, ft_strlen(temp));
+	write(pipe_fd, "\n", 1);
+	free(*line);
+	free(temp);
 }
 
 void	heredoc_rl(char *delim, t_shell *shell, int mode, int pipe_fd)
 {
 	char	*line;
-	char	*temp;
 
-	temp = NULL;
 	line = NULL;
 	while (1)
 	{
+		if (g_sigint)
+		{
+			shell->exit = 130;
+			break ;
+		}
 		line = readline("> ");
 		if (!line)
+		{
+			rl_null(delim);
 			break ;
+		}
 		if (ft_strncmp(line, delim, ft_strlen(line)) == 0)
 		{
 			free(line);
 			break ;
 		}
-		if (mode == 0)
-			temp = heredoc_expand(line, shell);
-		else
-			temp = ft_strdup(line);
-		write(pipe_fd, temp, ft_strlen(temp));
-		write(pipe_fd, "\n", 1);
-		free(line);
-		free(temp);
+		write_to_fd(mode, pipe_fd, &line, shell);
 	}
+	rl_event_hook = NULL;
 }
 
 int	create_heredoc(char *delim, t_shell *shell, int mode)
@@ -85,6 +65,7 @@ int	create_heredoc(char *delim, t_shell *shell, int mode)
 		return (-1);
 	}
 	setup_sig_heredoc();
+	rl_event_hook = heredoc_rl_event;
 	heredoc_rl(delim, shell, mode, pipe_fd[1]);
 	close(pipe_fd[1]);
 	return (pipe_fd[0]);

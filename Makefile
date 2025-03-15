@@ -15,8 +15,8 @@ ERROR_FILENAMES := free_1.c free_2.c
 ERROR_FILES := ${addprefix ${ERROR_FOLDER}, ${ERROR_FILENAMES}}
 
 PARSE_FOLDER := ${addprefix ${SRC_FOLDER}, /parsing/}
-PARSE_FILENAMES := cmd_expand.c parse.c parse_utils.c print_ast.c \
-									rd_expand.c expand_utils.c heredoc.c
+PARSE_FILENAMES := cmd_expand.c parse.c parse_utils.c \
+									rd_expand.c expand_utils.c heredoc.c heredoc_utils.c
 PARSE_FILES := ${addprefix ${PARSE_FOLDER}, ${PARSE_FILENAMES}}
 
 LEX_FOLDER := ${addprefix ${SRC_FOLDER}, /lexing/}
@@ -24,13 +24,13 @@ LEX_FILENAMES := lex.c lex_utils.c
 LEX_FILES := ${addprefix ${LEX_FOLDER}, ${LEX_FILENAMES}}
 
 SIGS_FOLDER := ${addprefix ${SRC_FOLDER}, /signals/}
-SIGS_FILENAMES := signals.c
+SIGS_FILENAMES := signals.c signals2.c
 SIGS_FILES := ${addprefix ${SIGS_FOLDER}, ${SIGS_FILENAMES}}
 
 UTILS_FOLDER := ${addprefix ${SRC_FOLDER}, /utils/}
 UTILS_FILENAMES := check_arg.c ft_isspace.c ft_strndup.c split_args.c \
 									strcjoin.c ft_split_app.c ft_strdup_app.c \
-									gnl.c is_flag.c free_every.c
+									gnl.c is_flag.c free_every.c ft_atoll.c
 UTILS_FILES := ${addprefix ${UTILS_FOLDER}, ${UTILS_FILENAMES}}
 
 INIT_FOLDER := ${addprefix ${SRC_FOLDER}, /init/}
@@ -49,7 +49,7 @@ ENV_FILES := ${addprefix ${ENV_FOLDER}, ${ENV_FILENAMES}}
 
 BUILTINS_FOLDER := ${addprefix ${SRC_FOLDER}, /builtins/}
 BUILTINS_FILENAMES := bi_pwd.c bi_env.c bi_export.c bi_cd.c bi_echo.c bi_exit.c \
-											bi_unset.c
+											bi_unset.c bi_dot.c bi_exit_helper.c
 BUILTINS_FILES := ${addprefix ${BUILTINS_FOLDER}, ${BUILTINS_FILENAMES}}
 
 MAIN_FOLDER := ${addprefix ${SRC_FOLDER}, /main/}
