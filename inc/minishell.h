@@ -6,7 +6,7 @@
 /*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 15:05:37 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/15 16:19:44 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/15 19:19:49 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void							update_value(t_list **env_ll, char *key,
 void							add_env_direct(t_list **env_ll, char *k,
 									char *v);
 int								check_key(int key_len, char *env);
-int								check_value(int key_len, char *env);
+// int								check_value(int key_len, char *env);
 char							*find_value(t_list **env_ll, char *key);
 t_env							*find_node(t_list **env_ll, char *key);
 void							fill_value(t_env *key_v, int val_len,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bi_exit_helper.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 15:04:56 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/15 15:04:57 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/15 21:26:43 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,17 @@ int	isdigit_str(char *args)
 	i = 0;
 	if (args[0] == '+' || args[0] == '-')
 		i++;
+	if (args[i] == '\0')
+		return (1);
 	while (args[i] != '\0')
 	{
-		if (!ft_isdigit(args[i]))
+		if (ft_isspace(args[i]))
 		{
-			return (1);
+			i++;
+			continue ;
 		}
+		if (!ft_isdigit(args[i]))
+			return (1);
 		i++;
 	}
 	return (0);

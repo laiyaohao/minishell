@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:10:48 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/13 23:50:00 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/15 19:19:46 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ void	add_env(char **env, int i, t_list **env_ll)
 		(add_empty_key(env_ll, env, key, i), free(value));
 		return ;
 	}
-	if (check_value(key_len + 1, env[i]))
-	{
-		(free(key), free(value));
-		return ;
-	}
+	// if (check_value(key_len + 1, env[i]))
+	// {
+	// 	(free(key), free(value));
+	// 	return ;
+	// }
 	env_a(key, value, env_ll);
 }
