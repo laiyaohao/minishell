@@ -3,12 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/15 16:21:44 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/15 22:25:54 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
+
 
 #include "../../inc/minishell.h"
 
@@ -31,6 +34,9 @@ void	handle_parent(int pid, t_shell *shell)
 		else if (term_sig == SIGINT)
 			write(STDOUT_FILENO, "\n", 1);
 	}
+	if (g_sigint)
+		g_sigint = 0;
+	setup_sig_interactive();
 }
 
 void	child_ve(t_ast *node, t_shell *shell)
@@ -50,6 +56,8 @@ void	child_ve(t_ast *node, t_shell *shell)
 	else if (path == NULL)
 		execve(exec.cmd, node->args, env);
 	free_2d(env);
+	free_2d(exec.paths);
+	free(exec.cmd);
 	exec_err(node, shell);
 }
 

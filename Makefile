@@ -11,7 +11,7 @@ EXEC_FILENAMES := exec_cmd.c exec_pipe.c exec_rd.c exec_utils.c exec_err.c
 EXEC_FILES := ${addprefix ${EXEC_FOLDER}, ${EXEC_FILENAMES}}
 
 ERROR_FOLDER := ${addprefix ${SRC_FOLDER}, /error/}
-ERROR_FILENAMES := free_1.c free_2.c
+ERROR_FILENAMES := free_1.c free_2.c free_every.c
 ERROR_FILES := ${addprefix ${ERROR_FOLDER}, ${ERROR_FILENAMES}}
 
 PARSE_FOLDER := ${addprefix ${SRC_FOLDER}, /parsing/}
@@ -30,7 +30,7 @@ SIGS_FILES := ${addprefix ${SIGS_FOLDER}, ${SIGS_FILENAMES}}
 UTILS_FOLDER := ${addprefix ${SRC_FOLDER}, /utils/}
 UTILS_FILENAMES := check_arg.c ft_isspace.c ft_strndup.c split_args.c \
 									strcjoin.c ft_split_app.c ft_strdup_app.c \
-									gnl.c is_flag.c free_every.c ft_atoll.c
+									gnl.c is_flag.c ft_atoll.c
 UTILS_FILES := ${addprefix ${UTILS_FOLDER}, ${UTILS_FILENAMES}}
 
 INIT_FOLDER := ${addprefix ${SRC_FOLDER}, /init/}

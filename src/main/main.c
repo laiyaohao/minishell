@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 16:50:41 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/14 16:50:06 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/15 21:33:39 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ int	main(int argc, char **argv, char **env)
 	g_sigint = 0;
 	init_attr(shell->attr, &shell->env_ll);
 	shell_loop(shell);
-	free_shell(shell);
+	free_env(&shell->env_ll);
+	if (shell->attr)
+		free(shell->attr);
+	free(shell);
 	rl_clear_history();
 	return (0);
 }

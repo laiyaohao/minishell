@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:59 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/15 15:09:21 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/15 21:47:09 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	handle_child(int mode, int pipe_fd[2], t_ast *node, t_shell *shell)
 		close(pipe_fd[0]);
 		exec_ast(node->right, shell);
 	}
-	free_tree(shell->tree);
+	free_every(shell);
 	exit (0);
 }
 
@@ -66,7 +66,7 @@ void	exec_pipe(t_ast *node, t_shell *shell)
 
 void	exec_ast(t_ast *node, t_shell *shell)
 {
-	if (!node || g_sigint)
+	if (!node)
 		return ;
 	if (node->type == AST_CMD)
 		exec_cmd(node, shell);

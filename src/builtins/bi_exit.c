@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bi_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 18:45:03 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/15 15:13:27 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/15 21:54:34 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	print_exit(t_shell *sh_atr)
 void	numeric_arg(t_shell *sh_atr, char **args)
 {
 	print_exit(sh_atr);
-	ft_putstr_fd("bash: exit: ", 2);
+	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(args[1], 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
 	close(sh_atr->std_in);
@@ -74,7 +74,7 @@ void	bi_exit(t_shell *sh_atr, char **args)
 	{
 		handle_non_numeric(sh_atr, args);
 		print_exit(sh_atr);
-		ft_putstr_fd("bash: exit: too many arguments\n", 2);
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		sh_atr->exit = 1;
 		return ;
 	}
