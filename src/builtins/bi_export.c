@@ -31,7 +31,7 @@ void	bi_export(t_list **env_ll, char **args)
 	i = 1;
 	if (!args[i])
 	{
-		print_env(env_ll, 1);
+		print_export(env_ll);
 	}
 	while (args[i] != NULL)
 	{

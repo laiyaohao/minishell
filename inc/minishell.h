@@ -182,7 +182,8 @@ void							bi_unset(t_list **env_ll, char **args);
 void							bi_env(t_list **env_ll);
 void							bi_exit(t_shell *sh_atr, char **args);
 void							bi_dot(t_ast *node);
-void							print_env(t_list **env_ll, int expo);
+void							print_env(t_list **env_ll);
+void							print_export(t_list **env_ll);
 int								check_out_of_range(int neg,
 									unsigned long long num, int *error);
 int								ft_atoi_long(const char *str, int *error);

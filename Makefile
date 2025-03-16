@@ -44,7 +44,7 @@ TOKENS_FILES := ${addprefix ${TOKENS_FOLDER}, ${TOKENS_FILENAMES}}
 ENV_FOLDER := ${addprefix ${SRC_FOLDER}, /env/}
 ENV_FILENAMES := setup_env.c free_env.c print_env.c add_env.c \
 									check_env.c del_env.c find_env.c update_env.c fill_env.c \
-									add_env_help.c
+									add_env_help.c print_export.c
 ENV_FILES := ${addprefix ${ENV_FOLDER}, ${ENV_FILENAMES}}
 
 BUILTINS_FOLDER := ${addprefix ${SRC_FOLDER}, /builtins/}
