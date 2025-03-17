@@ -6,7 +6,7 @@
 /*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:13:32 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/12 17:13:33 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/15 21:36:55 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,5 @@ void	add_empty_key(t_list **env_ll, char **env, char *key, int i)
 	temp = find_node(env_ll, key);
 	if (temp == NULL)
 		add_empty_key_help(env, i, env_ll);
-	else
-		temp->value = NULL;
 	free(key);
 }

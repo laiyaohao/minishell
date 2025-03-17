@@ -6,7 +6,7 @@
 /*   By: ryannnaa <ryannnaa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 18:44:28 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/17 15:36:00 by ryannnaa         ###   ########.fr       */
+/*   Updated: 2025/03/17 17:17:04 by ryannnaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,7 @@ void	bi_cd(t_list **env_ll, t_shell *shell, char **args)
 		return ;
 	}
 	if (!path || ft_strncmp(path, "--", 3) == 0
-		|| ft_strncmp(path, "~", 2) == 0 || ft_isspace(path[0])
-		|| path[0] == '\0')
+		|| ft_strncmp(path, "~", 2) == 0 || path[0] == '\0')
 	{
 		change_dir(shell, env_ll, "HOME");
 	}
