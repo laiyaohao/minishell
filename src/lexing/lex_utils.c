@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lex_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ryannnaa <ryannnaa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:06:28 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/10 20:06:32 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/17 14:41:01 by ryannnaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,28 @@ void	add_value(char **s, int *j, char **temp)
 void	handle_word(char **s, int *i, char **temp)
 {
 	int	j;
+	int	c;
 
+	if (!s || !(*s))
+		return ;
 	j = 0;
-	while ((*s)[j] && (*s)[j] != ' ')
+	while ((*s)[j] && ft_isspace((*s)[j]) == 0)
 	{
-		if ((*s)[j] == '"')
+		if ((*s)[j] == '"' || (*s)[j] == '\'')
 		{
+			c = (*s)[j];
 			j++;
-			while ((*s)[j] != '"')
+			while ((*s)[j] && (*s)[j] != c)
 				j++;
+			j++;
 		}
-		j++;
+		else
+			j++;
 	}
 	add_value(s, &j, temp);
 	*i = T_WORD;
-	(*s) += j;
+	if (*s)
+		(*s) += j;
 }
 
 void	handle_redir_in(char **s, int *i)
