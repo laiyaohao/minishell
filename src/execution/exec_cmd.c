@@ -87,7 +87,7 @@ void	what_exec(t_ast *node, t_shell *shell)
 	else if (ft_strncmp(node->args[0], "pwd", 4) == 0)
 		bi_pwd();
 	else if (ft_strncmp(node->args[0], "export", 7) == 0)
-		bi_export(&shell->env_ll, node->args);
+		bi_export(&shell->env_ll, shell, node->args);
 	else if (ft_strncmp(node->args[0], "unset", 6) == 0)
 		bi_unset(&shell->env_ll, node->args);
 	else if (ft_strncmp(node->args[0], "env", 4) == 0)

@@ -24,7 +24,7 @@
  * by right, the SHLVL environment will increment by one when there is one
  * more level of inception.
  */
-void	bi_export(t_list **env_ll, char **args)
+void	bi_export(t_list **env_ll, t_shell *shell, char **args)
 {
 	int	i;
 
@@ -35,7 +35,7 @@ void	bi_export(t_list **env_ll, char **args)
 	}
 	while (args[i] != NULL)
 	{
-		add_env(args, i, env_ll);
+		add_env(args, i, env_ll, shell);
 		i++;
 	}
 }

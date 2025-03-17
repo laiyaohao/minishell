@@ -33,7 +33,7 @@ void	up_shlvl(t_list **env_ll)
 	}
 }
 
-void	setup_env(t_list **env_ll, char **env)
+void	setup_env(t_list **env_ll, char **env, t_shell *shell)
 {
 	char	*answer;
 	int		i;
@@ -49,7 +49,7 @@ void	setup_env(t_list **env_ll, char **env)
 	}
 	while (env[i] != NULL)
 	{
-		add_env(env, i, env_ll);
+		add_env(env, i, env_ll, shell);
 		i++;
 	}
 	up_shlvl(env_ll);

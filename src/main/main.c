@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **env)
 	if (!shell)
 		return (-1);
 	init_shell(shell, env);
-	setup_env(&shell->env_ll, env);
+	setup_env(&shell->env_ll, env, shell);
 	g_sigint = 0;
 	init_attr(shell->attr, &shell->env_ll);
 	shell_loop(shell);
