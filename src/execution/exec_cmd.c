@@ -3,15 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ryannnaa <ryannnaa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/15 22:25:54 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/17 16:43:41 by ryannnaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
-
 
 #include "../../inc/minishell.h"
 
@@ -34,8 +31,6 @@ void	handle_parent(int pid, t_shell *shell)
 		else if (term_sig == SIGINT)
 			write(STDOUT_FILENO, "\n", 1);
 	}
-	if (g_sigint)
-		g_sigint = 0;
 	setup_sig_interactive();
 }
 
@@ -70,14 +65,14 @@ void	exec_ve(t_ast *node, t_shell *shell)
 		ft_putstr_fd("Error: Failed to fork\n", 2);
 	else if (pid == 0)
 	{
+		setup_sig_exec();
 		close(shell->std_in);
 		close(shell->std_out);
 		close_rd(shell->tree);
-		setup_sig_exec();
 		if (node->args && node->args[0])
 			child_ve(node, shell);
 		else
-			exit(0);
+			exit(shell->exit);
 	}
 	else
 		handle_parent(pid, shell);
@@ -85,8 +80,6 @@ void	exec_ve(t_ast *node, t_shell *shell)
 
 void	what_exec(t_ast *node, t_shell *shell)
 {
-	if (g_sigint)
-		return ;
 	if (ft_strncmp(node->args[0], "echo", 5) == 0)
 		shell->exit = bi_echo(node->args);
 	else if (ft_strncmp(node->args[0], "cd", 3) == 0)

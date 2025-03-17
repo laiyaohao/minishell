@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bi_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
+/*   By: ryannnaa <ryannnaa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 18:44:28 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/15 16:30:18 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/17 15:36:00 by ryannnaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void	bi_cd(t_list **env_ll, t_shell *shell, char **args)
 	path = args[1];
 	if (more_args(args, 1) || (path != NULL && !path[0]))
 	{
+		shell->exit = 1;
 		return ;
 	}
 	if (!path || ft_strncmp(path, "--", 3) == 0

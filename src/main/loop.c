@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ryannnaa <ryannnaa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:22:56 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/14 16:49:19 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/17 16:51:42 by ryannnaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	process_input(t_shell *shell)
 	if (grammar_check(shell->tokens))
 	{
 		ft_putstr_fd("Syntax error near unexpected token\n", 2);
+		shell->exit = 2;
 		free_tlist(shell->tokens);
 	}
 	else
