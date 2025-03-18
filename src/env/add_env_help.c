@@ -6,7 +6,7 @@
 /*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:13:32 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/15 21:36:55 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/18 17:32:36 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	add_empty_key_help(char **env, int i, t_list **env_ll)
 
 	key_v = malloc(sizeof(t_env));
 	full_len = ft_strlen(env[i]);
-	key = malloc(sizeof(full_len) + 1);
+	key = malloc(full_len + 1);
 	j = 0;
 	while (j < full_len)
 	{
