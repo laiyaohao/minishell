@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_err.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:54:43 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/15 21:25:11 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/18 13:47:26 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	exec_err(t_ast *node, t_shell *shell)
 	
 	if (ft_strncmp(node->args[0], "..", 3) == 0)
 		handle_ddot(node, shell);
-	else if (errno == ENOENT)
+	else if (errno == ENOENT || node->args[0][0] == '\0')
 	{
 		handle_no_ent(node, shell);
 		shell->exit = 127;
