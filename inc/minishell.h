@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 15:05:37 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/15 16:19:44 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/18 16:36:38 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,6 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
-
-# ifndef OPEN_MAX
-#  define OPEN_MAX 1024
-# endif
 
 extern volatile sig_atomic_t	g_sigint;
 
@@ -125,14 +117,14 @@ void							setup_sig_heredoc(void);
 void							sigint_handler(int sig);
 void							sigint_heredoc(int sig);
 int								heredoc_rl_event(void);
-void							setup_env(t_list **env_ll, char **env);
-void							add_env(char **env, int i, t_list **env_ll);
+void							setup_env(t_list **env_ll, char **env, t_shell *shell);
+void							add_env(char **env, int i, t_list **env_ll, t_shell *shell);
 void							update_value(t_list **env_ll, char *key,
 									char *new_v);
 void							add_env_direct(t_list **env_ll, char *k,
 									char *v);
 int								check_key(int key_len, char *env);
-int								check_value(int key_len, char *env);
+// int								check_value(int key_len, char *env);
 char							*find_value(t_list **env_ll, char *key);
 t_env							*find_node(t_list **env_ll, char *key);
 void							fill_value(t_env *key_v, int val_len,
@@ -177,12 +169,13 @@ int								bi_echo(char **args);
 void							bi_cd(t_list **env_ll, t_shell *shell,
 									char **args);
 void							bi_pwd(void);
-void							bi_export(t_list **env_ll, char **args);
+void							bi_export(t_list **env_ll, t_shell *shell, char **args);
 void							bi_unset(t_list **env_ll, char **args);
 void							bi_env(t_list **env_ll);
 void							bi_exit(t_shell *sh_atr, char **args);
 void							bi_dot(t_ast *node);
-void							print_env(t_list **env_ll, int expo);
+void							print_env(t_list **env_ll);
+void							print_export(t_list **env_ll);
 int								check_out_of_range(int neg,
 									unsigned long long num, int *error);
 int								ft_atoi_long(const char *str, int *error);

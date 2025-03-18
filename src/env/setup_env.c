@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:38:46 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/13 23:52:19 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/18 15:31:25 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	up_shlvl(t_list **env_ll)
 	}
 }
 
-void	setup_env(t_list **env_ll, char **env)
+void	setup_env(t_list **env_ll, char **env, t_shell *shell)
 {
 	char	*answer;
 	int		i;
@@ -43,13 +43,13 @@ void	setup_env(t_list **env_ll, char **env)
 	if (env == NULL || env[i] == NULL)
 	{
 		answer = getcwd(NULL, 0);
-		add_env_direct(env_ll, "_", "./minishell");
-		add_env_direct(env_ll, "PWD", answer);
+		add_env_direct(env_ll, ft_strdup("_"), ft_strdup("./minishell"));
+		add_env_direct(env_ll, ft_strdup("PWD"), ft_strdup(answer));
 		free(answer);
 	}
 	while (env[i] != NULL)
 	{
-		add_env(env, i, env_ll);
+		add_env(env, i, env_ll, shell);
 		i++;
 	}
 	up_shlvl(env_ll);

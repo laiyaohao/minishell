@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:10:48 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/13 23:50:00 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/18 15:30:13 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	env_a(char *key, char*value, t_list **env_ll)
 	}
 }
 
-void	add_env(char **env, int i, t_list **env_ll)
+void	add_env(char **env, int i, t_list **env_ll, t_shell *shell)
 {
 	char	*key;
 	char	*value;
@@ -57,17 +57,18 @@ void	add_env(char **env, int i, t_list **env_ll)
 	eq = ft_strchr(env[i], '=');
 	key_len = find_eq(env[i]);
 	if (key_len == 0 || check_key(key_len, env[i]))
+	{
+		ft_putstr_fd("export: '", 2);
+		ft_putstr_fd(env[i], 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+		shell->exit = 1;
 		return ;
+	}
 	key = ft_substr(env[i], 0, key_len);
 	value = ft_substr(env[i], key_len + 1, ft_strlen(env[i]) - key_len);
 	if (eq == NULL)
 	{
 		(add_empty_key(env_ll, env, key, i), free(value));
-		return ;
-	}
-	if (check_value(key_len + 1, env[i]))
-	{
-		(free(key), free(value));
 		return ;
 	}
 	env_a(key, value, env_ll);

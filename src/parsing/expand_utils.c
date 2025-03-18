@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:17:01 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/12 15:59:22 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/18 16:44:29 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,11 @@ void	handle_var(char **s, char **res, t_shell *shell)
 
 	var = NULL;
 	(*s)++;
+	if (!**s)
+	{
+		(strcjoin('$', res), strcjoin(**s, res));
+		return ;
+	}
 	if (**s == '?')
 		handle_exit(s, res, shell);
 	else if (!ft_isalnum(**s) && (**s) != '_')

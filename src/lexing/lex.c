@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lex.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ryannnaa <ryannnaa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:07:13 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/10 20:09:17 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/17 14:17:48 by ryannnaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_node	*create_token(int type, char *value)
 		ft_putstr_fd("Error: Unable to create token\n", 2);
 		return (NULL);
 	}
+	ft_memset(token, 0, sizeof(token));
 	if (value)
 		token->value = ft_strdup(value);
 	else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/15 16:21:44 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/18 16:40:27 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	handle_parent(int pid, t_shell *shell)
 		else if (term_sig == SIGINT)
 			write(STDOUT_FILENO, "\n", 1);
 	}
+	setup_sig_interactive();
 }
 
 void	child_ve(t_ast *node, t_shell *shell)
@@ -50,6 +51,10 @@ void	child_ve(t_ast *node, t_shell *shell)
 	else if (path == NULL)
 		execve(exec.cmd, node->args, env);
 	free_2d(env);
+	if (exec.paths)
+		free_2d(exec.paths);
+	if (exec.cmd)
+		free(exec.cmd);
 	exec_err(node, shell);
 }
 
@@ -62,14 +67,14 @@ void	exec_ve(t_ast *node, t_shell *shell)
 		ft_putstr_fd("Error: Failed to fork\n", 2);
 	else if (pid == 0)
 	{
+		setup_sig_exec();
 		close(shell->std_in);
 		close(shell->std_out);
 		close_rd(shell->tree);
-		setup_sig_exec();
 		if (node->args && node->args[0])
 			child_ve(node, shell);
 		else
-			exit(0);
+			exit(shell->exit);
 	}
 	else
 		handle_parent(pid, shell);
@@ -77,8 +82,6 @@ void	exec_ve(t_ast *node, t_shell *shell)
 
 void	what_exec(t_ast *node, t_shell *shell)
 {
-	if (g_sigint)
-		return ;
 	if (ft_strncmp(node->args[0], "echo", 5) == 0)
 		shell->exit = bi_echo(node->args);
 	else if (ft_strncmp(node->args[0], "cd", 3) == 0)
@@ -86,7 +89,7 @@ void	what_exec(t_ast *node, t_shell *shell)
 	else if (ft_strncmp(node->args[0], "pwd", 4) == 0)
 		bi_pwd();
 	else if (ft_strncmp(node->args[0], "export", 7) == 0)
-		bi_export(&shell->env_ll, node->args);
+		bi_export(&shell->env_ll, shell, node->args);
 	else if (ft_strncmp(node->args[0], "unset", 6) == 0)
 		bi_unset(&shell->env_ll, node->args);
 	else if (ft_strncmp(node->args[0], "env", 4) == 0)

@@ -11,7 +11,7 @@ EXEC_FILENAMES := exec_cmd.c exec_pipe.c exec_rd.c exec_utils.c exec_err.c
 EXEC_FILES := ${addprefix ${EXEC_FOLDER}, ${EXEC_FILENAMES}}
 
 ERROR_FOLDER := ${addprefix ${SRC_FOLDER}, /error/}
-ERROR_FILENAMES := free_1.c free_2.c
+ERROR_FILENAMES := free_1.c free_2.c free_every.c
 ERROR_FILES := ${addprefix ${ERROR_FOLDER}, ${ERROR_FILENAMES}}
 
 PARSE_FOLDER := ${addprefix ${SRC_FOLDER}, /parsing/}
@@ -30,7 +30,7 @@ SIGS_FILES := ${addprefix ${SIGS_FOLDER}, ${SIGS_FILENAMES}}
 UTILS_FOLDER := ${addprefix ${SRC_FOLDER}, /utils/}
 UTILS_FILENAMES := check_arg.c ft_isspace.c ft_strndup.c split_args.c \
 									strcjoin.c ft_split_app.c ft_strdup_app.c \
-									gnl.c is_flag.c free_every.c ft_atoll.c
+									is_flag.c ft_atoll.c
 UTILS_FILES := ${addprefix ${UTILS_FOLDER}, ${UTILS_FILENAMES}}
 
 INIT_FOLDER := ${addprefix ${SRC_FOLDER}, /init/}
@@ -44,7 +44,7 @@ TOKENS_FILES := ${addprefix ${TOKENS_FOLDER}, ${TOKENS_FILENAMES}}
 ENV_FOLDER := ${addprefix ${SRC_FOLDER}, /env/}
 ENV_FILENAMES := setup_env.c free_env.c print_env.c add_env.c \
 									check_env.c del_env.c find_env.c update_env.c fill_env.c \
-									add_env_help.c
+									add_env_help.c print_export.c
 ENV_FILES := ${addprefix ${ENV_FOLDER}, ${ENV_FILENAMES}}
 
 BUILTINS_FOLDER := ${addprefix ${SRC_FOLDER}, /builtins/}

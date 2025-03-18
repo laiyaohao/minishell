@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:54:43 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/15 15:09:21 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/18 13:47:26 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,11 @@ void	handle_no_ent(t_ast *node, t_shell *shell)
 
 void	exec_err(t_ast *node, t_shell *shell)
 {
+	int	status;
+	
 	if (ft_strncmp(node->args[0], "..", 3) == 0)
 		handle_ddot(node, shell);
-	else if (errno == ENOENT)
+	else if (errno == ENOENT || node->args[0][0] == '\0')
 	{
 		handle_no_ent(node, shell);
 		shell->exit = 127;
@@ -106,7 +108,7 @@ void	exec_err(t_ast *node, t_shell *shell)
 		ft_putstr_fd("Error: execve failed\n", 2);
 		shell->exit = 1;
 	}
-	close(shell->std_in);
-	close(shell->std_out);
-	exit(shell->exit);
+	status = shell->exit;
+	free_every(shell);
+	exit(status);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ryannnaa <ryannnaa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:00:58 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/15 15:09:21 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/17 17:32:16 by ryannnaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,26 @@ int	count_keys(t_list *env_ll)
 	return (i);
 }
 
+void	add_val(t_env *pair, char **res)
+{
+	char *t_value;
+	
+	if (pair->key)
+	{
+		if (pair->value)
+		{
+			t_value = ft_strjoin(pair->key, "=");
+			*res = ft_strjoin(t_value, pair->value);
+			free(t_value);
+		}
+		else
+			*res = ft_strdup(pair->key);
+	}
+}
+
 char	**env_arr(t_list *env_ll)
 {
 	int		i;
-	char	*t_value;
 	char	**res;
 	t_list	*temp;
 	t_env	*pair;
@@ -93,9 +109,7 @@ char	**env_arr(t_list *env_ll)
 	while (temp)
 	{
 		pair = (t_env *)(temp->content);
-		t_value = ft_strjoin(pair->key, "=");
-		res[i] = ft_strjoin(t_value, pair->value);
-		free(t_value);
+		add_val(pair, &res[i]);
 		temp = temp->next;
 		i++;
 	}

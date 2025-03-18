@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:22:56 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/14 16:49:19 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/18 17:03:23 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	process_input(t_shell *shell)
 	if (grammar_check(shell->tokens))
 	{
 		ft_putstr_fd("Syntax error near unexpected token\n", 2);
+		shell->exit = 2;
 		free_tlist(shell->tokens);
 	}
 	else
@@ -58,7 +59,10 @@ void	shell_loop(t_shell *shell)
 		if (*(shell->attr->full_line))
 		{
 			if (check_line(shell->attr))
-				printf("have error lah deh: %s\n", (shell->attr->full_line));
+			{
+				printf("unclosed quotes: %s\n", (shell->attr->full_line));
+				shell->exit = 1;
+			}
 			else
 				process_input(shell);
 			add_history((shell->attr->full_line));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_arg.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 18:58:28 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/14 17:26:13 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/18 16:08:15 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	more_args(char **args, int cd)
 	if (i > 2)
 	{
 		if (cd)
-			ft_putstr_fd("more arguments than needed.\n", 2);
+			ft_putstr_fd("cd: too many arguments\n", 2);
 		return (1);
 	}
 	else
