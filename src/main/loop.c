@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ryannnaa <ryannnaa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:22:56 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/17 16:51:42 by ryannnaa         ###   ########.fr       */
+/*   Updated: 2025/03/18 15:00:00 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,10 @@ void	shell_loop(t_shell *shell)
 		if (*(shell->attr->full_line))
 		{
 			if (check_line(shell->attr))
-				printf("have error lah deh: %s\n", (shell->attr->full_line));
+			{
+				printf("unclosed quotes: %s\n", (shell->attr->full_line));
+				shell->exit = 1;
+			}
 			else
 				process_input(shell);
 			add_history((shell->attr->full_line));

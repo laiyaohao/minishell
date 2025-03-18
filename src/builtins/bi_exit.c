@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bi_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 18:45:03 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/15 21:54:34 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/18 14:53:13 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ void	numeric_arg(t_shell *sh_atr, char **args)
 
 void	byebye(t_shell *sh_atr)
 {
+	print_exit(sh_atr);
 	close(sh_atr->std_in);
 	close(sh_atr->std_out);
 	free_every(sh_atr);
-	print_exit(sh_atr);
 }
 
 /**

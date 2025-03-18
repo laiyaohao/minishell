@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bi_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ryannnaa <ryannnaa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 18:44:28 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/17 17:17:04 by ryannnaa         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:00:03 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,10 @@ void	change_dir(t_shell *shell, t_list **env_ll, char *key)
 	target_dir = find_value(env_ll, key);
 	if (!target_dir || target_dir[0] == '\0' || ft_isspace(target_dir[0]))
 	{
+		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(key, 2);
-		ft_putstr_fd(" env variable have error\n", 2);
+		ft_putstr_fd(" not set\n", 2);
+		shell->exit = 1;
 		return ;
 	}
 	change_dir_helper(shell, env_ll, target_dir);
@@ -98,12 +100,14 @@ void	bi_cd(t_list **env_ll, t_shell *shell, char **args)
 	}
 	if (!path || ft_strncmp(path, "--", 3) == 0
 		|| ft_strncmp(path, "~", 2) == 0 || path[0] == '\0')
-	{
 		change_dir(shell, env_ll, "HOME");
-	}
 	else if (ft_strncmp(path, "-", 2) == 0)
-	{
 		change_dir(shell, env_ll, "OLDPWD");
+	else if (ft_strncmp(path, "~", 1) == 0)
+	{
+		path = ft_strjoin(find_value(env_ll, "HOME"), args[1] + 1);
+		change_dir_helper(shell, env_ll, path);
+		free(path);
 	}
 	else
 		change_dir_helper(shell, env_ll, path);
