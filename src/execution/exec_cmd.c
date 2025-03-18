@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ryannnaa <ryannnaa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/17 16:43:41 by ryannnaa         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:40:27 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ void	child_ve(t_ast *node, t_shell *shell)
 	else if (path == NULL)
 		execve(exec.cmd, node->args, env);
 	free_2d(env);
-	free_2d(exec.paths);
-	free(exec.cmd);
+	if (exec.paths)
+		free_2d(exec.paths);
+	if (exec.cmd)
+		free(exec.cmd);
 	exec_err(node, shell);
 }
 

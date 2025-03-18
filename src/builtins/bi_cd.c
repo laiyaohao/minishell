@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bi_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 18:44:28 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/18 16:00:03 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/18 16:52:21 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	change_dir(t_shell *shell, t_list **env_ll, char *key)
 void	bi_cd(t_list **env_ll, t_shell *shell, char **args)
 {
 	char	*path;
+	char	*home;
 
 	path = args[1];
 	if (more_args(args, 1) || (path != NULL && !path[0]))
@@ -105,9 +106,12 @@ void	bi_cd(t_list **env_ll, t_shell *shell, char **args)
 		change_dir(shell, env_ll, "OLDPWD");
 	else if (ft_strncmp(path, "~", 1) == 0)
 	{
-		path = ft_strjoin(find_value(env_ll, "HOME"), args[1] + 1);
-		change_dir_helper(shell, env_ll, path);
-		free(path);
+		home = find_value(env_ll, "HOME");
+		if (home)
+			path = ft_strjoin(home, args[1] + 1);
+		else
+			path = ft_strdup(args[1]);
+		(change_dir_helper(shell, env_ll, path), free(path));
 	}
 	else
 		change_dir_helper(shell, env_ll, path);
