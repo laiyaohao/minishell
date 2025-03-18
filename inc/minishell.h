@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 15:05:37 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/18 16:36:38 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/18 20:44:04 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,10 @@ void							setup_sig_heredoc(void);
 void							sigint_handler(int sig);
 void							sigint_heredoc(int sig);
 int								heredoc_rl_event(void);
-void							setup_env(t_list **env_ll, char **env, t_shell *shell);
-void							add_env(char **env, int i, t_list **env_ll, t_shell *shell);
+void							setup_env(t_list **env_ll, char **env,
+									t_shell *shell);
+void							add_env(char **env, int i, t_list **env_ll,
+									t_shell *shell);
 void							update_value(t_list **env_ll, char *key,
 									char *new_v);
 void							add_env_direct(t_list **env_ll, char *k,
@@ -169,7 +171,8 @@ int								bi_echo(char **args);
 void							bi_cd(t_list **env_ll, t_shell *shell,
 									char **args);
 void							bi_pwd(void);
-void							bi_export(t_list **env_ll, t_shell *shell, char **args);
+void							bi_export(t_list **env_ll, t_shell *shell,
+									char **args);
 void							bi_unset(t_list **env_ll, char **args);
 void							bi_env(t_list **env_ll);
 void							bi_exit(t_shell *sh_atr, char **args);

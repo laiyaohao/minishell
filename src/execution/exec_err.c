@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:54:43 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/18 19:27:23 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/18 20:43:25 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	handle_no_ent(t_ast *node, t_shell *shell)
 void	exec_err(t_ast *node, t_shell *shell)
 {
 	int	status;
-	
+
 	if (ft_strncmp(node->args[0], "..", 3) == 0)
 		handle_ddot(node, shell);
 	else if (errno == ENOENT || node->args[0][0] == '\0')

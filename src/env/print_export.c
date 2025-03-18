@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_export.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/18 20:45:16 by tiatan            #+#    #+#             */
+/*   Updated: 2025/03/18 20:45:17 by tiatan           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 // Swap function to swap node contents
@@ -10,13 +22,13 @@ void	swap_env_vars(char **a, char **b)
 	*b = temp_key;
 }
 
-void sort_keys(char **keys, int num)
+void	sort_keys(char **keys, int num)
 {
 	int	i;
 	int	j;
 
 	if (!keys)
-		return;
+		return ;
 	i = 0;
 	while (i < num - 1)
 	{
@@ -25,7 +37,7 @@ void sort_keys(char **keys, int num)
 		{
 			if (ft_strncmp(keys[j], keys[j + 1], ft_strlen(keys[j])) > 0)
 			{
-				swap_env_vars(&keys[j], &keys[j+1]);
+				swap_env_vars(&keys[j], &keys[j + 1]);
 			}
 			j++;
 		}
@@ -34,9 +46,9 @@ void sort_keys(char **keys, int num)
 }
 
 // Function to print and free the sorted list
-void print_sorted_env(t_list **env_ll, char **keys, int num)
+void	print_sorted_env(t_list **env_ll, char **keys, int num)
 {
-	int	i;
+	int		i;
 	char	*value;
 
 	i = 0;
@@ -69,12 +81,13 @@ void	print_export(t_list **env_ll)
 {
 	char	**keys;
 	int		num;
-	int	i;
+	int		i;
+	t_list	*node;
 
 	num = num_keys(*env_ll);
 	keys = malloc((num + 1) * sizeof(char *));
 	i = 0;
-	t_list *node = *env_ll;
+	node = *env_ll;
 	while (node != NULL)
 	{
 		keys[i] = ((t_env *)((node)->content))->key;

@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:22:56 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/18 17:03:23 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/18 20:50:23 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,18 @@ void	process_input(t_shell *shell)
 	}
 }
 
+void	check_input(t_shell *shell)
+{
+	if (check_line(shell->attr))
+	{
+		printf("unclosed quotes: %s\n", (shell->attr->full_line));
+		shell->exit = 1;
+	}
+	else
+		process_input(shell);
+	add_history((shell->attr->full_line));
+}
+
 void	shell_loop(t_shell *shell)
 {
 	while (1)
@@ -57,16 +69,7 @@ void	shell_loop(t_shell *shell)
 			break ;
 		}
 		if (*(shell->attr->full_line))
-		{
-			if (check_line(shell->attr))
-			{
-				printf("unclosed quotes: %s\n", (shell->attr->full_line));
-				shell->exit = 1;
-			}
-			else
-				process_input(shell);
-			add_history((shell->attr->full_line));
-		}
+			check_input(shell);
 		free(shell->attr->full_line);
 	}
 	free_stuff(shell);

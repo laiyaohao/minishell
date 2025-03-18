@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/18 19:25:29 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/18 20:40:41 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,6 @@ void	what_exec(t_ast *node, t_shell *shell)
 
 void	exec_cmd(t_ast *node, t_shell *shell)
 {
-	if (!node->args[0])
-		return ;
 	shell->std_in = dup(STDIN_FILENO);
 	shell->std_out = dup(STDOUT_FILENO);
 	if (shell->std_in < 0 || shell->std_out < 0)
@@ -115,7 +113,7 @@ void	exec_cmd(t_ast *node, t_shell *shell)
 		ft_putstr_fd("Error: Failed to save stdout or stdin\n", 2);
 		exit(-1);
 	}
-	if (exec_rd(node->rd, shell) == 0)
+	if (exec_rd(node->rd, shell) == 0 && node->args[0])
 		what_exec(node, shell);
 	if (dup2(shell->std_in, STDIN_FILENO) < 0)
 	{
