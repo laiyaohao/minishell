@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:17:01 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/18 16:44:29 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/18 19:22:55 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,27 @@ char	*get_env(t_list *env_ll, char *key)
 {
 	t_list	*temp;
 	t_env	*pair;
+	char	*res;
+	char	*tmp;
 
 	temp = env_ll;
 	while (temp)
 	{
 		pair = (t_env *)temp->content;
 		if (ft_strncmp(pair->key, key, ft_strlen(key)) == 0)
-			return (pair->value);
+		{
+			if (ft_strchr(pair->value, '\'') != NULL)
+			{
+				tmp = ft_strjoin("\"", pair->value);
+				res = ft_strjoin(tmp, "\"");
+				free(tmp);
+			}
+			else
+			{
+				res = ft_strdup(pair->value);
+			}
+			return (res);
+		}
 		temp = temp->next;
 	}
 	return (NULL);
@@ -92,7 +106,11 @@ void	handle_var(char **s, char **res, t_shell *shell)
 		if (!var)
 			*res = ft_strjoin(temp, "");
 		else
+		{
 			*res = ft_strjoin(temp, var);
+		}
+		if (var)
+			free(var);
 		if (temp)
 			free(temp);
 	}

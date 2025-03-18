@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/18 16:40:27 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/18 19:25:29 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	child_ve(t_ast *node, t_shell *shell)
 		free_2d(exec.paths);
 	if (exec.cmd)
 		free(exec.cmd);
+	if (path)
+		free(path);
 	exec_err(node, shell);
 }
 
