@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ryannnaa <ryannnaa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:59 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/17 16:59:34 by ryannnaa         ###   ########.fr       */
+/*   Updated: 2025/03/18 20:43:08 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	pipe_exit(t_shell *shell)
 {
 	int	term_sig;
-	
+
 	if (WIFEXITED(shell->exit))
 		shell->exit = WEXITSTATUS(shell->exit);
 	else if (WIFSIGNALED(shell->exit))
@@ -28,7 +28,7 @@ void	pipe_exit(t_shell *shell)
 void	handle_child(int mode, int pipe_fd[2], t_ast *node, t_shell *shell)
 {
 	int	status;
-	
+
 	if (mode == 1)
 	{
 		close(pipe_fd[0]);
@@ -51,7 +51,7 @@ void	handle_child(int mode, int pipe_fd[2], t_ast *node, t_shell *shell)
 	}
 	status = shell->exit;
 	free_every(shell);
-	exit (status);
+	exit(status);
 }
 
 void	exec_pipe(t_ast *node, t_shell *shell)

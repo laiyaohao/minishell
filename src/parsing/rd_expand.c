@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:16:04 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/10 20:16:10 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/19 11:40:59 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*rd_expand(char *s, int mode, t_shell *shell)
 			hd_dquote(&s, &res);
 		else if (*s == '"' && mode)
 			rd_dquote(&s, &res, shell);
-		else if (*s == '$' && mode)
+		else if (*s == '$' && !mode)
 			handle_var(&s, &res, shell);
 		else
 		{

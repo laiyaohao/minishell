@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:20:31 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/15 15:12:25 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/19 15:34:21 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,55 +39,55 @@ t_redirect	*create_rd(void)
 	return (rd);
 }
 
-int	len_check(char *s)
+void	nested_quotes(char **s, char **res)
 {
-	int		i;
-	int		j;
-	char	quote;
+	int	c;
 
-	i = 0;
-	j = 0;
-	quote = 0;
-	while (s[j])
+	c = **s;
+	(*s)++;
+	while (**s && **s != c)
 	{
-		if ((s[j] == '\'' || s[j] == '"') && !quote)
-			quote = s[j];
-		else if (s[j] == quote)
-			quote = 0;
+		if (**s && **s == Q_MARKER)
+		{
+			(*s)++;
+			strcjoin(**s, res);
+			(*s)++;
+		}
 		else
-			i++;
-		j++;
+		{
+			strcjoin(**s, res);
+			(*s)++;
+		}
 	}
-	return (i);
+	(*s)++;
 }
 
 char	*remove_quotes(char *s)
 {
-	int		i;
-	int		j;
-	int		len;
-	char	*temp;
-	char	quote;
+	char	*res;
 
-	i = 0;
-	j = 0;
-	quote = 0;
-	len = len_check(s);
-	temp = malloc(sizeof(char) * (len + 1));
-	if (!temp)
+	res = ft_strdup("");
+	if (!res)
 		return (NULL);
-	while (s[i])
+	while (*s)
 	{
-		if ((s[i] == '"' || s[i] == '\'') && !quote)
-			quote = s[i];
-		else if (s[i] == quote)
-			quote = 0;
+		if (*s && *s == Q_MARKER)
+		{
+			s++;
+			strcjoin(*s, &res);
+			s++;
+		}
+		else if (*s && (*s == '"' || *s == '\''))
+		{
+			nested_quotes(&s, &res);
+		}
 		else
-			temp[j++] = s[i];
-		i++;
+		{
+			strcjoin(*s, &res);
+			s++;
+		}
 	}
-	temp[j] = '\0';
-	return (temp);
+	return (res);
 }
 
 void	process_args(char ***array)

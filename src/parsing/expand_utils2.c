@@ -1,61 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc_utils.c                                    :+:      :+:    :+:   */
+/*   expand_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/14 16:18:13 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/19 11:39:51 by tiatan           ###   ########.fr       */
+/*   Created: 2025/03/19 15:30:58 by tiatan            #+#    #+#             */
+/*   Updated: 2025/03/19 15:31:21 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-char	*heredoc_expand(char *s, t_shell *shell)
+char	*affix_quote(char *s)
 {
 	char	*res;
 
 	res = ft_strdup("");
 	if (!res)
 		return (NULL);
-	while (s && *s)
+	while (*s)
 	{
-		if (*s == '$')
-			handle_var(&s, &res, shell);
+		if (*s && (*s == '\'' || *s == '"'))
+		{
+			strcjoin(Q_MARKER, &res);
+			strcjoin(*s, &res);
+			s++;
+		}
 		else
 		{
 			strcjoin(*s, &res);
 			s++;
 		}
 	}
-	strcjoin('\0', &res);
 	return (res);
 }
 
-int	check_quote(char *s)
+int	check_quotes(char *s)
 {
-	int	i;
-
-	i = 0;
-	if (*s && *s == '$')
-		i = 1;
-	while (*s)
-	{
-		if (*s == '\'' || *s == '"')
-		{
-			i = 1;
-			break ;
-		}
-		s++;
-	}
-	return (i);
-}
-
-void	rl_null(char *delim)
-{
-	ft_putstr_fd("warning: here-document at line ", 2);
-	ft_putstr_fd("delimited by end-of-file (wanted `", 2);
-	ft_putstr_fd(delim, 2);
-	ft_putstr_fd("')\n", 2);
+	if (ft_strchr(s, '"') != NULL | ft_strchr(s, '\'') != NULL)
+		return (1);
+	return (0);
 }

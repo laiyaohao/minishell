@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:17:01 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/18 16:44:29 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/19 15:31:16 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,33 @@ void	handle_exit(char **s, char **res, t_shell *shell)
 	(*s)++;
 }
 
-void	handle_var(char **s, char **res, t_shell *shell)
+void	var_value(char **s, char **res, t_shell *shell)
 {
 	char	*temp;
+	char	*tmp;
 	char	*var;
 
 	var = NULL;
+	temp = get_var(s);
+	var = get_env(shell->env_ll, temp);
+	free(temp);
+	temp = *res;
+	if (!var)
+		*res = ft_strjoin(temp, "");
+	else if (check_quotes(var))
+	{
+		tmp = affix_quote(var);
+		*res = ft_strjoin(temp, tmp);
+		free(tmp);
+	}
+	else
+		*res = ft_strjoin(temp, var);
+	if (temp)
+		free(temp);
+}
+
+void	handle_var(char **s, char **res, t_shell *shell)
+{
 	(*s)++;
 	if (!**s)
 	{
@@ -84,16 +105,5 @@ void	handle_var(char **s, char **res, t_shell *shell)
 		(*s)++;
 	}
 	else
-	{
-		temp = get_var(s);
-		var = get_env(shell->env_ll, temp);
-		free(temp);
-		temp = *res;
-		if (!var)
-			*res = ft_strjoin(temp, "");
-		else
-			*res = ft_strjoin(temp, var);
-		if (temp)
-			free(temp);
-	}
+		var_value(s, res, shell);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ryannnaa <ryannnaa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:00:58 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/17 17:32:16 by ryannnaa         ###   ########.fr       */
+/*   Updated: 2025/03/18 20:43:16 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ int	count_keys(t_list *env_ll)
 
 void	add_val(t_env *pair, char **res)
 {
-	char *t_value;
-	
+	char	*t_value;
+
 	if (pair->key)
 	{
 		if (pair->value)

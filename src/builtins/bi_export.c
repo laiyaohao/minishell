@@ -6,7 +6,7 @@
 /*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:22:37 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/12 17:22:53 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/19 16:20:39 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,21 @@
  * by right, the SHLVL environment will increment by one when there is one
  * more level of inception.
  */
-void	bi_export(t_list **env_ll, t_shell *shell, char **args)
+int	bi_export(t_list **env_ll, t_shell *shell, char **args)
 {
 	int	i;
+	int	err;
 
 	i = 1;
+	err = 0;
 	if (!args[i])
 	{
 		print_export(env_ll);
 	}
 	while (args[i] != NULL)
 	{
-		add_env(args, i, env_ll, shell);
+		err = add_env(args, i, env_ll, shell);
 		i++;
 	}
+	return (err);
 }

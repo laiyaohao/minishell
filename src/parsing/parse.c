@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:20:28 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/15 15:14:00 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/19 11:59:00 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	parse_redir(t_node **token, t_redirect **ast_rd, t_shell *shell)
 	if (new_rd->type == T_HEREDOC)
 	{
 		mode = check_quote((*token)->value);
-		new_rd->file = rd_expand((*token)->value, 0, shell);
+		new_rd->file = rd_expand((*token)->value, mode, shell);
 		new_rd->fd = create_heredoc(new_rd->file, shell, mode);
 	}
 	else
