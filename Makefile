@@ -30,7 +30,7 @@ SIGS_FILES := ${addprefix ${SIGS_FOLDER}, ${SIGS_FILENAMES}}
 UTILS_FOLDER := ${addprefix ${SRC_FOLDER}, /utils/}
 UTILS_FILENAMES := check_arg.c ft_isspace.c ft_strndup.c split_args.c \
 									strcjoin.c ft_split_app.c ft_strdup_app.c \
-									is_flag.c ft_atoll.c
+									is_flag.c ft_atoll.c print_ast.c
 UTILS_FILES := ${addprefix ${UTILS_FOLDER}, ${UTILS_FILENAMES}}
 
 INIT_FOLDER := ${addprefix ${SRC_FOLDER}, /init/}

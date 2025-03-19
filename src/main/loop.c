@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:22:56 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/18 20:50:23 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/19 11:54:13 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	process_input(t_shell *shell)
 	else
 	{
 		shell->tree = parser(shell->tokens, shell);
+		debug_print_ast(shell->tree);
 		if (!g_sigint)
 			exec_ast(shell->tree, shell);
 		free_tree(shell->tree);

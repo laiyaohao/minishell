@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 15:05:37 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/18 20:44:04 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/19 11:52:49 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,5 +207,6 @@ int								ft_atoll(const char *str, long long *result);
 int								is_flag(char *arg, char c);
 int								more_args(char **args, int cd);
 int								ft_isspace(int c);
+void							debug_print_ast(t_ast *root);
 
 #endif

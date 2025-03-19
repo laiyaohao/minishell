@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:23:31 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/14 16:49:10 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/19 11:56:59 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	heredoc_rl(char *delim, t_shell *shell, int mode, int pipe_fd)
 			rl_null(delim);
 			break ;
 		}
-		if (ft_strncmp(line, delim, ft_strlen(line)) == 0)
+		if (ft_strncmp(line, delim, ft_strlen(delim)) == 0)
 		{
 			free(line);
 			break ;
