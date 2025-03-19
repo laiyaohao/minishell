@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:22:56 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/19 15:21:02 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/19 15:42:58 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	process_input(t_shell *shell)
 	else
 	{
 		shell->tree = parser(shell->tokens, shell);
-		shell->exit = 0;
 		if (!g_sigint)
 			exec_ast(shell->tree, shell);
 		free_tree(shell->tree);

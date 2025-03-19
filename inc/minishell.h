@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 15:05:37 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/19 15:31:48 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/19 16:31:52 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,11 +121,11 @@ void							sigint_heredoc(int sig);
 int								heredoc_rl_event(void);
 void							setup_env(t_list **env_ll, char **env,
 									t_shell *shell);
-void							add_env(char **env, int i, t_list **env_ll,
+int								add_env(char **env, int i, t_list **env_ll,
 									t_shell *shell);
 void							update_value(t_list **env_ll, char *key,
 									char *new_v);
-void							add_env_direct(t_list **env_ll, char *k,
+int								add_env_direct(t_list **env_ll, char *k,
 									char *v);
 int								check_key(int key_len, char *env);
 // int								check_value(int key_len, char *env);
@@ -136,7 +136,7 @@ void							fill_value(t_env *key_v, int val_len,
 void							fill_key(t_env *key_v, int key_len, char *env);
 void							add_empty_key_help(char **env, int i,
 									t_list **env_ll);
-void							add_empty_key(t_list **env_ll, char **env,
+int								add_empty_key(t_list **env_ll, char **env,
 									char *key, int i);
 int								check_line(t_attr *attr);
 int								set_status(int status, char *line, int i);
@@ -170,15 +170,15 @@ void							exec_err(t_ast *node, t_shell *shell);
 int								exec_rd(t_redirect *rd, t_shell *shell);
 char							**env_arr(t_list *env_ll);
 int								bi_echo(char **args);
-void							bi_cd(t_list **env_ll, t_shell *shell,
+int								bi_cd(t_list **env_ll, t_shell *shell,
 									char **args);
-void							bi_pwd(void);
-void							bi_export(t_list **env_ll, t_shell *shell,
+int								bi_pwd(void);
+int								bi_export(t_list **env_ll, t_shell *shell,
 									char **args);
-void							bi_unset(t_list **env_ll, char **args);
-void							bi_env(t_list **env_ll);
+int								bi_unset(t_list **env_ll, char **args);
+int								bi_env(t_list **env_ll);
 void							bi_exit(t_shell *sh_atr, char **args);
-void							bi_dot(t_ast *node);
+void							bi_dot(t_ast *node, t_shell *shell);
 void							print_env(t_list **env_ll);
 void							print_export(t_list **env_ll);
 int								check_out_of_range(int neg,
@@ -189,7 +189,7 @@ void							handle_non_numeric(t_shell *sh_atr,
 void							numeric_arg(t_shell *sh_atr, char **args);
 void							free_env(t_list **env_ll);
 void							free_node(t_env *node);
-void							del_env(char **env, int i, t_list **env_ll);
+int								del_env(char **env, int i, t_list **env_ll);
 void							free_2d(char **memory);
 void							free_tlist(t_tok *tokens);
 void							free_tree(t_ast *tree);

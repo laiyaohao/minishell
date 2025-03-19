@@ -6,7 +6,7 @@
 /*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:13:32 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/19 12:37:16 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/19 16:07:21 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	add_empty_key_help(char **env, int i, t_list **env_ll)
 	ft_lstadd_back(env_ll, node);
 }
 
-void	add_empty_key(t_list **env_ll, char **env, char *key, int i)
+int	add_empty_key(t_list **env_ll, char **env, char *key, int i)
 {
 	t_env	*temp;
 
@@ -44,4 +44,5 @@ void	add_empty_key(t_list **env_ll, char **env, char *key, int i)
 	if (temp == NULL)
 		add_empty_key_help(env, i, env_ll);
 	free(key);
+	return (EXIT_SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/19 14:43:22 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/19 16:36:27 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,19 +85,19 @@ void	what_exec(t_ast *node, t_shell *shell)
 	if (ft_strncmp(node->args[0], "echo", 5) == 0)
 		shell->exit = bi_echo(node->args);
 	else if (ft_strncmp(node->args[0], "cd", 3) == 0)
-		bi_cd(&shell->env_ll, shell, node->args);
+		shell->exit = bi_cd(&shell->env_ll, shell, node->args);
 	else if (ft_strncmp(node->args[0], "pwd", 4) == 0)
-		bi_pwd();
+		shell->exit = bi_pwd();
 	else if (ft_strncmp(node->args[0], "export", 7) == 0)
-		bi_export(&shell->env_ll, shell, node->args);
+		shell->exit = bi_export(&shell->env_ll, shell, node->args);
 	else if (ft_strncmp(node->args[0], "unset", 6) == 0)
-		bi_unset(&shell->env_ll, node->args);
+		shell->exit = bi_unset(&shell->env_ll, node->args);
 	else if (ft_strncmp(node->args[0], "env", 4) == 0)
-		bi_env(&shell->env_ll);
+		shell->exit = bi_env(&shell->env_ll);
 	else if (ft_strncmp(node->args[0], "exit", 5) == 0)
 		bi_exit(shell, node->args);
 	else if (ft_strncmp(node->args[0], ".", 2) == 0)
-		bi_dot(node);
+		bi_dot(node, shell);
 	else
 		exec_ve(node, shell);
 }
@@ -113,6 +113,8 @@ void	exec_cmd(t_ast *node, t_shell *shell)
 	}
 	if (exec_rd(node->rd, shell) == 0 && node->args[0])
 		what_exec(node, shell);
+	else
+		shell->exit = 0;
 	if (dup2(shell->std_in, STDIN_FILENO) < 0)
 	{
 		ft_putstr_fd("Error: Failed to restore stdin\n", 2);
