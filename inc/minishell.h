@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 15:05:37 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/19 11:52:49 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/19 15:31:48 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+# define Q_MARKER '\x02'
 
 extern volatile sig_atomic_t	g_sigint;
 
@@ -207,6 +209,7 @@ int								ft_atoll(const char *str, long long *result);
 int								is_flag(char *arg, char c);
 int								more_args(char **args, int cd);
 int								ft_isspace(int c);
-void							debug_print_ast(t_ast *root);
+char							*affix_quote(char *s);
+int								check_quotes(char *s);
 
 #endif

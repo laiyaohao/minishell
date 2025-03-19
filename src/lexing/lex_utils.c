@@ -6,17 +6,11 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:06:28 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/19 11:32:30 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/19 15:05:58 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-void	handle_pipe(char **s, int *i)
-{
-	*i = T_PIPE;
-	(*s)++;
-}
 
 void	add_value(char **s, int *j, char **temp)
 {
@@ -68,28 +62,4 @@ void	handle_word(char **s, int *i, char **temp)
 	*i = T_WORD;
 	if (*s)
 		(*s) += j;
-}
-
-void	handle_redir_in(char **s, int *i)
-{
-	(*s)++;
-	if (**s == '<')
-	{
-		*i = T_HEREDOC;
-		(*s)++;
-	}
-	else
-		*i = T_REDIR_IN;
-}
-
-void	handle_redir_out(char **s, int *i)
-{
-	(*s)++;
-	if (**s == '>')
-	{
-		*i = T_REDIR_APP;
-		(*s)++;
-	}
-	else
-		*i = T_REDIR_OUT;
 }

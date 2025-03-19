@@ -6,7 +6,7 @@
 /*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:17:01 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/18 20:48:18 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/19 15:31:16 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,13 @@ char	*get_env(t_list *env_ll, char *key)
 {
 	t_list	*temp;
 	t_env	*pair;
-	char	*res;
-	char	*tmp;
 
 	temp = env_ll;
 	while (temp)
 	{
 		pair = (t_env *)temp->content;
 		if (ft_strncmp(pair->key, key, ft_strlen(key)) == 0)
-		{
-			if (ft_strchr(pair->value, '\'') != NULL)
-			{
-				tmp = ft_strjoin("\"", pair->value);
-				res = ft_strjoin(tmp, "\"");
-				free(tmp);
-			}
-			else
-				res = ft_strdup(pair->value);
-			return (res);
-		}
+			return (pair->value);
 		temp = temp->next;
 	}
 	return (NULL);
@@ -79,6 +67,7 @@ void	handle_exit(char **s, char **res, t_shell *shell)
 void	var_value(char **s, char **res, t_shell *shell)
 {
 	char	*temp;
+	char	*tmp;
 	char	*var;
 
 	var = NULL;
@@ -88,12 +77,14 @@ void	var_value(char **s, char **res, t_shell *shell)
 	temp = *res;
 	if (!var)
 		*res = ft_strjoin(temp, "");
-	else
+	else if (check_quotes(var))
 	{
-		*res = ft_strjoin(temp, var);
+		tmp = affix_quote(var);
+		*res = ft_strjoin(temp, tmp);
+		free(tmp);
 	}
-	if (var)
-		free(var);
+	else
+		*res = ft_strjoin(temp, var);
 	if (temp)
 		free(temp);
 }
