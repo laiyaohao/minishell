@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   del_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:27:27 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/19 12:04:35 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/19 12:34:28 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	del_env(char **env, int i, t_list **env_ll)
 	}
 	while (node != NULL
 		&& ft_strncmp(((t_env *)(node->content))->key, env[i],
-		ft_strlen(((t_env *)(node->content))->key)))
+		ft_strlen(env[i]) + 1))
 	{
 		prev = node;
 		node = node->next;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:36:05 by ylai              #+#    #+#             */
-/*   Updated: 2025/03/19 12:01:16 by tiatan           ###   ########.fr       */
+/*   Updated: 2025/03/19 12:36:49 by ylai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*find_value(t_list **env_ll, char *key)
 	while (list != NULL)
 	{
 		node = list->content;
-		if (ft_strncmp(node->key, key, ft_strlen(key)) == 0)
+		if (ft_strncmp(node->key, key, ft_strlen(key) + 1) == 0)
 		{
 			return (node->value);
 		}
@@ -39,7 +39,7 @@ t_env	*find_node(t_list **env_ll, char *key)
 	while (list != NULL)
 	{
 		node = list->content;
-		if (ft_strncmp(node->key, key, ft_strlen(key)) == 0)
+		if (ft_strncmp(node->key, key, ft_strlen(key) + 1) == 0)
 		{
 			return (node);
 		}
