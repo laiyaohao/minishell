@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylai <ylai@student.42singapore.sg>         +#+  +:+       +#+        */
+/*   By: tiatan <tiatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:05:35 by tiatan            #+#    #+#             */
-/*   Updated: 2025/03/19 16:36:27 by ylai             ###   ########.fr       */
+/*   Updated: 2025/03/19 19:09:39 by tiatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	exec_cmd(t_ast *node, t_shell *shell)
 	}
 	if (exec_rd(node->rd, shell) == 0 && node->args[0])
 		what_exec(node, shell);
-	else
+	else if (node->args[0] == NULL)
 		shell->exit = 0;
 	if (dup2(shell->std_in, STDIN_FILENO) < 0)
 	{
